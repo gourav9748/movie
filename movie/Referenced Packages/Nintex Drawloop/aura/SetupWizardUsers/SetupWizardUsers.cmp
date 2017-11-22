@@ -1,0 +1,189 @@
+<aura:component implements="force:appHostable" controller="Loop.SetupWizardUsersController">
+    <!--Internal attributes-->
+    <aura:attribute name="isDdpAdmin" type="boolean" default="true"/>
+    <aura:attribute name="hasSiteWideLicense" type="boolean" default="false" access="private"/>
+    <aura:attribute name="isSandbox" type="boolean" default="false" access="private"/>
+    <aura:attribute name="usedLicenses" type="integer" default="0" access="private"/>
+    <aura:attribute name="allowedLicenses" type="integer" default="0" access="private"/>
+    <aura:attribute name="tooManyUsers" type="boolean" default="false" access="private"/>
+    <aura:attribute name="provisionedUsersText" type="string" default="" access="private"/>
+    <aura:attribute name="ddpAdminPermissionSetId" type="string" default="" access="private" description="Id of the Ddp Admin PermissionSet."/>
+    <aura:attribute name="ddpUserPermissionSetId" type="string" default="" access="private" description="Id of the Ddp User PermissionSet."/>
+    <aura:attribute name="salesforceUserLicenseId" type="string" default="" access="private" description="Id of the Salesforce UserLicense."/>
+    
+    <!--Column attributes-->
+    <aura:attribute name="allProfiles" type="List" default="[]" access="private" description="List of all ProfileData. Immutable."/>
+    <aura:attribute name="selectedProfile" type="Object" access="private" description="Id of currently selected ProfileData."/>
+    <aura:attribute name="availableUsers" type="List" default="[]" access="private" description="List of available UserData for a selected ProfileData."/>
+    <aura:attribute name="selectedAvailableUsers" type="List" default="[]" access="private" description="Currently selected UserDatas among Available Users."/>
+    <aura:attribute name="ddpAdmins" type="List" default="[]" access="private" description="List of UserData that have Drawloop Admin PermissionSet."/>
+    <aura:attribute name="selectedDdpAdmins" type="List" default="[]" access="private" description="Currently selected UserData among Drawloop Admins."/>
+    <aura:attribute name="ddpUsers" type="List" default="[]" access="private" description="List of UserData that have Drawloop User PermissionSet."/>
+    <aura:attribute name="selectedDdpUsers" type="List" default="[]" access="private" description="Currently selected UserData among Drawloop Users."/>
+    <aura:attribute name="stagedUsers" type="List" default="[]" access="private" description="List of UserData that need to be changed."/>
+    <aura:attribute name="hasContract" type="boolean" default="false"/>
+    
+    <!--Methods-->
+    <aura:method name="save" action="{!c.save}"/>
+    
+    <!--Handled events-->
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:handler event="aura:doneRendering" action="{!c.onDoneRendering}"/>
+    
+    <!--Registered events-->
+    <aura:registerEvent name="moveToNextStep" type="Loop:moveToNextStep"/>
+    <aura:registerEvent name="showError" type="Loop:showError"/>
+    <aura:registerEvent name="redirectPage" type="Loop:redirectPage"/>
+    <aura:registerEvent name="actionEvent" type="Loop:actionEvent"/>
+    
+    <div class="slds">
+        <div style="height:40rem;">
+            <aura:if isTrue="{!v.hasSiteWideLicense}">
+                <div class="slds-grid slds-wrap slds-m-bottom--medium">
+                    <div class="slds-size--1-of-1">
+                        <div class="slds-box slds-box--x-small slds-theme--warning">
+                            <p>You have a site-wide license. Consider skipping this step and <a href="http://help.nintex.com/en-us/docgen/docservices/Default.htm#cshid=9016" target="_blank">assign permissions by using profiles.</a></p>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.isSandbox}">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-size--1-of-1">
+                        <div class="slds-box slds-box--x-small slds-theme--warning">
+                            <p>You are in a sandbox environment. Consider skipping this step and <a href="http://help.nintex.com/en-us/docgen/docservices/Default.htm#cshid=9016" target="_blank">assign permissions by using profiles.</a></p>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            <div class="slds-grid slds-m-top--medium slds-m-bottom--medium" style="height:100%;min-width:60rem;max-width:85rem;margin:auto;">
+                <div id="profiles-column-container" class="slds-size--1-of-4 slds-m-right--medium slds-p-bottom--small" style="height:100%;">
+                    <div class="slds-form-element" style="height:100%;">
+                        <div class="slds-form-element__label" style="height:3%; font-size:16px;">Profiles</div>
+                        <div class="slds-form-element__control slds-picklist slds-picklist--multi" style="height:97%;">
+                            <ul id="profileList" class="slds-picklist__options slds-picklist__options--multi shown" style="height:100%;width:inherit;">
+                                <aura:iteration items="{!v.allProfiles}" var="profile">
+                                    <li id="{!profile.Id}" onclick="{!c.selectProfile}" class="slds-picklist__item" aria-selected="false" role="option">
+                                        <span class="slds-truncate">
+                                            {!profile.Name}
+                                        </span>
+                                    </li>
+                                </aura:iteration>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="users-column-container" class="slds-size--1-of-4 slds-m-right--medium slds-p-bottom--small" style="height:100%;">
+                    <div class="slds-form-element" style="height:100%;">
+                        <div class="slds-form-element__label" style="height:3%; font-size:16px;">Available Users</div>
+                        <aura:if isTrue="{!v.tooManyUsers}">
+                            <div class="slds-box slds-box--x-small slds-theme--warning slds-grid" style="height:6%;">
+                                <div id="iconContainer" class="slds-m-right--x-small move-down-1px">
+                                    <span>
+                                        <Loop:Svg class="slds-icon slds-icon--x-small" xlinkHref="/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#warning"/>
+                                    </span>
+                                </div>
+                                <span class="slds-truncate">
+                                    <p>Please filter by Profile to see more Users.</p>
+                                </span>
+                            </div>
+                        </aura:if>
+                        <div id="availableUsersListContainer" class="slds-form-element__control slds-picklist slds-picklist--multi" style="height:97%;">
+                            <ul id="availableUsersList" class="slds-picklist__options slds-picklist__options--multi shown" style="height:100%; width:inherit;">
+                                <li aura:id="availableUsersLoading" hidden="true" style="height:100%; width:100%;">
+                                    <div class="slds-grid slds-grid--align-center slds-grid--vertical-align-center" style="height:100%;">
+                                        <div id="spinner-container" class="slds-align-middle">
+                                            <Loop:Spinner class="slds-spinner slds-spinner--large" visible="true" />
+                                        </div>
+                                    </div>
+                                </li>
+                                <aura:iteration items="{!v.availableUsers}" var="user">
+                                    <li aura:id="availableUsersListItem" id="{!user.Id}" onclick="{!c.availableUserClicked}" class="slds-picklist__item" aria-selected="false" role="option">
+                                        <span class="slds-truncate">
+                                            {!user.Name}
+                                        </span>
+                                    </li>
+                                </aura:iteration>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="button-column-container" class="slds-size--1-of-4 slds-grid--vertical slds-m-right--medium slds-p-bottom--small" style="height:100%;">
+                    <div style="height:11rem;"/>
+                    <button type="button" name="addAdmins" class="slds-button slds-button--neutral" onclick="{!c.addAdmin}" style="width:100%;">
+                        <span>Add Admin</span>
+                        <span>
+                            <Loop:Svg class="slds-icon--xx-small slds-icon-text-default move-up-1px slds-m-left--xx-small" xlinkHref="/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#chevronright"/>
+                        </span>
+                    </button>
+                    
+                    <div style="height:1rem;"/><!--This div only exists because of this SLDS styling ".slds-button + .slds-button { margin-left: 0.25rem; }"-->
+                    
+                    <button type="button" name="removeAdmins" class="slds-button slds-button--neutral" onclick="{!c.removeAdmin}" style="width:100%;">
+                        <span>
+                            <Loop:Svg class="slds-icon--xx-small slds-icon-text-default move-up-1px slds-m-right--xx-small" xlinkHref="/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"/>
+                        </span>
+                        <span>Remove Admin</span>
+                    </button>
+                    
+                    <div style="height:13rem;"/><!--This div only exists because of this SLDS styling ".slds-button + .slds-button { margin-left: 0.25rem; }"-->
+                    
+                    <button type="button" name="addUsers" class="slds-button slds-button--neutral" onclick="{!c.addUser}" style="width:100%;">
+                        <span>Add User</span>
+                        <span>
+                            <Loop:Svg class="slds-icon--xx-small slds-icon-text-default move-up-1px slds-m-left--xx-small" xlinkHref="/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#chevronright"/>
+                        </span>
+                    </button>
+                    
+                    <div style="height:1rem;"/><!--This div only exists because of this SLDS styling ".slds-button + .slds-button { margin-left: 0.25rem; }"-->
+                    
+                    <button type="button" name="removeUsers" class="slds-button slds-button--neutral" onclick="{!c.removeUser}" style="width:100%;">
+                        <span>
+                            <Loop:Svg class="slds-icon--xx-small slds-icon-text-default move-up-1px slds-m-right--xx-small" xlinkHref="/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#chevronleft"/>
+                        </span>
+                        <span>Remove User</span>
+                    </button>
+                </div>
+                <div id="staging-lists-column-container" class="slds-size--1-of-4 slds-grid--vertical slds-p-bottom--small" style="height:100%;">
+                    <div class="slds-form-element slds-m-bottom--small" style="height:15%;">
+                        <div class="slds-form-element__label" style="font-size:16px;" aria-label="select-2">Provisioned Users</div>
+                        <div class="slds-form-element__controller slds-box slds-box--x-small slds-theme--shade">
+                            <p>{!v.provisionedUsersText}</p>
+                            <aura:if isTrue="{! !v.isSandbox &amp;&amp; v.isDdpAdmin}">
+                            	<button class="slds-button" style="line-height:1rem;" onclick="{!c.redirectPage}">{!v.hasContract ? 'Purchase User Licenses' : 'Purchase Nintex Drawloop'}</button>
+                            </aura:if>
+                        </div>
+                    </div>
+                    <div class="slds-form-element slds-m-bottom--x-small">
+                        <div class="slds-form-element__label">Admin</div>
+                        <div class="slds-form-element__controller slds-picklist slds-picklist--multi">
+                            <ul id="ddpAdminsList" class="slds-picklist__options slds-picklist__options--multi shown" style="width:inherit;">
+                                <aura:iteration items="{!v.ddpAdmins}" var="ddpAdmin">
+                                    <li id="{!ddpAdmin.Id}" onclick="{!c.ddpAdminClicked}" draggable="true" class="slds-picklist__item" aria-selected="false" role="option">
+                                        <span class="slds-truncate">
+                                            <span>{!ddpAdmin.Name}</span>
+                                        </span>
+                                    </li>
+                                </aura:iteration>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__label">User</div>
+                        <div class="slds-picklist slds-picklist--multi">
+                            <ul id="ddpUsersList" class="slds-picklist__options slds-picklist__options--multi shown" style="width:inherit;">
+                                <aura:iteration items="{!v.ddpUsers}" var="ddpUser">
+                                    <li id="{!ddpUser.Id}" onclick="{!c.ddpUserClicked}" draggable="true" class="slds-picklist__item" aria-selected="false" role="option">
+                                        <span class="slds-truncate">
+                                            <span>{!ddpUser.Name}</span>
+                                        </span>
+                                    </li>
+                                </aura:iteration>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

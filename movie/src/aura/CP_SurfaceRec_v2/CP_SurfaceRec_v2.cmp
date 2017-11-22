@@ -1,0 +1,494 @@
+<aura:component >
+	<ltng:require styles="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+    <aura:attribute name="locRecord" type="ProductConfiguration.location"/>
+	<aura:attribute name="surfaceRec" type="ProductConfiguration.surface"/>
+    <aura:attribute name="surfaceProRec" type="Product2"/>
+    <aura:attribute name="ConditionRec" type="ProductConfiguration.condition"/>
+    <aura:attribute name="ConditionList" type="ProductConfiguration.condition[]"/>
+    <!--<aura:attribute name="woodTypeConditionValues" type="String[]"/>
+    <aura:attribute name="knotsConditionValues" type="String[]"/>-->
+	<aura:attribute name="stainConditionValues" type="String[]"/>
+    <!--<aura:attribute name="stainTypeConditionValues" type="String[]"/>
+    <aura:attribute name="woodAgeConditionValues" type="String[]"/>-->
+    <aura:attribute name="uploadPictureURL" type="String"/>
+    <aura:attribute name="quoteId" type="String"/>
+    
+    <aura:attribute name="result" type="Double" default="0"/>
+    
+    <aura:attribute name="calculationLineList" type="object[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!--  -->
+    <div aura:id="backdrop" class="slds-size--12-of-12 slds-grid slds-wrap slds-grid-pull-padded removepadding">
+        <div class="slds-size--2-of-12 slds-small-size_2-of-12 slds-align_absolute-center slds-m-vertical_x-small">
+            <ui:inputCheckbox aura:id="surfaceID"
+                              class="slds-checkbox slds-checkbox--faux myCheckbox"
+                              labelClass="slds-form-element__label"
+                              change="{!c.addSurfaceToLocation}"/>
+        </div>
+        <div class="slds-size--4-of-12 slds-small-size_4-of-12 slds-align_absolute-center slds-m-vertical_x-small fontForMobile">
+            <ui:outputText aura:id="surfaceIDText"
+                           value="{!v.surfaceProRec.Name}"/>
+        </div>
+        <div class="slds-size--3-of-12 slds-small-size_3-of-12 slds-align_absolute-center slds-m-vertical_x-small fontForMobile">
+            <ui:inputText aura:id="surfaceQty" value="100" required="true" disabled="true" class="fontForMobile"
+                          click="{!c.showCalculator}"/>
+        </div>
+        <div class="slds-size--3-of-12 slds-small-size_3-of-12 slds-align_absolute-center slds-m-vertical_x-small">
+             <ui:button aura:id="conditionButton"
+                        label="View"
+                           class="slds-button slds-button--nuetral slds-text-align_left"
+                           press="{!c.addSurfaceToLocation}"
+                        disabled="true"/>
+        </div>
+    </div>
+    
+    
+    <div aura:id="modaldialog1" class="slds-backdrop slds-backdrop--hide">
+			<div class=" fontForMobile">
+				<div class="slds-modal__container">
+					<!--<div class="slds-text-align-right">
+						<ui:button label="X"
+                                   press="{!c.closeOtherProperties}"></ui:button>
+					</div>-->
+                    
+                    <aura:renderIf isTrue="{!v.surfaceProRec.Name == 'Deck'}">
+					<div class="slds-p-top_x-small slds-p-left_x-small backgroundColrCss">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_2-of-12">
+                                <div onclick="{!c.saveProperties}">
+                                    <lightning:icon iconName="utility:save" size="small" alternativeText="Save"/>
+                                </div>
+                            </div>
+                            <div class="slds-size_6-of-12">
+                            	<h2 class="slds-text-heading--small">Set {!v.surfaceProRec.Name} Conditions</h2>
+                            </div>
+                            <div class="slds-size_4-of-12 slds-small-size_4-of-12 slds-m-vertical_x-small">
+                               <iframe src="{!v.uploadPictureURL}" width="100%" height="40px;" frameBorder="0"/>
+                            </div>
+                        </div>
+					</div>
+                        <div class="slds-modal__content slds-p-around--medium slds-p-around--small fontForMobile">
+                            <div>
+                                <div class="slds-grid slds-wrap fontForMobile slds-scrollable_y conditionModelHeight">
+                                    <div class="slds-size_1-of-3" aura:id="woodTypeQuestions">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control" aura:id="woodTypeDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="woodType"
+                                                                label="Wood Type"
+                                                                change="{!c.addConditionToSurface}"
+                                                                labelClass="highlightcell">
+                                                    <!--<aura:iteration items="{!v.woodTypeConditionValues}" var="obj">
+                                                        <ui:inputSelectOption text="{!obj}"/>
+                                                    </aura:iteration>-->
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="Redwood"/>
+                                                    <ui:inputSelectOption text="Cedar"/>
+                                                    <ui:inputSelectOption text="Soft Wood"/>
+                                                    <ui:inputSelectOption text="IPE"/>
+                                                    <ui:inputSelectOption text="Hardwood"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="knotsDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="knots"
+                                                                label="Knots"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <!--<aura:iteration items="{!v.knotsConditionValues}" var="obj">
+                                                        <ui:inputSelectOption text="{!obj}"/>
+                                                    </aura:iteration>-->
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="No knots"/>
+                                                    <ui:inputSelectOption text="Few knots"/>
+                                                    <ui:inputSelectOption text="Many knots"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3"></div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control" aura:id="stainDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="stainType"
+                                                                label="Stain Type"
+                                                                change="{!c.addConditionToSurface}"
+                                                                labelClass="highlightcell">
+                                                    <!--<aura:iteration items="{!v.stainTypeConditionValues}" var="obj">
+                                                        <ui:inputSelectOption text="{!obj}"/>
+                                                    </aura:iteration>-->
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="No stain"/>
+                                                    <ui:inputSelectOption text="Clear"/>
+                                                    <ui:inputSelectOption text="Semi-transparent stain"/>
+                                                    <ui:inputSelectOption text="Solid stain"/>
+                                                    <ui:inputSelectOption text="Paint"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="woodageDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="woodage"
+                                                                label="Wood Age"
+                                                                change="{!c.addConditionToSurface}"
+                                                                labelClass="highlightcell">
+                                                    <!--<aura:iteration items="{!v.woodAgeConditionValues}" var="obj">
+                                                        <ui:inputSelectOption text="{!obj}"/>
+                                                    </aura:iteration>-->
+                                                    <ui:inputSelectOption text="-None-"/>
+                                                    <ui:inputSelectOption text="New wood"/>
+                                                    <ui:inputSelectOption text="Almost new wood"/>
+                                                    <ui:inputSelectOption text="Old wood"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3"></div>
+                                    <div class="slds-size_1-of-3"></div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="stainConditionDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="stainCondition"
+                                                                label="Stain Condition"
+                                                                change="{!c.addConditionToSurface}"
+                                                                labelClass="highlightcell">
+                                                    <aura:iteration items="{!v.stainConditionValues}" var="obj">
+                                                        <ui:inputSelectOption text="{!obj}"/>
+                                                    </aura:iteration>
+                                                    <!--<ui:inputSelectOption text="-None-"/><ui:inputSelectOption text="No work needed now"/><ui:inputSelectOption text="Light stain - will come off"/><ui:inputSelectOption text="Moderate stain - unsure"/><ui:inputSelectOption text="Heavy stain - won’t come off"/><ui:inputSelectOption text="Good - fully covering"/><ui:inputSelectOption text="Fair - partially covering"/><ui:inputSelectOption text="Poor - minimally covering"/>-->
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="stainColorDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="stainColor"
+                                                                label="Stain Color"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <!--<aura:iteration items="{!v.stainColorConditionValues}" var="obj">
+                                                        <ui:inputSelectOption text="{!obj}"/>
+                                                    </aura:iteration>-->
+                                                                
+                                                    <ui:inputSelectOption text="-None-"/>
+                                                    <ui:inputSelectOption text="Natural color"/>
+                                                    <ui:inputSelectOption text="Not natural color"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3"></div>
+                                    <div class="slds-size_1-of-3"></div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="stainColorTextDiv">
+                                                <ui:inputText aura:id="stainColorText"
+                                                              label="Color"
+                                                              placeholder="Enter Color.."
+                                                              change="{!c.addConditionToSurface}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3"></div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="paintConditionDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="paintCondition"
+                                                                label="Paint Condition"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <!--<aura:iteration items="{!v.paintConditionValues}" var="obj">
+                                                        <ui:inputSelectOption text="{!obj}"/>
+                                                    </aura:iteration>-->
+                                                    <ui:inputSelectOption text="-None-"/>
+                                                    <ui:inputSelectOption text="No work needed now"/>
+                                                    <ui:inputSelectOption text="Good - fully covering"/>
+                                                    <ui:inputSelectOption text="Fair - partially covering"/>
+                                                    <ui:inputSelectOption text="Poor - minimally covering"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="paintColorTextDiv">
+                                                <ui:inputText aura:id="PaintColorText"
+                                                              label="Color"
+                                                              placeholder="Enter Color.."
+                                                              change="{!c.addConditionToSurface}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="surfaceCondition"
+                                                                label="Surface Condition"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="Even surface"/>
+                                                    <ui:inputSelectOption text="Uneven surface"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="boardCondition"
+                                                                label="Board Condition"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="Smooth boards"/>
+                                                    <ui:inputSelectOption text="Rough boards"/>
+                                                    <ui:inputSelectOption text="Cupping boards"/>
+                                                    <ui:inputSelectOption text="Beveled boards"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="boardSpacing"
+                                                                label="Board Spacing"
+                                                                change="{!c.addConditionToSurface}"
+                                                                labelClass="highlightcell">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="No spaces between"/>
+                                                    <ui:inputSelectOption text="Small spaces between"/>
+                                                    <ui:inputSelectOption text="Large spaces between"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="boardMounting"
+                                                                label="Board Mounting"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="Bottom"/>
+                                                    <ui:inputSelectOption text="Screws"/>
+                                                    <ui:inputSelectOption text="Nails"/>
+                                                    <ui:inputSelectOption text="Screws and Nails"/>
+                                                    <ui:inputSelectOption text="Dowels"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="screwNailConditionDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="screwNailCondition"
+                                                                label="Screw Nail Condition"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="Recessed"/>
+                                                    <ui:inputSelectOption text="Flush"/>
+                                                    <ui:inputSelectOption text="Some popping up"/>
+                                                    <ui:inputSelectOption text="All popping up"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="screwNailCoatingDiv">
+                                                <ui:inputSelect class="slds-input" aura:id="screwNailCoating"
+                                                                label="Screw Nail Coating"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="SS - not coated"/>
+                                                    <ui:inputSelectOption text="SS - coated"/>
+                                                    <ui:inputSelectOption text="Galvanized"/>
+                                                    <ui:inputSelectOption text="Galvanized - rusting"/>
+                                                    <ui:inputSelectOption text="Filler"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_3-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="descSomeMissingTextDiv">
+                                                <ui:inputText aura:id="descSomeMissingText"
+                                                              label="Description (some missing, to be sanded down)"
+                                                              placeholder="Enter Description.."
+                                                              change="{!c.addConditionToSurface}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="debris"
+                                                                label="Debris"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="No debris"/>
+                                                    <ui:inputSelectOption text="Some debris"/>
+                                                    <ui:inputSelectOption text="Lots of debris"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="growth"
+                                                                label="Growth"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="No growth"/>
+                                                    <ui:inputSelectOption text="Some growth"/>
+                                                    <ui:inputSelectOption text="Lots of growth"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="descFungusTextDiv">
+                                                <ui:inputText aura:id="descFungusText"
+                                                              label="Description (fungus, lichen, moss, mold)"
+                                                              placeholder="Enter Description.."
+                                                              change="{!c.addConditionToSurface}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="repairs"
+                                                                label="Repairs"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="No repairs"/>
+                                                    <ui:inputSelectOption text="Possible repairs"/>
+                                                    <ui:inputSelectOption text="Repairs needed"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_2-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control hide" aura:id="descRotTextDiv">
+                                                <ui:inputText aura:id="descRotText"
+                                                              label="Description (rot, structural, other)"
+                                                              placeholder="Enter Description.."
+                                                              change="{!c.addConditionToSurface}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="sunExposure"
+                                                                label="Sun exposure"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="Full sun"/>
+                                                    <ui:inputSelectOption text="Morning sun"/>
+                                                    <ui:inputSelectOption text="Afternoon sun"/>
+                                                    <ui:inputSelectOption text="Little sun"/>
+                                                    <ui:inputSelectOption text="Seasonal sun"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="difficulty"
+                                                                label="Difficulty"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="Low difficulty"/>
+                                                    <ui:inputSelectOption text="Medium difficulty"/>
+                                                    <ui:inputSelectOption text="High difficulty"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3">
+                                        <div class="slds-form-element slds-is-required">
+                                            <div class="slds-form-element__control">
+                                                <ui:inputSelect class="slds-input" aura:id="accessToBottom"
+                                                                label="Access to Bottom"
+                                                                change="{!c.addConditionToSurface}">
+                                                    <ui:inputSelectOption text="--None--"/>
+                                                    <ui:inputSelectOption text="No access to bottom"/>
+                                                    <ui:inputSelectOption text="Access to bottom"/>
+                                                </ui:inputSelect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <aura:set attribute="else">
+                            <div class="slds-modal__content slds-p-around--medium slds-p-around--small fontForMobile alignCenterAll">
+                                <div>
+                                    <div class="fontForMobile conditionNotDefined">
+                                			Condition for {!v.surfaceProRec.Name} surface is not defined.
+                                    </div>
+                                    <div class="slds-form-element slds-align_absolute-center">
+                                        <ui:button label="Back"
+                                                   class="slds-button slds-button--nuetral"
+                                                   press="{!c.saveProperties}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:set>
+                     </aura:renderIf>
+				</div>
+			</div>
+		</div>
+    
+    <div aura:id="modaldialog2" class="slds-backdrop slds-backdrop--hide">
+        <div class="slds-modal__container calculateSection">
+            <div class="slds-modal__header slds-theme--info">
+                <h2 class="slds-text-heading--medium">Calculate Size</h2>
+            </div>
+			<div class="slds-modal__content slds-p-around--medium slds-p-around--small fontForMobile backgroundColor">
+				<div class="slds-grid slds-wrap">
+                    <div class="slds-size_4-of-12">
+                        <div onclick="{!c.saveSize}">
+                            <lightning:icon iconName="utility:save" size="small" alternativeText="Save" variant="inverse"/>
+                        </div>
+                    </div>
+					<div class="slds-size_4-of-12 resultMargin resultCss">
+						TOTAL :
+					</div>
+					<div class="slds-size_4-of-12 resultMargin resultCss">
+						{!v.result}
+					</div>
+				</div>
+				<hr class="hrstlye"/>
+				<div class="slds-grid slds-wrap resultMargin backgroundColor slds-grid_vertical-stretch">
+					<aura:iteration items="{!v.calculationLineList}" var="obj">
+                        <c:CP_CalculationLine length="{!obj.x}"
+                                               width="{!obj.y}"
+                                               result="{!obj.r}"/>
+                    </aura:iteration>
+                </div>
+                <div class="slds-grid slds-wrap resultMargin backgroundColor slds-grid_vertical-stretch">
+                    <div class="slds-size_6-of-12 slds-align_absolute-center">
+                    	<lightning:button variant="brand" label="Add Lines" onclick="{!c.addLine}"/>
+                    </div>
+                    <div class="slds-size_6-of-12 slds-align_absolute-center">
+                    	<lightning:button variant="brand" label="Calculate" onclick="{!c.calculate}"/>
+                    </div>
+                </div>
+				
+            </div>
+        </div>
+    </div>
+    
+    
+</aura:component>

@@ -1,0 +1,3 @@
+<apex:page standardController="Contact" extensions="sharinpix.SharinPixSampleController">
+  <apex:canvasApp developerName="Albums" height="500px" parameters="{!parameters}" width="100%"/>
+</apex:page>

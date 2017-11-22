@@ -1,0 +1,17 @@
+.THIS.custom-svg {
+    vertical-align: middle;
+    background-color: #FF7900;
+    border-radius: .125rem;
+    display: inline-block;
+	margin-right: .75rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.THIS .icon {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 5px;
+	/* These are necessary to vertically align the icon in the middle across all browsers and devicees. */
+    vertical-align: top;
+    margin-top: 5px;
+}

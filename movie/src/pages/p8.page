@@ -1,0 +1,37 @@
+<apex:page controller="c8" tabStyle="Account" >
+<apex:form >
+  
+<apex:pageBlock title="Account Information" >
+
+<apex:pageBlockSection >
+<apex:inputField value="{!ac.AccountNumber}"/>
+<apex:inputText value="{!ac.name}"/>
+<apex:inputField value="{!ac.BillingCountry}"/>
+<apex:inputField value="{!ac.Type}"/>
+</apex:pageBlockSection>
+
+<apex:pageBlockButtons >
+<apex:commandButton action="{!save}" value="save">  </apex:commandbutton>
+<apex:commandButton action="{!reload}" value="reload"/>
+
+<apex:commandButton action="{!cancel}" value="Cancel"></apex:commandbutton>
+<apex:commandButton action="{!showdetails}" value="Show Details"><apex:actionSupport event="Oncomplete" rerender="Ac_Table" /></apex:commandbutton>
+</apex:pageBlockButtons>
+
+</apex:pageBlock>
+
+<apex:pageBlock id="Ac_Table"  rendered="{!showTable}">
+<apex:pageblockTable value="{!accounts}" var="a">
+
+<apex:column headervalue="Account Number">
+    <apex:commandLink value="{!a.Accountnumber}" action="{!details}" ><apex:param value="{!a.id}" name="ac_id"/></apex:commandLink>
+    </apex:column>
+<apex:column value="{!a.name}"/>
+<apex:column value="{!a.billingCountry}"/>
+<apex:column value="{!a.type}"/>
+ 
+</apex:pageblockTable>
+ <apex:inlineEditSupport />
+</apex:pageBlock>
+</apex:form>
+</apex:page>

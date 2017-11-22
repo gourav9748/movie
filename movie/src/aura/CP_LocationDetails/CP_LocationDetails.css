@@ -1,0 +1,45 @@
+.THIS .contentMargin{
+    margin-top: 6%;
+}
+.THIS .setfullwidth{
+    width: 100%;
+}
+.THIS .hide {
+    display: none;
+}
+.THIS .addLocatioHeadingClass{
+   background-color: #5d7193;
+}
+.THIS .fontSmall{
+        font-size: x-small;
+}
+.THIS .setwidthcss{
+    width: 40%!important;
+}
+.THIS .scrollable {
+        overflow-y:auto;
+    }
+    
+
+@media only screen and (min-width: 320px) {
+    .THIS .contentMargin{
+        margin-top: 17%;
+    }
+    .THIS p {
+    	font-size: small;
+    }
+    .THIS .backLinkCss{
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-top: 8px;
+        text-align: left;
+    }
+    .THIS .addLocatioHeadingClass{
+       background-color: #5d7193;
+        padding-right: 99px;
+        font-weight: bolder;
+        padding-top: 4px;
+    }
+}

@@ -1,0 +1,120 @@
+.THIS .myCheckbox{
+  display: inline-block;
+  float: left;
+}
+.THIS .removepadding{
+        padding-left: 0px;
+    padding-right: 0px;
+}
+.THIS .setMargin{
+       padding: 10px;
+    	font-weight: bold;
+}
+.THIS .backgroundColor{
+        background-color: black;
+}
+.THIS .donebutton{
+    color: blue;
+    padding: 2px;
+    font-weight: 900;
+    font-size: medium;
+    padding-left: 19px;
+}
+.THIS .textBoxClass{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+.THIS .resulttextBoxClass{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #f7f700;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+.THIS .topblank{
+   height: 36px;
+    font-size: 16px;
+    color: #fff;
+}
+.THIS .topmultiply{
+    height: 55px;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+}
+.THIS .buttomMultiply{
+  font-size: 16px;
+    color: #fff;
+    text-align: center;
+}
+.THIS .topblankep{
+    font-size: 36px;
+    color: blue;
+    padding-top: 25px!important;
+    padding-bottom: 0px!important;
+}
+.THIS .topeq{
+    font-size: 36px;
+    color: blue;
+    text-align: center;
+    padding-top: 0px!important;
+    padding-bottom: 0px!important;
+}
+.THIS .buttomeq{
+  font-size: 36px;
+    color: blue;
+    text-align: center;
+    padding-top: 0px!important;
+    padding-bottom: 0px!important;
+}
+.THIS .resultCss{
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+}
+.THIS .resultMargin{
+    font-weight: bold;
+}
+.THIS .SurfaceHeadingStyle{
+    padding-left: 54px;
+    font-weight: bold;
+    padding-top: 12px;
+}
+.THIS .conditionModelHeight{
+        height: 24rem;
+}
+.THIS .conditionNotDefined{
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+.THIS .alignCenterAll{
+        margin-top: 17rem;
+}
+.THIS .hrstlye{
+    margin-top: 7px;
+    margin-bottom: 3px;
+}
+.THIS .calculateSection{
+    /*width: 60%!important;*/
+}
+.THIS .backgroundColrCss{
+        background-color: yellowgreen;
+}

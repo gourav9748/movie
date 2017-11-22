@@ -1,0 +1,40 @@
+<apex:page controller="sharinpix.SharinPixSettingController">
+    <apex:canvasApp developerName="Albums" height="500px" parameters="{!parameters}" width="100%"/>
+    <script>
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    eventer(messageEvent, function(e) {
+        if (e.origin !== "https://app.sharinpix.com") { return; }
+        if (e.data.name == null) { return; }
+        switch(e.data.name) {
+            case "check-secret":
+                sharinpix.SharinPixSettingController.hasValidSecret(
+                    function(response) {
+                        e.source.postMessage({ name: "admin-secret-valid", payload: response }, e.origin);
+                    }
+                );
+                break;
+            case "admin-secret-url-v2":
+                payload = e.data.payload;
+                if (payload != null) {
+                    sharinpix.SharinPixSettingController.saveSecret(
+                        payload.url, payload.organization.sfid,
+                        function(response) {
+                            e.source.postMessage({ name: "admin-secret-saved", payload: response }, e.origin);
+                        }
+                    );
+                }
+                break;
+            case "get-org-infos":
+                sharinpix.SharinPixSettingController.getOrgInfos(
+                    function(response) {
+                        e.source.postMessage({ name: "org-infos", payload: eval(response)[0] }, e.origin);
+                    },
+                    { escape: false }
+                );
+                break;
+        }
+    }, false);
+    </script>
+</apex:page>

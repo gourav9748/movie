@@ -1,0 +1,53 @@
+<aura:component controller="Loop.AuthorizeLoopController">
+    <ltng:require scripts="/resource/Loop__Scripts/jquery-2.1.4.js,/resource/Loop__Scripts/jquery.drawloop.js,/resource/Loop__Scripts/eventListener.js"/>
+    <aura:attribute name="customizeApplication" type="Boolean" default="true" required="true"/>
+    <aura:attribute name="loopUrl" type="string" default=""/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:registerEvent name="moveToNextStep" type="Loop:moveToNextStep"/>
+    <aura:registerEvent name="showError" type="Loop:showError"/>
+    <aura:registerEvent name="actionEvent" type="Loop:actionEvent"/>
+    
+    <aura:method name="save" action="{!c.save}" access="Public"/>
+    
+    <aura:attribute name="fetchPreOAuthDataSuccessful" type="Boolean" default="false"/>
+    <aura:attribute name="oAuthUrl" type="String"/>
+    <aura:attribute name="isSandbox" type="Boolean"/>
+    <aura:attribute name="needsAuthentication" type="Boolean" default="true"/>
+    <aura:attribute name="authorizedStatus" type="String" default="Unauthorized"/>
+    <aura:attribute name="authorizingUser" type="String" default=""/>
+    <aura:attribute name="authorizationText" type="String" default=""/>
+    
+    <aura:attribute name="authButtonDisabled" type="Boolean" default="true"/>
+    <aura:attribute name="spinnerVisible" type="Boolean" default="true"/>
+    <aura:attribute name="buttonLabel" type="String" default="Authorize Nintex Drawloop"/>
+        
+    <div class="slds">
+        <div class="slds-grid">
+            <div class="slds-float--left slds-m-bottom--large">
+                <div class="slds-word-wrap">Give the app permissions to run <a href="http://help.nintex.com/en-us/docgen/docservices/Default.htm#cshid=9020" target="_blank">Scheduled Document Packages</a>, <a href="http://help.nintex.com/en-us/docgen/docservices/Default.htm#cshid=9021" target="_blank">Mass Document Packages</a>, and <a href="http://help.nintex.com/en-us/docgen/docservices/Default.htm#cshid=9029" target="_blank">Insert-Updates</a> with elevated privilege, and integrate with partner applications.<br/>
+                    <br/>
+                    The app will run as the user you are currently logged in as to perform these tasks. If you want the app to run as a different user, you must log in with the account you want the app to run as, and then authorize the app again.<br/>
+                    <br/>
+                    <b>Status: </b> {!v.authorizedStatus}<br/>
+                    <div hidden="{!v.authorizingUser == ''}">
+                        <b>Current Authorizing User: </b><div aura:id="authorizedUser" style="display:inline-block;">{!v.authorizingUser}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aura:if isTrue="{!!v.customizeApplication}">
+            <div class="slds-m-bottom--medium">
+                <Loop:Toast toastClass="slds-notify slds-notify--toast slds-theme--warning" 
+                         toastMessage="You must have the Customize Application permission to authorize the app."
+                         toastStyle="margin: 0;"/>
+            </div>
+        </aura:if>
+        <button class="slds-button slds-button--brand" onclick="{!c.authorizeLoopServices}" disabled="{!v.authButtonDisabled || !v.customizeApplication}">{!v.buttonLabel}</button>
+        <div class="slds-grid">
+            <div class="slds-col">
+                <ui:outputText value="{!v.authorizationText}"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

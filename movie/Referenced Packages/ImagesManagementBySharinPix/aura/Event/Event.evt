@@ -1,0 +1,6 @@
+<aura:event type="APPLICATION" description="SharinPix Event" access="GLOBAL">
+  <aura:attribute name="name" type="String"/>
+  <aura:attribute name="payload" type="Object"/>
+  <aura:attribute name="albumId" type="String"/>
+  <aura:attribute name="source" type="Object"/>
+</aura:event>

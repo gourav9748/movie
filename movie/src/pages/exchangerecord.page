@@ -1,0 +1,240 @@
+<apex:page >
+   <script type="text/javascript">var __sfdcSessionId = '{!GETSESSIONID()}';</script>
+    <script src="/soap/ajax/39.0/connection.js"  type="text/javascript">
+    </script>
+    <script type="text/javascript">     
+    
+    window.onload = setupPage;
+    
+    function setupPage() {
+      //function contains all code to execute after page is rendered
+
+      var state = { //state that you need when the callback is called
+          output1 : document.getElementById("owner1records"),
+          output2 : document.getElementById("owner2records"),
+          startTime : new Date().getTime()};
+
+      var callback = {
+          //call layoutResult if the request is successful
+          onSuccess: layoutResults,
+
+          //call queryFailed if the api request fails
+          onFailure: queryFailed,
+          source: state};
+      
+        
+        sforce.connection.query("Select Id, Name,OwnerId From Account order by Name ", callback);
+  }
+
+  function queryFailed(error, source) {
+    //source.output.innerHTML = "An error has occurred: " + error;
+  }
+
+  /**
+  * This method will be called when the toolkit receives a successful
+  * response from the server.
+  * @queryResult - result that server returned
+  * @source - state passed into the query method call.
+  */
+  function layoutResults(queryResult, source) {
+    if (queryResult.size > 0) {
+      //var output = "";
+
+      //get the records array
+      var records = queryResult.getArray('records');
+      var ownerid1="00528000004q9GL";
+      var ownerid2="00528000004q9Xy";
+      //loop through the records and construct html string
+      for (var i = 0; i < records.length; i++) {
+        var account = records[i];
+        var opt = document.createElement('option');
+        opt.Id =account.Id;
+        opt.innerHTML = account.Name;
+        var accountowner= account.OwnerId.toString().substr(0,15); 
+          console.log("++++++++++++++"+accountowner) ; 
+          if(!accountowner.localeCompare(ownerid1))
+            source.output1.appendChild(opt);
+          else 
+           source.output2.appendChild(opt);
+            
+        //output += account.Id + " " + account.Name +
+          //  " [Industry - " + account.Industry + "]<br>";
+      }
+
+    //render the generated html string
+    //source.output.innerHTML = output;
+    }
+  }
+     function exchange1()
+    {
+        /*//alert("hiiiiiii");
+        var Accid = document.getElementById("owner1records").options[document.getElementById("owner1records").selectedIndex].Id;
+        var acc = new sforce.SObject("Account");
+        //var acc=sforce.connection.query("Select Id, Name,OwnerId From Account where Id='"+Accid+"'");
+        acc.Id=Accid;
+        acc.OwnerId="00528000004q9Xy";
+        sforce.connection.update([acc]) 
+        //sforce.connection.query("Update acc");
+        
+        
+        location.reload(); */
+        //document.getElementById("owner2records").appendChild(document.getElementById("owner1records").options[document.getElementById("owner1records").selectedIndex]);
+        //document.getElementById("owner1records").options[document.getElementById("owner1records").selectedIndex].remove();
+        var options=document.getElementById("owner1records").options;
+        var slectedOpt=[];
+        //alert(option);
+        //(document.getElementById("owner1records").options.length);
+        var k=0;
+        var i=0
+        while(i<options.length)
+        {
+                if(options[i].selected)
+                {
+                    var opt = document.createElement('option');
+                    opt.Id =options[i].Id;
+                    opt.innerHTML = options[i].innerHTML;
+                    slectedOpt[k]=opt;
+                    k++;
+                    document.getElementById("owner2records").appendChild(opt);
+                    document.getElementById("owner1records").options[i].remove();
+                }
+            else{
+                i++;
+                }
+        }
+        
+        /* for(var j=0;j<slectedOpt.length;j++)
+        {
+           for(var i=0;i<document.getElementById("owner1records").options.length;i++)
+           {
+            if(document.getElementById("owner1records").options[i].Id.localeCompare(slectedOpt[j].Id))
+            {
+                document.getElementById("owner1records").options[i].remove();
+                break;
+            }
+           }
+        } */
+        
+    }
+    function exchange2()
+    {
+        /*//alert("hiiiiiii");
+        var Accid = document.getElementById("owner2records").options[document.getElementById("owner2records").selectedIndex].Id;
+        var acc = new sforce.SObject("Account");
+        //var acc=sforce.connection.query("Select Id, Name,OwnerId From Account where Id='"+Accid+"'");
+        acc.Id=Accid;
+        acc.OwnerId="00528000004q9GL";
+        sforce.connection.update([acc]) 
+        //sforce.connection.query("Update acc");
+        
+        
+        location.reload(); */
+        //setupPage();
+        //document.getElementById("owner1records").appendChild(document.getElementById("owner2records").options[document.getElementById("owner2records").selectedIndex]);
+        //document.getElementById("owner2records").options[document.getElementById("owner2records").selectedIndex].remove();
+        var options=document.getElementById("owner2records").options;
+        var slectedOpt=[];
+        //alert(option);
+        //(document.getElementById("owner1records").options.length);
+        var k=0;
+        var i=0
+        while(i<options.length)
+        {
+                if(options[i].selected)
+                {
+                    var opt = document.createElement('option');
+                    opt.Id =options[i].Id;
+                    opt.innerHTML = options[i].innerHTML;
+                    slectedOpt[k]=opt;
+                    k++;
+                    document.getElementById("owner1records").appendChild(opt);
+                    document.getElementById("owner2records").options[i].remove();
+                }
+            else{
+                i++;
+                }
+        }
+        /* alert(slectedOpt1.length);
+         console.log(slectedOpt1[0].Name);
+         for(var j=0;j<slectedOpt1.length;j++)
+        {
+            //alert(slectedOpt1.length);
+           for(var i=0;i<document.getElementById("owner2records").options.length;i++)
+           {
+               //alert(slectedOpt1[j].Id);
+               //alert(slectedOpt1[j].Name);
+            if(document.getElementById("owner2records").options[i].Id.localeCompare(slectedOpt1[j].Id))
+            {
+                document.getElementById("owner2records").options[i].remove();
+                break;
+            }
+           }
+        } */
+        
+        
+    }
+    function Update(source)
+    {
+        //alert("hiiiiiiiiii");
+        var allacc=[];
+        var i;
+        for(i=0;i<document.getElementById("owner1records").options.length;i++)
+            {
+                var acc = new sforce.SObject("Account");
+                acc.Id=document.getElementById("owner1records").options[i].Id;
+                acc.OwnerId="00528000004q9GL";
+                allacc.push(acc);
+            }
+        for(i=0;i<document.getElementById("owner2records").options.length;i++)
+            {
+                var acc = new sforce.SObject("Account");
+                acc.Id=document.getElementById("owner2records").options[i].Id;
+                acc.OwnerId="00528000004q9Xy";
+                allacc.push(acc);
+            }
+        
+        sforce.connection.update(allacc);
+        alert("owner is changed");
+        
+    }
+  </script>
+
+   <!-- <apex:pageblock >
+  <apex:pageBlockSection columns="2">
+    <apex:outputPanel >-->
+    <table>
+    <tr>
+    <th>    
+    Owner1 acc records:
+    <select multiple="multiple" id="owner1records"  size="10"  style="min-width: 50%;">
+    
+    </select>
+    </th>
+        <th>
+            <div>
+            <button type="button" onclick="exchange1()"> ==> </button>
+            </div>
+            <div>
+                <button type="button" onclick="exchange2()"> === </button>
+            </div>        </th>
+    <th> 
+        
+            
+       
+       Owner2 acc records:
+         <select multiple="multiple" id="owner2records" size="10"  style="min-width: 50%;">
+         
+    
+    </select>
+    </th>    
+        
+    </tr>    
+    </table>
+    
+    <center><button type="button" onclick="Update()"> Update </button></center>
+    
+  <!--  </apex:outputPanel>
+  
+  </apex:pageBlockSection>
+  </apex:pageblock> -->
+</apex:page>

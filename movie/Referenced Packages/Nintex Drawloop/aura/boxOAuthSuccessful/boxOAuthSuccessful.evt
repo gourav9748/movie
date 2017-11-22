@@ -1,0 +1,6 @@
+<aura:event type="APPLICATION" description="Fire after completing Box OAuth">
+    <aura:attribute name="success" type="boolean"/>
+    <aura:attribute name="errorCode" type="String"/>
+    <aura:attribute name="errorId" type="String"/>
+    <aura:attribute name="errorDescription" type="String"/>
+</aura:event>

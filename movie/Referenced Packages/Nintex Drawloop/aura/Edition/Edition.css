@@ -1,0 +1,15 @@
+.THIS.inherit-min-height {
+    min-height: inherit;
+}
+.THIS.slds .slds-grid .border-left {
+    border-left: thin solid;
+}
+.THIS.slds .slds-grid .slds-col .slds-button .hidden {
+    display: none;
+}
+.THIS .slds-button {
+    cursor: pointer;
+}
+.THIS .hidden {
+    display: none;
+}

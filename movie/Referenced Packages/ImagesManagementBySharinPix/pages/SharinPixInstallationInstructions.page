@@ -1,0 +1,46 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+    <style type="text/css">
+     html {
+        text-align: center;
+        font-family: arial;
+        font-weight:bold;
+     }
+     
+     table {
+        text-align:center;
+        
+        margin-left: auto;
+        margin-right: auto;
+     }
+    </style>
+    
+    <apex:variable var="urlGettingStarted" value="https://docs.google.com/document/d/1eayQZFMa1MdXuNCOx2yQxMY2yd1hez9FxPw_DvnxjJw/edit?usp=sharing"/>
+    <apex:variable var="urlHowTos" value="https://docs.google.com/document/d/1I1wBZpI5lRfyNl8rKAx3PD5xPHctFhTFKVGa1SLlVkw/edit?usp=sharing"/>
+    
+    <apex:image url="{!URLFOR($Resource.sharinpix__SharinPixInstallationInstructions, 'SharinPix_Logo.png')}" alt="SharinPix Logo"/>
+    <br/>
+    <h3>
+        Congratulations ! You have successfully installed SharinPix. <br />
+        To get started please follow our guides below. <br />
+        Enjoy ! <br />
+    </h3>
+    
+    <apex:panelGrid columns="2" 
+                    border="1" 
+                    cellspacing="0" 
+                    cellpadding="15"
+                    width="400">
+        <apex:outputText value="Getting Started" />
+        <apex:outputText value="How-to Articles" />
+        <apex:outputText >
+            <a href="{! urlGettingStarted }" target="_blank"><apex:image url="{!URLFOR($Resource.sharinpix__SharinPixInstallationInstructions, 'Implement.png')}" width="50" /></a>
+        </apex:outputText>
+        <apex:outputText >
+            <a href="{! urlHowTos }" target="_blank"><apex:image url="{!URLFOR($Resource.sharinpix__SharinPixInstallationInstructions, 'Sustain.png')}" width="50" /></a>
+        </apex:outputText>
+        <apex:outputLink value="{! urlGettingStarted }" target="_blank">Click Here</apex:outputLink>
+        <apex:outputLink value="{! urlHowTos }" target="_blank">Click Here</apex:outputLink>
+    </apex:panelGrid>
+    <br />
+    <apex:outputText >For more resources,&nbsp;<apex:outputLink value="https://github.com/SharinPix/documentation/wiki" target="_blank">click here</apex:outputLink></apex:outputText>
+</apex:page>

@@ -1,0 +1,103 @@
+<apex:page controller="ObjectController" tabStyle="order">
+  <apex:form id="abc">
+  
+      <apex:pageBlock id="orderSearch">
+          <apex:pageBlockSection title="Search Order" columns="2">
+              <apex:inputText label="Order Id" value="{!order_id}"/>
+              <apex:inputField label="Account Name" value="{!order.accountid}"/>
+          </apex:pageBlockSection>
+          
+          <apex:pageBlockSection columns="1">
+              <apex:commandButton value="Search Orders"  action="{!search}">
+                  <apex:actionSupport event="onclick"  reRender="block" immediate="true"></apex:actionSupport>
+              </apex:commandButton>
+          </apex:pageBlockSection>
+          
+      </apex:pageBlock>
+      
+      <apex:outputPanel id="block" rendered="{!showresult}">
+          <apex:pageBlock title="Order List">
+          
+                 <apex:pageBlockTable value="{!ord}" var="o">
+                          <apex:column >
+                        
+                          
+                            <input type="radio" value="{!o.id}" id="choose" name="choose">
+                            
+            
+                            <apex:actionSupport event="onclick" id="ff" rerender="block2">
+                             
+                             
+                                  <apex:param assignTo="{!chooseorderid}" value="{!o.id}" name="val" id="val2"></apex:param>
+                                  </apex:actionSupport>
+                                  
+                                  
+                               </input>   
+                              
+                          </apex:column>
+                          <apex:column value="{!o.OrderNumber}" title="Order Number"/>
+                          <apex:column value="{!o.accountid}" title="Account Name"/>
+                          <apex:column value="{!o.effectivedate}" title="Order Start Date"/>
+                          <apex:column value="{!o.contractid}" title="Contract Number"/>
+                 </apex:pageBlockTable>
+                 
+             
+            
+          
+              
+                  <apex:panelGrid columns="2" cellspacing="15px" style="align:center">
+                     
+                        <!-- <apex:commandButton value="Next" action="{!Next}" onclick="setVar();">-->
+                         <apex:commandButton value="Next" action="{!Next}" >
+                            <apex:actionSupport event="onclick"  reRender="block3" ></apex:actionSupport>
+                         </apex:commandButton>   
+                         <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                    
+                  </apex:panelGrid>
+              
+          </apex:pageBlock>
+           
+      </apex:outputPanel>
+     <!-- <apex:inputHidden value="{!chooseorderid}" id="myHiddenField" />
+      <input type="Hidden" value="{!chooseorderid}" id="myHiddenField1"/>-->
+             <!-- <apex:actionFunction id="abc" name="passStringToController" action="{!Next}" rerender="myHiddenField"/> -->
+              
+      <apex:outputPanel id="block3" rendered="{!showresult2}">
+         <apex:pageBlock title="Order details">
+             <apex:pageBlockTable value="{!ordpro}" var="pro">
+                          
+                          <apex:column value="{!pro.AvailableQuantity}" />
+                          <apex:column value="{!pro.ListPrice}" />
+                          <apex:column value="{!pro.OrderId}" />
+                          <apex:column value="{!pro.OrderItemNumber}" />
+                          <apex:column value="{!pro.OriginalOrderItemId}" />
+                          <apex:column value="{!pro.PricebookEntryId}" />
+                          <apex:column value="{!pro.Quantity}" />
+                          <apex:column value="{!pro.ServiceDate}" />
+                          <apex:column value="{!pro.UnitPrice }" />
+                          
+
+                 </apex:pageBlockTable>
+          </apex:pageBlock>
+       </apex:outputPanel>
+       
+  </apex:form>
+  <script>
+function setVar(){
+   // alert('I am in');
+    var id = document.getElementById('choose').value;
+    //alert('I am in'+id);
+   // $('input[id$=myHiddenField]').val(id);
+    //jQuery('[id$=myHiddenField]').val(id);
+    // alert('I am inmmmmm');  
+ //passStringToController();
+ 
+ document.getElementById('j_id0:abc:myHiddenField').value = id ;
+// alert('{!$Component.abc.myHiddenField}');
+  //alert('------->'+document.getElementById('j_id0:abc:myHiddenField'));
+  
+ 
+}
+</script>
+
+</apex:page>

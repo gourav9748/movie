@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template">
+	<aura:attribute name="surfaceName" type="ProductConfiguration.surface"/>
+    <aura:attribute name="locationName" type="ProductConfiguration.location"/>
+    <aura:attribute name="addOrRemove" type="Boolean"/>
+</aura:event>

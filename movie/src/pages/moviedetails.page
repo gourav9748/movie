@@ -1,0 +1,100 @@
+<apex:page controller="MovieController" sidebar="false" showHeader="false">
+  
+      <apex:form >
+      <apex:pageBlock >
+      <apex:pageBlockSection title="My Content Section" columns="2">
+          
+                  <apex:inputField value="{!cd.Name__c}"/><br></br>
+                  <apex:inputField value="{!cd.Age__c}"/><br></br>
+                 <apex:inputField value="{!cd.Phone__c}"/><br></br>
+                   <apex:inputField value="{!cd.Email__c}"/><br></br>
+                  <apex:inputField value="{!cd.location__c}">
+                      <apex:actionSupport event="onchange" Action="{!Method}" reRender="new"/> 
+                  </apex:inputField><br></br>
+                 
+           </apex:pageBlockSection>   
+       </apex:pageBlock>
+       
+        <apex:pageBlock id="new">
+                     <apex:pageBlockSection >
+                                        
+                                        <apex:pageBlockTable value="{!allTheaters}" var="theater" rendered="{!ShowEmail}" >
+                                           <apex:column headerValue="Theater id">
+                                               <apex:commandLink value="{!theater.Name}" action="{!Method1}" reRender="movies"> 
+                                                 
+                                                     
+                                                     
+                                                     <apex:param assignTo="{!cd.Theater__c}" value="{!theater.Id}" name="theaterId"/>
+                                                     
+                                               </apex:commandLink>
+                                           </apex:column> 
+                                           <apex:column value="{!theater.Name__c}"/>
+                                           <apex:column value="{!theater.address__c}"/>
+                                           <apex:column value="{!theater.total_no_of_seats__c}"/>
+                                           <apex:column value="{!theater.Type__c}"/>
+                                        </apex:pageBlockTable><br></br>
+                                      <!--  <apex:inputField value="{!cd.Theater__c}" rendered="{!ShowEmail}" >
+                                          <apex:actionSupport event="onselect" action="{!Method1}" reRender="movies"/>
+                                        </apex:inputField> -->
+                     </apex:pageBlockSection>                   
+
+                  </apex:pageBlock>
+                  <apex:pageBlock id="movies" >
+                     <apex:pageBlockSection >
+                     <apex:outputPanel rendered="{!ShowMovies}">
+                        
+                          <h1> all the movie list running in the "{!cd.Theater__c}" </h1>
+                      </apex:outputPanel><br></br>
+                        <apex:pageBlockTable value="{!relatedMovies}" var="movie" rendered="{!ShowMovies}">
+                        <apex:column headerValue="Movie id">
+                           <apex:commandLink value="{!movie.Name}" action="{!tickets}" reRender="ticket">
+                                <apex:param assignTo="{!cd.movie__c}" value="{!movie.Id}" name="theaterId"/>
+                           </apex:commandLink>
+                          </apex:column> 
+                     <!--      <apex:column value="{!movie.Name}"/> -->
+                           <apex:column value="{!movie.movie_name__c}"/>
+                           <apex:column value="{!movie.Price__c}"/>
+                           <apex:column value="{!movie.timings__c}"/>
+                           <apex:column value="{!movie.Available_seats__c}"/>
+                           <apex:column value="{!movie.director__c}"/>
+                         </apex:pageBlockTable>
+                      <!--     <apex:inputField value="{!cd.movie__c}" rendered="{!ShowMovies}" >
+                           <apex:actionSupport event="onselect" action="{!tickets}" reRender="ticket"/>
+                                          
+                           </apex:inputField> -->
+                        
+                     </apex:pageBlockSection>
+                  </apex:pageBlock>
+                  
+                  <apex:pageBlock id="ticket" >
+                     <apex:pageBlockSection >
+                 
+                
+                  <apex:inputField value="{!cd.no_of_tickets__c}" rendered="{!ticket1}" >
+                 
+                    <apex:actionSupport event="onkeyup" action="{!totalPrice}" rerender="total" >
+                     
+                     </apex:actionSupport>
+                  </apex:inputField>
+                  
+                 </apex:pageBlockSection>
+                  </apex:pageBlock>
+                  
+                  
+                 <apex:pageBlock id="total"  >
+                     <apex:pageBlockSection >
+
+                  <apex:outputText value="{!totalPricevalue}" label="total price" rendered="{!totalPriceShow}" /><br></br>
+                  <apex:commandButton value="BOOK" action="{!book}" id="bookbutton" rendered="{!totalPriceShow}"/>
+                  </apex:pageBlockSection>
+                   </apex:pageBlock>
+                                   
+                  
+                  
+                  
+
+      </apex:form>
+      
+      
+  
+</apex:page>

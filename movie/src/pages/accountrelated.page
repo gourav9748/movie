@@ -1,0 +1,253 @@
+<apex:page controller="RelatedController2" >
+
+  <apex:form >
+  <apex:pageBlock id="accountdetails" title="Account Details">
+     
+     <apex:pageBlockSection >
+        <apex:outputField value="{!acdetails2.OwnerId}">
+          <apex:commandLink value="[Change]"  action="{!changeowner}"/>
+        </apex:outputField>  
+        <apex:outputField value="{!acdetails2.AccountNumber}"/>
+        <apex:outputField value="{!acdetails2.name}">
+           <apex:commandLink value="[View Hierarchy]"  action="{!showhirechy}"/>
+         </apex:outputField>  
+        <apex:outputField value="{!acdetails2.BillingCountry}"/>
+        <apex:outputField value="{!acdetails2.Type}"/>
+            <apex:outputField value="{!acdetails2.fax}"/>
+          <apex:outputField value="{!acdetails2.phone}"/>
+             <apex:outputField value="{!acdetails2.industry}"/>
+               <apex:outputField value="{!acdetails2.website}"/>
+                 <apex:outputField value="{!acdetails2.ownership}"/>
+               <apex:outputField value="{!acdetails2.rating}"/>
+                 <apex:outputField value="{!acdetails2.sic}"/>
+                  <apex:outputField value="{!acdetails2.NumberOfEmployees}"/>
+             <apex:outputField value="{!acdetails2.TickerSymbol}"/>
+             <apex:outputField value="{!acdetails2.Tradestyle}"/>
+             <apex:outputField value="{!acdetails2.YearStarted}"/>
+             <apex:outputField value="{!acdetails2.SicDesc}"/>
+             <apex:outputField value="{!acdetails2.AnnualRevenue}"/>
+            <apex:outputField value="{!acdetails2.Site}"/>
+                
+     </apex:pageBlockSection>
+  
+  
+   
+     
+     <apex:pageBlockSection title="Address Information">
+        <apex:outputField value="{!acdetails2.billingcity}"/>
+        <apex:outputField value="{!acdetails2.shippingcity}"/>
+        <apex:outputField value="{!acdetails2.shippingcountry}"/>
+                    
+     </apex:pageBlockSection>
+  
+  
+  
+  <apex:pageblockSection title="Additional Information">
+             <apex:outputField value="{!acdetails2.CustomerPriority__c}"/>
+             <apex:outputField value="{!acdetails2.SLA__c}"/>
+             <apex:outputField value="{!acdetails2.SLASerialNumber__c}"/>
+            <apex:outputField value="{!acdetails2.UpsellOpportunity__c}"/>
+             <apex:outputField value="{!acdetails2.SLAExpirationDate__c}"/>
+              <apex:outputField value="{!acdetails2.NumberofLocations__c}"/>
+              
+     </apex:pageBlockSection>
+     
+      
+  <apex:pageblockSection title="Description Information">
+             <apex:outputField value="{!acdetails2.Description}"/><br/>
+             
+              
+     </apex:pageBlockSection>
+ <apex:pageBlockButtons >
+                
+               
+               
+               <apex:commandButton value="Edit" action="{!EditSection}" immediate="true"/>
+                <apex:commandButton value="Delete" action="{!deletetheSection}" immediate="true"/>
+                
+            </apex:pageBlockButtons>
+  </apex:pageBlock>
+  </apex:form>
+   <apex:form >
+   
+  <apex:pageBlock id="contact" >
+ <table style="width:60%">
+     <tr>
+         <th>
+          <apex:image url="{!$Resource.contactimagee}"/>
+          <!--<img src="/img/icon/invoices24.png" class="relatedListIcon" style="width:24px; display:block; margin-left:0;" />-->
+          <b><font size="4">Contacts</font></b>
+          </th>
+          <th>                
+            <apex:commandButton id="newcontact" value="New contact"  action="{!contactpage}"/>
+           
+          </th>
+          </tr>
+ </table>
+<!--<apex:image url="{!$Resource.contactimagee}"/>-->
+
+   
+<!--<apex:facet name="header">
+<div class="pbTitle" style="padding-left:5px; padding-top:5px;" >
+    <table style="width:201%">
+      <tr>
+         <th>
+          <img src="/img/icon/invoices24.png" class="relatedListIcon" style="width:24px; display:block; margin-left:0;" />
+          <b><font size="4">Contacts</font></b>
+          </th>
+          <th>                
+            <form method="get" action='http://www.google.com'>
+            <input type='submit' value='New contact' name='abc'/> 
+          </form>
+           
+          </th>
+          </tr>
+      </table>    
+         </div>
+     
+  </apex:facet>-->
+  <!--<apex:pageBlockButtons location="top">
+  <apex:commandButton id="newcontact" value="New contact"  action="{!contactpage}"/>
+  </apex:pageBlockButtons>-->
+  
+  
+  
+  
+  <apex:pageBlockSection columns="1">
+  
+
+
+    <apex:pageBlockTable value="{!contactpage}" var="contact">   
+        
+         <apex:column title="Actions" headerValue="Action">
+            
+            <apex:commandLink value="Edit |" action="{!edit}" >
+            <apex:param assignTo="{!contact1.Id}" value="{!contact.Id}" name="theaterId"/>
+            </apex:commandLink>
+            
+             <apex:commandLink value=" Del" action="{!showPopup}" rerender="tstpopup">
+             <apex:param assignTo="{!contact1.Id}" value="{!contact.Id}" name="theaterId"/>
+             </apex:commandLink>
+             
+         </apex:column> 
+            <apex:column value="{!contact.FirstName}"/>
+            <apex:column value="{!contact.Name}"/>
+            <apex:column value="{!contact.HomePhone}"/>
+            <apex:column value="{!contact.Fax}"/>
+            <apex:column value="{!contact.Email}"/>
+            <apex:column value="{!contact.MailingCity}"/>
+            <apex:column value="{!contact.OtherPhone}"/>
+            <apex:column value="{!contact.MobilePhone}"/>
+            <apex:column value="{!contact.Phone}"/>
+            <apex:column value="{!contact.AssistantName}"/>
+            <apex:column value="{!contact.Birthdate}"/>
+            <apex:column value="{!contact.Department}"/>
+            <apex:column value="{!contact.Title}"/>
+            <apex:column value="{!contact.LeadSource}"/>
+    
+    
+  </apex:pageBlockTable>
+  </apex:pageBlockSection> 
+ 
+  <apex:commandLink action="{!next}" rendered="{!pagelength<resultlength}">Show 5 more » | </apex:commandlink>
+        <apex:commandLink action="{!all}"> Go to list ({!resultlength}) »</apex:commandlink>
+   
+    
+   
+          
+    
+   </apex:pageBlock>​
+   </apex:form>
+  
+   <apex:form >
+  <apex:pageBlock id="notes" title="Notes & Attachments">
+  <apex:pageblockButtons >
+    <apex:commandButton id="newnote" value="New note" action="{!newnote}"/>
+    <apex:commandButton id="newattatchment" value="Attatch file" action="{!newattatchment}"/>
+    </apex:pageblockButtons>
+     <apex:pageBlockSection columns="1">
+         
+         <apex:pageBlockTable value="{!wna}" var="notes" id="test">
+      
+            <apex:column headerValue="Actions">
+               <apex:commandLink value="Edit |" action="{!noteedit}">
+                 <apex:param assignTo="{!naId}" value="{!notes.Id}" name="nid"/>
+               </apex:commandLink>
+               <apex:commandLink value=" view |" rendered="{!notes.type=='Attachment'}" action="{!noteview}">
+                 <apex:param assignTo="{!naId}" value="{!notes.Id}" name="nid"/>
+               </apex:commandLink>  
+               <apex:commandLink value=" del" action="{!showNotePopup}" reRender="notepopup" >
+                <apex:param assignTo="{!naId}" value="{!notes.Id}" name="nid"/>
+                <apex:param assignTo="{!type}" value="{!notes.type}" name="ntype"/>
+               </apex:commandLink> 
+            </apex:column>
+            <apex:column value="{!notes.type}" headerValue="Type"/>
+              
+            
+            <apex:column headerValue="Title">
+                <apex:commandLink value="{!notes.title}" action="{!noteorattatchdetails}">
+                 <apex:param assignTo="{!naId}" value="{!notes.Id}" name="nid"/>
+              </apex:commandLink>
+            </apex:column>  
+            <apex:column value="{!notes.related_to}" headerValue="Related to"/>
+            <apex:column value="{!notes.last_modified}" headerValue="Last Modified"/>
+            <apex:column value="{!notes.created_by}" headerValue="Created By"/>
+            
+        </apex:pageBlockTable>
+         
+     </apex:pageBlockSection>  
+     <apex:outputPanel id="tstpopup">
+        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+                <h1>Are you sure you want to delete the contact?</h1><br/><br/><br/>
+                <apex:commandButton value="Yes" action="{!closePopupOnYes}" rerender="tstpopup,Contact"/>
+                    
+                <apex:commandButton value="No" action="{!closePopupOnNo}" rerender="tstpopup"/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+     <apex:outputPanel id="notepopup">
+        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayNotePopUp}"/>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayNotePopUp}">
+                <h1>Are you sure you want to delete?</h1><br/><br/><br/>
+                <apex:commandButton value="Yes" action="{!closePopupOnYesfornote}" rerender="notepopup,notes"/>
+                    
+                <apex:commandButton value="No" action="{!closePopupOnNo}" rerender="notepopup"/>
+            </apex:outputPanel>
+        </apex:outputPanel>    
+   
+  </apex:pageBlock>
+        </apex:form> 
+        
+       
+             
+
+
+        
+  <style type="text/css">
+        .custPopup{
+            background-color: white;
+            border-width: 5px;
+            border-style: solid;
+            z-index: 9999;
+            left: 50%;
+            padding:20px;
+            position: absolute;
+            width: 500px;
+            margin-left: -250px;
+            top:200px;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+    </style>
+
+</apex:page>

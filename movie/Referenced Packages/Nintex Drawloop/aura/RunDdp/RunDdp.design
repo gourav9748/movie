@@ -1,0 +1,5 @@
+<design:component label="Drawloop">
+    <design:attribute name="title" label="Title" description="Component Title" />
+    <design:attribute name="startExpanded" label="Start Expanded" description="Option to start Run Document Package in expanded state." />
+    <design:attribute name="ddpLabel" label="Document Package Label" description="Option to change the label of the Document Package object."/>
+</design:component>

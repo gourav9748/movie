@@ -1,0 +1,41 @@
+<aura:component >
+    <aura:attribute name="id" type="string"/>
+    <aura:attribute name="isHtmlEmail" type="boolean" access="private"/>
+    <aura:attribute name="emailSubject" type="string" access="private"/>
+    <aura:attribute name="emailBody" type="string" access="private"/>
+    
+    <aura:registerEvent name="updateSlideEmail" type="Loop:updateSlideEmail"/>
+    <aura:registerEvent name="slideOutEditEmail" type="Loop:slideOutEditEmail"/>
+    
+    <aura:method name="setValues" action="{!c.setValues}">
+        <aura:attribute name="globalId" type="string"/>
+        <aura:attribute name="isHtmlEmail" type="boolean" required="true" access="private"/>
+        <aura:attribute name="emailSubject" type="string" access="private"/>
+        <aura:attribute name="emailBody" type="string" access="private"/>
+    </aura:method>
+    
+    <div aura:id="emailFormContainer" class="slds">
+        <h2 class="slds-text-heading--small slds-m-bottom--medium">Edit Email</h2>
+        <div class="slds-form-element slds-m-bottom--small max-width">
+        	<label class="slds-form-element__label">Subject</label>
+            <div class="slds-form-element__control">
+                <input aura:id="emailSubject" class="slds-input" placeholder="Add a subject" value="{!v.emailSubject}"/>
+            </div>
+        </div>
+        <aura:if isTrue="{!v.isHtmlEmail}">
+            <ui:inputRichText aura:id="emailRichText" label="Body" height="250px" value="{!v.emailBody}"/>
+            <aura:set attribute="else">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label">Body</label>
+                    <div class="slds-form-element__control">
+                        <textarea aura:id="emailBody" class="slds-texarea custom-textarea input-text-size" placeholder="Add a body" value="{!v.emailBody}" style="resize:none;"/>
+                    </div>
+                </div>
+            </aura:set>
+        </aura:if>
+        <div aura:id="contentButtons" style="text-align:right; padding-top: 10px;">
+            <button class="slds-button slds-button--neutral" onclick="{!c.cancel}">Cancel</button>
+            <button class="slds-button slds-button--brand" onclick="{!c.updateSlideEmail}">Save</button>
+        </div>
+    </div>
+</aura:component>

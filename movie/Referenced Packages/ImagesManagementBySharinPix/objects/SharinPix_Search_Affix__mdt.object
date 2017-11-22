@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Prefixes and suffixes to add to Salesforce IDs when performing Search using the SharinPix Search form.</description>
+    <fields>
+        <fullName>Affix_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Whether the label should be prefixed or suffixed to the ID from the report.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Affix Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Prefix</fullName>
+                    <default>true</default>
+                </value>
+                <value>
+                    <fullName>Suffix</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Affix_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The actual affix to be prepended or appended to the object ID.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The actual affix to be prepended or appended to the object ID.</inlineHelpText>
+        <label>Affix Value</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Checked__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Initial value on SharinPix Search form</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>SharinPix Search Affix</label>
+    <pluralLabel>SharinPix Search Affixes</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

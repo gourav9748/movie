@@ -1,0 +1,46 @@
+<aura:component >
+    <aura:attribute name="id" type="string"/>
+    <aura:attribute name="reminderDelay" type="decimal" default="" access="private"/>
+    <aura:attribute name="daysTillSigningExpires" type="decimal" default="" access="private"/>
+    <aura:attribute name="reminderFrequency" type="decimal" default="" access="private"/>
+    <aura:attribute name="warnOfExpiration" type="decimal" default="" access="private"/>
+    
+    <aura:registerEvent name="updateDocuSignReminders" type="Loop:updateDocuSignReminders"/>
+    <aura:registerEvent name="slideOutDocuSignReminders" type="Loop:slideOutDocuSignReminders"/>
+    
+    <aura:method name="setValues" action="{!c.setValues}">
+        <aura:attribute name="globalId" type="string"/>
+        <aura:attribute name="reminderDelay" type="decimal" default="0"/>
+        <aura:attribute name="daysTillSigningExpires" type="decimal" default="0"/>
+        <aura:attribute name="reminderFrequency" type="decimal" default="0"/>
+        <aura:attribute name="warnOfExpiration" type="decimal" default="0"/>
+    </aura:method>
+    
+    <div class="slds">
+        <h2 class="slds-text-heading--small slds-m-bottom--medium">Edit Reminders and Expirations</h2>
+        <div class="slds-grid slds-p-bottom--small">
+            <div class="slds-p-right--small slds-col">
+                <label class="slds-form-element__label">Reminder Delay</label>
+                <input aura:id="reminderDelay" class="slds-input" value="{!v.reminderDelay}"/>
+            </div>
+            <div class="slds-col">
+                <label class="slds-form-element__label">Warn of Expiration</label>
+                <input aura:id="warnOfExpiration" class="slds-input" value="{!v.warnOfExpiration}"/>
+            </div>
+        </div>
+        <div class="slds-grid slds-p-bottom--small">
+            <div class="slds-p-right--small slds-col">
+                <label class="slds-form-element__label">Reminder Frequency</label>
+                <input aura:id="reminderFrequency" class="slds-input" value="{!v.reminderFrequency}"/>
+            </div>
+            <div class="slds-col">
+                <label class="slds-form-element__label">Days Till Signing Expires</label>
+                <input aura:id="daysTillSigningExpires" class="slds-input" value="{!v.daysTillSigningExpires}"/>
+            </div>
+        </div>
+        <div aura:id="contentButtons" style="text-align:right;">
+            <button class="slds-button slds-button--neutral" onclick="{!c.cancel}">Cancel</button>
+            <button class="slds-button slds-button--brand" onclick="{!c.updateDocuSignReminders}">Save</button>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,17 @@
+<apex:page StandardController="Account" tabStyle="Account">
+<apex:form >
+<apex:pageBlock >
+
+
+<apex:pageBlockSection >
+<apex:commandButton value="view details" action="https://ap2.salesforce.com/{!account.id}"/>
+<apex:inputText value="{!account.id}"/>
+</apex:pageBlockSection>
+
+    
+</apex:pageBlock>
+>
+    
+</apex:form>
+  
+</apex:page>

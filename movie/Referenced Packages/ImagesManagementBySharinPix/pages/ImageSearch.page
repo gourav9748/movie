@@ -1,0 +1,14 @@
+<apex:page sidebar="false">
+    <apex:includeLightning />
+    <div id="appContainer" />
+    <script>
+    $Lightning.use("sharinpix:SharinPixSearchFormLtngOutApp", function() {
+        $Lightning.createComponent(
+            "sharinpix:SharinPixSearchForm",
+            {},
+            "appContainer",
+            function(cmp) {}
+        );
+    });
+    </script>
+</apex:page>

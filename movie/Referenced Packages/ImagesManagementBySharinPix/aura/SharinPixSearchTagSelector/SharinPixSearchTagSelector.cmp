@@ -1,0 +1,51 @@
+<aura:component controller="sharinpix.SharinPixTagSelectorController">
+    <aura:attribute name="tagOperator" type="String"/>
+    <aura:attribute name="tagNames" type="String"/>
+    <aura:attribute name="allTags" type="String[]"/>
+    <aura:attribute name="displayTags" type="boolean" default="false"/>
+
+    <aura:attribute name="selection" type="String"/>
+
+    <aura:handler name="change" value="{! v.selection }" action="{! c.setTagNames }"/>
+
+    <fieldset class="slds-form-element">
+        <legend class="slds-form-element__legend slds-form-element__label">Filter by tags</legend>
+        <div class="slds-form-element__control">
+            <div class="slds-radio_button-group">
+                <span class="slds-button slds-radio_button">
+                    <input type="radio" name="rdoTagOperator" aura:id="no-tag" id="no-tag" onchange="{! c.toggleTagsFilter }" checked="true"/>
+                    <label class="slds-radio_button__label" for="no-tag">
+                        <span class="slds-radio_faux">None</span>
+                    </label>
+                </span>
+                <span class="slds-button slds-radio_button">
+                    <input type="radio" name="rdoTagOperator" id="any-tag" onchange="{! c.toggleTagsFilter }"/>
+                    <label class="slds-radio_button__label" for="any-tag">
+                        <span class="slds-radio_faux">Any of</span>
+                    </label>
+                </span>
+                <span class="slds-button slds-radio_button">
+                    <input type="radio" name="rdoTagOperator" id="all-tags" onchange="{! c.toggleTagsFilter }"/>
+                    <label class="slds-radio_button__label" for="all-tags">
+                        <span class="slds-radio_faux">All of</span>
+                    </label>
+                </span>
+            </div>
+        </div>
+    </fieldset>
+
+    <lightning:spinner aura:id="ltngSpinner" variant="brand" size="medium" class="slds-hide" alternativeText="Loading tags..."/>
+
+    <div style="{! 'display: ' + (v.displayTags ? 'block' : 'none') }">
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="selTagList">Tags</label>
+            <div class="slds-form-element__control">
+                <ui:inputSelect class="slds-select select-tags" multiple="true" aura:id="selTagList" value="{! v.selection }">
+                    <aura:iteration items="{! v.allTags }" var="tag">
+                        <ui:inputSelectOption text="{! tag }" label="{! tag }"/>
+                    </aura:iteration>
+                </ui:inputSelect>
+            </div>
+        </div>
+    </div>
+</aura:component>

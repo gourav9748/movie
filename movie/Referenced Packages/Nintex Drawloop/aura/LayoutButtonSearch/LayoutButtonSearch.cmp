@@ -1,0 +1,16 @@
+<aura:component controller="Loop.LayoutButtonController">
+    <aura:attribute name="objectGroups" type="List"/>
+    
+    <aura:registerEvent name="actionEvent" type="Loop:actionEvent"/>
+    
+    <div class="slds" style="margin-bottom: 25px;">
+        <div class="slds-grid">
+            <div class="slds-col slds-size--1-of-3">
+                <ui:inputText aura:id="searchText" label="Search" placeholder="Keyword" class="slds-input" keyup="{!c.detectEnter}"/>
+            </div>
+            <div class="slds-col--padded slds-size--2-of-3 slds-align-bottom">
+                <button class="slds-button slds-button--brand" onclick="{!c.filterObjects}">Search</button>
+            </div>
+        </div>
+    </div>
+</aura:component>

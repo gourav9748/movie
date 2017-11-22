@@ -1,0 +1,12 @@
+<apex:page standardController="Loop__DDP__c" extensions="Loop.DdpTestExt" action="{!onLoad}" showheader="false" sidebar="false">
+    <style>
+        /*This centers the runDDP component within the page Visualforce creates.*/
+        .runDdpPanel > span > div {
+            margin-left: 1.5%;
+        }
+    </style>
+    <apex:pageMessages />
+    <apex:outputPanel rendered="{!showLightningTest}" styleClass="runDdpPanel">
+        <c:runDDP useLightningExperience="true" context="TEST" loopUrl="{!loopUrl}"/>
+    </apex:outputPanel>
+</apex:page>

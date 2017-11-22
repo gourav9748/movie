@@ -1,0 +1,20 @@
+<apex:page controller="RoleController">
+<apex:form >
+  <apex:pageBlock >
+    <apex:pageBlockSection >
+       <apex:inputText value="{!idR}" label="Role id"/>
+      <apex:commandButton value="Search Hirerchy" action="{!showHirerchy}" reRender="roletable"/> 
+    </apex:pageBlockSection>
+  </apex:pageBlock>
+  </apex:form>  
+  <apex:form >
+  <apex:pageBlock id="roletable">
+     
+         <apex:pageblockTable value="{!allroles}" var="r" rendered="{!showTable}"  >
+          <apex:column headerValue="name" value="{!r.Name}"/>
+         </apex:pageblockTable>
+     
+  </apex:pageBlock>
+</apex:form>
+
+</apex:page>

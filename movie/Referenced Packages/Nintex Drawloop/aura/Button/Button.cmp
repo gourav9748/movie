@@ -1,0 +1,23 @@
+<aura:component >
+	<!-- Attributes for the button -->
+    <aura:attribute name="label" type="String" description="This is the button label"/>
+    <aura:attribute name="class" type="String" description="SLDS class"/>
+    <aura:attribute name="onclick" type="Aura.Action" default="{!c.doNothing}" description="This allows handling onClick events"/>
+    <aura:attribute name="data" type="String" description="Any data to be passed via html5 data- attribute"/>
+    <aura:attribute name="disabled" type="Boolean"/>
+    <aura:attribute name="visible" type="Boolean" default="true"/>
+    <aura:attribute name="style" type="String" default=""/>
+    
+	<!-- Attributes for SVG -->
+    <aura:attribute name="svgXlinkHref" type="String" description="svgIcon's xlink-href"/>
+    <aura:attribute name="svgClass" type="String" description="svgIcon CSS classname"/>
+    
+    <div style="{!v.style + 'display: ' + (v.visible ? 'inline-block;' : 'none;')}">
+        <button aura:id="button" class="{!v.class}" onclick="{!v.onclick}" data-data="{!v.data}">
+            <aura:if isTrue="{!v.svgXlinkHref != null}">
+                <Loop:Svg xlinkHref="{!v.svgXlinkHref}" class="{!v.svgClass}"/>
+            </aura:if>
+            {!v.label}
+        </button>
+    </div>
+</aura:component>

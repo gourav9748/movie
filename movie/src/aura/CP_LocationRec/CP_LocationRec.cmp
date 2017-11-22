@@ -1,0 +1,52 @@
+<aura:component controller="LocationController">
+	<aura:attribute name="locationRec" type="ProductConfiguration.location"/>
+	<aura:attribute name="surfacePrList" type="Product2[]"/>
+    <aura:attribute name="quoteId" type="String"/>
+    
+	<aura:handler event="c:CP_SurfaceAddEvent" action="{!c.addsurfaceFromEvent}"/>
+	<div class="slds-grid slds-wrap slds-grid--pull-padded removepadding">
+		<div class=" slds-size--1-of-1 slds-large-size_1-of-1">
+			<div aura:id="backdrop">
+				<aura:renderIf isTrue="{!v.locationRec.locationName==''}">
+					<div>
+						<ui:inputText aura:id="locationname"
+                                      class="tablefont"
+                                      label="Location Name "
+                                      placeholder="Enter Location Name"
+                                      value="{!v.locationRec.locationName}"
+                                      change="{!c.capitaliseLetters}"/>
+					</div>
+					<aura:set attribute="else">
+						<div class = "slds-grid slds-wrap slds-align--absolute-left">
+							<div class="slds-grid slds-wrap slds-p-horizontal--medium slds-p-horizontal--small slds-size--12-of-12">
+                                <div aura:id="urlLinktext"
+                                     class="slds-size--12-of-12 slds-text-align_center slds-p-top_small">
+									<ui:outputURL aura:id="locationnameOutPut"
+                                              	class="slds-output $font-size-heading-medium $font-weight-bold"
+                                              	label="{!v.locationRec.locationName}"/>
+                            	</div>
+                                <!-- **** Removed Hide -->
+                                <div class="slds-size--12-of-12" aura:id = "selectapplicatesurfaceheading">
+                                    <h2 class="slds-text-heading--small fontForMobile applicablesurfaceheading tablefont">Select applicable surfaces</h2>
+                                </div>
+                                <!-- **** Removed Hide -->
+								<div aura:id = "SurfaceListSection" class = "slds-size--12-of-12 slds-small-size_12-of-12 slds-text-align_center slds-grid slds-wrap slds-grid_align-space">
+                                    
+                                    <div class="slds-size--2-of-12 slds-small-size_2-of-12 slds-border_bottom fontForMobile tablefont" title="Select">Select</div>
+                                    <div class="slds-size--4-of-12 slds-small-size_4-of-12 slds-border_bottom fontForMobile tablefont" title="Surfaces">Surfaces</div>
+                                    <div class="slds-size--3-of-12 slds-small-size_3-of-12 slds-border_bottom fontForMobile tablefont" title="Size">Size/Qty</div>
+                                    <div class="slds-size--3-of-12 slds-small-size_3-of-12 slds-border_bottom fontForMobile tablefont" title="Condition">Conditions</div>
+                                    </div>
+                                	<aura:iteration items="{!v.surfacePrList}" var="obj">
+                                        <c:CP_SurfaceRec_v2 surfaceProRec="{!obj}"
+                                                         locRecord="{!v.locationRec}"
+                                                         quoteId="{!v.quoteId}"/>
+                                    </aura:iteration>
+							</div>
+						</div>
+					</aura:set>
+				</aura:renderIf>
+			</div>
+		</div>
+	</div>
+</aura:component>

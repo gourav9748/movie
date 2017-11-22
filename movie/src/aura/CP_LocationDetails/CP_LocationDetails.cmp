@@ -1,0 +1,66 @@
+<aura:component implements="force:hasRecordId,force:appHostable,force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes" access="global" 
+                controller="LocationController_v2">
+    
+    <style>
+        .modal-container.slds-modal__container{
+            width:80rem;
+            max-width:80rem!important;
+        }
+    </style>
+    <aura:attribute name="locationList" type="ProductConfiguration.location[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="surfaceProductList" type="Product2[]"/>
+    <aura:handler event="c:CP_LocationAddEvent" action="{!c.addLocationFromEvent}"/>
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+           <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+             <span class="slds-assistive-text">Loading</span>
+             <div class="slds-spinner__dot-a"></div>
+             <div class="slds-spinner__dot-b"></div>
+           </div>
+        </div>
+     </aura:if>
+    
+    <div aura:id="backdrop">
+        <div class="slds-page-header_object-home slds-theme--info slds-grid slds-wrap topHeadingclass slds-p-left_xxx-small slds-m-bottom_xx-small slds-p-top_xx-small slds-p-bottom_xx-small">
+            <div class="slds-size--2-of-12" aura:id="cancel">
+                <div onclick="{!c.cancelAction}" class="">
+                	<lightning:icon iconName="action:back" size="small" alternativeText="Back"/>
+                </div>
+            </div>
+            <div class="slds-size--8-of-12 slds-p-top_x-small slds-align_absolute-center">
+                <h2 class="slds-text-heading--small slds-text-heading--small">ADD LOCATION</h2>
+            </div>
+            <div class="slds-size--2-of-12 slds-p-top_x-small" aura:id="save">
+                <div onclick="{!c.saveAction}" class="">
+                	<lightning:icon iconName="utility:save" size="small" alternativeText="Save" variant="inverse"/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slds-grid slds-wrap slds-grid_pull-padded removepadding scrollable">
+            <div class=" slds-size--1-of-1 slds-medium-size_6-of-6 slds-p-horizontal--small">
+                <aura:iteration items="{!v.locationList}" var="obj">
+                    <c:CP_LocationRec_v2 locationRec="{!obj}"
+                                      surfacePrList="{!v.surfaceProductList}"
+                                      quoteId="{!v.recordId}"/>
+                </aura:iteration>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap slds-grid_pull-padded removepadding">
+            <div class="slds-text-body_small slds-size--4-of-12 slds-text-align_center hide setwidthcss" aura:id="addanotherlocationbutton">
+                <ui:button label="ADD ANOTHER LOCATION"
+                           class="slds-button slds-button--neutral slds-text-align_right fontSmall slds-p-horizontal_x-small"
+                           press="{!c.addLocation}"/>
+            </div>
+            <div class="slds-text-body_small slds-size--2-of-12"></div>
+            <div class="slds-text-body_small slds-size--4-of-12 slds-text-align_center hide setwidthcss" aura:id="proceedwithpricingbutton">
+                <ui:button label="PROCEED WITH PRICING"
+                           class="slds-button slds-button--brand slds-text-align_left fontSmall slds-p-horizontal_x-small"
+                           press="{!c.proceedWithPricing}"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

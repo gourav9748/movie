@@ -1,0 +1,53 @@
+.THIS .removepadding{
+        padding-left: 0px;
+    padding-right: 0px;
+}
+.THIS .tablefont{
+  font-weight: 900;
+}
+.THIS a {
+    color: rgb(0, 112, 210);
+    font-size: x-large;
+    
+}
+.THIS .fontForMobile {
+    font-size: small;
+}
+.THIS .applicablesurfaceheading{
+    font-style: italic;
+    color: red;
+}
+.THIS .hide {
+    display: none;
+}
+.THIS .highlightcell{
+    font-weight: bold;
+}
+
+.THIS .hideForMobile {
+    display: inline;
+}
+
+@media only screen and (min-width: 320px) {
+    .THIS p {
+    font-size: small;
+    
+}
+    .THIS select{
+        font-size: small;
+    }
+.THIS .buttontruncate > .truncate {
+    white-space: normal;
+}
+    .THIS .slds-button--neutral{
+            padding-left: .5rem!important;
+   			padding-right: .5rem!important;
+            margin-top: .5rem!important;
+    }
+    .THIS .slds-button{
+         margin-top: .5rem!important;
+    }
+    .THIS .hideForMobile {
+    display: inline;
+}
+}

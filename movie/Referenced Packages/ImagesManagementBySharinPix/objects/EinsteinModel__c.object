@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>EinsteinDataset__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Einstein Dataset</label>
+        <referenceTo>EinsteinDataset__c</referenceTo>
+        <relationshipLabel>Einstein Models</relationshipLabel>
+        <relationshipName>Einstein_Models</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Epochs__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Optional. Number of training iterations for the neural network. Valid values are 1–100. If not specified, the default is calculated based on the dataset size. The larger the number, the longer the training takes to complete.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Optional. Number of training iterations for the neural network. Valid values are 1–100. If not specified, the default is calculated based on the dataset size. The larger the number, the longer the training takes to complete.</inlineHelpText>
+        <label>Epochs</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LearningRate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Optional. Specifies how much the gradient affects the optimization of the model at each time step. Use this parameter to tune your model. Valid values are between 0.0001 and 0.01. If not specified, the default is 0.0001. We recommend keeping this value between 0.0001 and 0.001.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Optional. Specifies how much the gradient affects the optimization of the model at each time step. Use this parameter to tune your model. Valid values are between 0.0001 and 0.01. If not specified, the default is 0.0001.</inlineHelpText>
+        <label>LearningRate</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TrainParams__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Optional. JSON that contains parameters that specify how the model is created. Valid values:
+{&quot;trainSplitRatio&quot;: 0.n}—Lets you specify the ratio of data used to train the dataset and the data used to test the model. The default split ratio is 0.9; 90% of the data is used to train the dataset and create the model and 10% of the data is used to test the model. If you pass in a split ratio of 0.6, then 60% of the data is used to train the dataset and create the model and 40% of the data is used to test the model.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Optional. JSON that contains parameters that specify how the model is created. Valid values:
+{&quot;trainSplitRatio&quot;: 0.n}—Lets you specify the ratio of data used to train the dataset and the data used to test the model.</inlineHelpText>
+        <label>TrainParams</label>
+        <length>131072</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <label>Einstein Model</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Model Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Einstein Models</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
+</CustomObject>

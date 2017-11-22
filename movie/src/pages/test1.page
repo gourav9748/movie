@@ -1,0 +1,15 @@
+<apex:page >
+  <table style="width:100%">
+      <tr>
+         <th>
+          <img src="/img/icon/invoices24.png" class="relatedListIcon" style="width:24px; display:block; margin-left:0;" />
+          <b><font size="4">Contacts</font></b>
+          </th>
+          <th>                
+            <form method="get" action='http://www.google.com'>
+            <input type='submit' value='New contact' name='abc'/>
+          </form>
+          </th>
+          </tr>
+      </table>    
+</apex:page>

@@ -1,0 +1,7 @@
+<apex:page docType="html-5.0" standardcontroller="Opportunity" sidebar="false" standardStylesheets="false" showHeader="false">
+    <!-- To use this sample for other objects, you must create a new Visualforce page and copy this sample into it then make edits. -->
+    <!-- Change the API name of the object for standard controller (standardcontroller="[Object's API Name]"). -->
+    <!-- Use the 'loop' namespace ('loop:runDDP'). -->
+    <!-- To use the Drawloop Lightning Component in Salesforce1, change useLightningExperience to true ('useLightningExperience="true"'). Otherwise Salesforce1 users will use the classic document generation experience. -->
+    <c:runDDP useLightningExperience="false" />
+</apex:page>

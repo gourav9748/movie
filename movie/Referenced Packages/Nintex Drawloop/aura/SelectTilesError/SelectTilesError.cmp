@@ -1,0 +1,21 @@
+<aura:component >
+    <aura:attribute name="message" type="string" required="true"/>
+	
+    <div class="slds">
+        <ul class="slds-list--vertical slds-has-cards slds-has-cards--space slds-has-list-interactions" style="padding: .5rem 1rem;">
+            <li>
+                <div class="slds-notify_container" style="text-align: center; position: static;">
+                    <div class="slds-notify slds-notify--toast slds-theme--warning warning-toast" style="fill: #54698d;position: static;box-shadow: 1px 1px 3px rgba(197, 197, 197, .8);margin: 0;width: 100%; min-width: 15rem;">
+                        <Loop:Svg class="slds-icon slds-icon--small slds-m-right--small slds-button__icon"
+                               xlinkHref="/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#ban"
+                               style="float: left;"
+                               />
+                        <div class="notify__content" style="text-align: center;">
+                            <h2 class="slds-text-heading--small">{!v.message}</h2>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aura:component>

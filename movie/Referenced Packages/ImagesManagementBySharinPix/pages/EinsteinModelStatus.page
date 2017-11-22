@@ -1,0 +1,35 @@
+<apex:page standardController="sharinpix__EinsteinModel__c" extensions="sharinpix.EinsteinModelStatusController" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+<apex:slds />
+
+<script type="text/javascript" src="{! URLFOR($Resource.PrefixedBootstrap, 'jquery-3.1.1.slim.min.js') }"/>
+<script>
+
+ $(document).ready(function(){
+    $(window).on('message', function(e){
+      data = e.originalEvent.data;
+      switch (data.name) {
+        case 'viewer-image-viewed':
+          document.getElementById('statusIframe').contentWindow.postMessage({name: 'viewer-image-viewed', model_id: '{!recordId}', image_id: data.payload.image.public_id}, '{!domain}');
+          break;
+        case 'viewer-closed':
+          document.getElementById('statusIframe').contentWindow.postMessage({name: 'viewer-closed'}, '{!domain}');
+          break;
+      };
+    });
+  });
+
+</script>
+</head>
+
+<body>
+  <iframe id="statusIframe" src="{!HTMLENCODE(modelStatusUrl)}" height="320px" width="100%" style="border: 0" />
+  <div id="album">
+    <iframe id="albumIframe" src="{!HTMLENCODE(albumUrl)}" height="520px" width="100%" style="border: 0" />
+  </div>
+</body>
+</html>
+
+</apex:page>

@@ -1,0 +1,4 @@
+<aura:event type="Component" description="To activate slider and load attachment records.">
+    <aura:attribute name="globalIdTag" type="string" default="" description="Id of this component."/>
+    <aura:attribute name="attachments" type="list" default="[]" description="This is all the available attachment file records."/>
+</aura:event>

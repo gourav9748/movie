@@ -1,0 +1,29 @@
+<apex:page controller="AccountCon" sidebar="false" showHeader="false">
+ 
+    <apex:pageBlock >
+     <apex:form id="theForm">
+        <apex:pageBlockTable value="{!accounts}" var="a">
+            <apex:column headerValue="Account Name">
+                           <apex:commandLink value="{!a.Name}" action="{!accountdetails}"  target="_blank">
+                                <apex:param assignTo="{!account1.Id}" value="{!a.Id}" name="accountId"/>
+                           </apex:commandLink>
+                          </apex:column> 
+            <apex:column value="{!a.Name}"/>
+            <apex:column value="{!a.id}"/>
+            <apex:column value="{!a.Phone}"/>
+            <apex:column value="{!a.Owner.Name}"/>
+            <apex:column value="{!a.AccountNumber}"/>
+            
+            
+            
+            
+            
+            
+            
+        </apex:pageBlockTable>
+        <apex:commandLink action="{!previous}">Previous</apex:commandlink>
+        <apex:commandLink action="{!next}">Next</apex:commandlink>
+        </apex:form>
+
+    </apex:pageBlock>
+</apex:page>

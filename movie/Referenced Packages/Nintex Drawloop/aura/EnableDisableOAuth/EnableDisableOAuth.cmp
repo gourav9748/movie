@@ -1,0 +1,27 @@
+<aura:component controller="Loop.EnableDisableOAuth">
+    <!--Required attributes-->
+    <aura:attribute name="connectedAppsEnabled" type="boolean" default="false" required="true"/>
+
+    <!--Handled events-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!--Fired events-->
+    <aura:registerEvent name="moveToNextStep" type="Loop:moveToNextStep"/>
+    <aura:registerEvent name="actionEvent" type="Loop:actionEvent"/>
+
+    <!--Aura methods-->
+    <aura:method name="save" action="{!c.save}"/>
+    
+	<div class="slds">
+        <div class="slds-text-heading--small" title="Setup Wizard">Connected Apps and OAuth
+            <Loop:HelpLink helpTopic="http://help.nintex.com/en-us/docgen/docservices/Default.htm#cshid=9018" style="height: 14px;width: 14px;margin-top: 4px;"/>
+        </div>
+        <div class="slds-text-body--regular slds-p-top--small">
+            This app supports Salesforce authorization and authentication with <a href="https://help.salesforce.com/apex/HTViewHelpDoc?id=connected_app_overview.htm" target="_blank">Connected Apps</a>. A connected app allows administrators to set various security policies and have explicit control over who may use the corresponding applications.
+        </div>
+        <div class="slds-grid slds-p-top--small">
+            <button aura:id="enabledButton" id="enable" onclick="{!c.onChange}" class="slds-button slds-button--neutral slds-button--brand slds-m-right--x-small" disabled="{!v.connectedAppsEnabled}">{!v.connectedAppsEnabled ? 'Enabled' : 'Enable'}</button>
+            <button aura:id="disabledButton" id="disable" onclick="{!c.onChange}" class="slds-button slds-button--neutral" disabled="{! !v.connectedAppsEnabled}">{!v.connectedAppsEnabled ? 'Disable' : 'Disabled'}</button>
+        </div>
+    </div>
+</aura:component>

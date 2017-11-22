@@ -1,0 +1,7 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader">
+   
+        <ui:button aura:id="button" buttonTitle="Click to see what you put into the field"  label="Click me" press="{!c.getInput}"/>
+
+   
+    <!--<lightning:spinner variant="brand" size="small"/>-->
+</aura:component>

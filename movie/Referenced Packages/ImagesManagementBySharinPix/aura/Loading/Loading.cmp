@@ -1,0 +1,14 @@
+<aura:component >
+  <div class="sharinpix-loading">
+    <div class="loading0"></div>
+    <div class="loading1"></div>
+    <div class="loading2"></div>
+    <div class="loading3"></div>
+    <div class="loading4"></div>
+    <div class="loading0"></div>
+    <div class="loading1"></div>
+    <div class="loading2"></div>
+    <div class="loading3"></div>
+    <div class="loading4"></div>
+  </div>
+</aura:component>

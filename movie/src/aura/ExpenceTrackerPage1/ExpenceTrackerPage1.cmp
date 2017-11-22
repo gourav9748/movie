@@ -1,0 +1,20 @@
+<aura:component >
+	<p>Hello lightning</p>
+    color:
+    
+<div class="sameline">
+<ui:inputCheckbox name="checkbox" aura:id="Check1"  click="{!c.helperMethod10}"/> red
+<ui:inputCheckbox name="checkbox"   aura:id="Check2"  click="{!c.helperMethod10}"/> blue
+<ui:inputCheckbox name="checkbox"  aura:id="Check3" label="green" click="{!c.helperMethod10}"/>
+<ui:inputCheckbox name="checkbox"  aura:id="Check4" label="cyan" click="{!c.helperMethod10}"/>
+<ui:inputCheckbox name="checkbox" aura:id="Check5" label="orange" click="{!c.helperMethod10}"/>
+<ui:inputCheckbox name="checkbox"  aura:id="Check6" label="purple" click="{!c.helperMethod10}"/>
+<ui:inputCheckbox name="checkbox"  aura:id="Check7" label="violet" click="{!c.helperMethod10}"/>
+<ui:inputCheckbox name="checkbox"  aura:id="Check8" label="yellow" click="{!c.helperMethod10}"/>
+<ui:inputCheckbox name="checkbox" aura:id="Check9" label="pink" click="{!c.helperMethod10}"/>
+</div>
+    <table width="100%" height="20%" border="1" aura:id='chtable'>
+<tr><td>Color Choosen</td></tr>
+</table>
+   
+</aura:component>

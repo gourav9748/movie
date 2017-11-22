@@ -1,0 +1,9 @@
+<aura:event type="COMPONENT" description="Fire when a Document Package is selected.">
+    <aura:attribute name="id" type="string" default="" description="Contains id of selected Document Package."/>
+    <aura:attribute name="name" type="string" default="" description="Contains name of selected Document Package."/>
+    <aura:attribute name="contactRequired" type="boolean" default="false" description="True if contact is required for the selected Document Package."/>
+    <aura:attribute name="attachmentAllowed" type="boolean" default="false" description="True if attachments are allowed for the selected Document Package."/>
+    <aura:attribute name="attachmentRequired" type="boolean" default="false" description="True if attachments are required for the selected Document Package."/>
+    <aura:attribute name="hasOptionalDocuments" type="boolean" default="false" description="True if the selected Document Package has optional documents."/>
+    <aura:attribute name="hasAdhocApexClass" type="boolean" default="false" description="True if there is a custom class in the AdHoc_Apex_Class__c field in the Document Package."/>
+</aura:event>

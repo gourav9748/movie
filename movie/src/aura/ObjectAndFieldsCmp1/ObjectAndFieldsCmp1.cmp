@@ -1,0 +1,8 @@
+<aura:component controller="LightningComponentReference" implements="force:hasRecordId,force:lightningQuickActionWithoutHeader">
+    
+        <input name="input" aura:id="myinput" label="Enter some text"  />
+    <ui:button aura:id="button" buttonTitle="Click to see what you put into the field"  label="Click me" press="{!c.getInput}"/>
+    
+    <aura:attribute name="expenses" type="Candidate[]" />
+	
+</aura:component>

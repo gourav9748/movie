@@ -1,0 +1,39 @@
+<aura:component controller="sharinpix.SharinPixReportSelectorController">
+    <aura:attribute name="reportId" type="String"/>
+    <aura:attribute name="reportParameters" type="String" default="[]"/> <!-- To add later -->
+    <aura:attribute name="reportsFolders" type="List"/>
+
+    <aura:attribute name="id" type="String"/>
+
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
+    <aura:handler name="change" value="{! v.id }" action="{! c.setReportId }"/>
+
+    <div class="slds-grid slds-wrap">
+        <div class="slds-p-horizontal_small slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <label class="slds-form-element__label">Report ID</label>
+                    <ui:inputText aura:id="txtReportId" class="slds-input" maxlength="18" placeholder="e.g. 00O58000001HQtw" change="{! c.setId }"/>
+                </div>
+            </div>
+        </div>
+        <div class="slds-p-horizontal_small slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <label class="slds-form-element__label">Report List</label>
+                    <div class="slds-select_container">
+                        <ui:inputSelect class="slds-select" aura:id="selReports" value="{! v.id }">
+                            <ui:inputSelectOption text="" label=""/>
+                            <aura:iteration items="{! v.reportsFolders }" var="reportsFolder">
+                                <ui:inputSelectOption text="{! reportsFolder.name }" label="{! reportsFolder.name }" disabled="true"/>
+                                <aura:iteration items="{! reportsFolder.reports }" var="report">
+                                    <ui:inputSelectOption text="{! report.Id }" label="{! '&nbsp;&nbsp;' + report.Name }"/>
+                                </aura:iteration>
+                            </aura:iteration>
+                        </ui:inputSelect>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

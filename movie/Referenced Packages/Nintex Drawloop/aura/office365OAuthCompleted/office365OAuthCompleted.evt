@@ -1,0 +1,6 @@
+<aura:event type="APPLICATION" description="Fire once OAuth with O365 completes">
+    <aura:attribute name="isSuccess" type="Boolean"/>
+    <aura:attribute name="errorCode" type="String"/>
+    <aura:attribute name="errorId" type="String"/>
+    <aura:attribute name="errorDescription" type="String"/>
+</aura:event>

@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="mass Ddp is selected, and Business edition is also selected">
+    <aura:attribute name="isMass" type="Boolean" default="false"/>
+</aura:event>

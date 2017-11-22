@@ -1,0 +1,223 @@
+<apex:page standardController="Loop__Text_Group__c" extensions="Loop.TextGroupExt" docType="html-5.0" title="{!$ObjectType.Loop__Text_Group__c.label} Edit: {!headerSubTitle}" applyHtmlTag="{!applyHtmlTag}">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <apex:includeScript value="{!URLFOR($Resource.Loop__Scripts, 'jquery-2.1.4.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Loop__Scripts, 'jquery.ui-1.11.3.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Loop__Scripts, 'nestable.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.Loop__CKEditor, 'ckeditor_basic/ckeditor.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Loop__Scripts, 'bootstrap-3.3.5/js/bootstrap.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Loop__Styles, 'css/textgroup.bootstrap-namespaced.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Loop__SalesforceLightning, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Loop__Styles, 'css/textgroup.css')}"/>
+    
+    <style>
+        .outer td.oRight {
+            padding: 0 0 20px 10px;
+        }
+        .slds-col {
+            margin: 5px 0px;
+        }
+        
+        .slds .slds-section-title--divider {
+            width: 100%;
+            margin: 0;
+        }
+        
+        .slds .slds-text-heading--label {
+            font-weight: bold;
+            font-size: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .search-container {
+            margin-bottom: 10px;
+        }
+        
+        .search-container .slds-button {
+            vertical-align: top;
+        }
+        
+        .slds .slds-button--icon-bare.help-icon {
+            vertical-align: text-top;
+        }
+        
+        .default-cursor, .slds button.default-cursor {
+            cursor: default;
+        }
+    </style>
+    
+    <div class="slds">
+        <div class="slds-page-header">
+            <div class="slds-grid slds-grid--align-spread">
+                <div class="slds-media slds-col">
+                    <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-custom-13">
+                            <use xlink:href="{!URLFOR($Resource.SalesforceLightning, 'assets/icons/custom-sprite/svg/symbols.svg#custom13')}"></use>
+                        </svg>
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-heading--label">{!$ObjectType.Text_Group__c.label} Edit</p>
+                        <div class="slds-grid">
+                            <div class="slds-col">
+                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate">{!headerSubTitle}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <span id="taggerURL" style="display:none;">{!fieldTaggerUrl}</span>
+        <div class="">
+            <div id="msgSection" class="slds-col slds-size--1-of-1">
+               <div id="messagesContainer" class="row text-center"></div>
+            </div>
+            
+            <div class="slds-col slds-size--1-of-1">
+                <div class="slds-grid ">
+                    <div class="slds-col slds-size--1-of-1 slds-col--padded">
+                        <div class="slds-float--right">
+                            <button type="button" class="slds-button slds-button--brand   save-Group"      >Save</button>
+                            <button type="button" class="slds-button slds-button--neutral quicksave-Group" >Quick Save</button>
+                            <button type="button" class="slds-button slds-button--neutral clone-Group"     >Clone</button>
+                            <button type="button" class="slds-button slds-button--neutral cancel-Group"    >Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slds-col slds-size--1-of-1" style="clear: both;">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size--1-of-2 slds-col--padded">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="groupName">{!$ObjectType.Text_Group__c.fields.Name.label}</label>
+                            <input id="groupName" class="slds-input" type="text" value="{!groupName}" />
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-2 slds-col--padded">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="groupDescription">{!$ObjectType.Text_Group__c.fields.Description__c.label}</label>
+                            <textarea id="groupDescription" class="slds-textarea">{!groupDescription}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="slds-section-title--divider">{!$ObjectType.Text_Snippet__c.labelplural}</h3>
+            
+            <div class="slds-col slds-size--1-of-1">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size--1-of-3 slds-col--padded unselected-col">
+                        <div class="slds-text-heading--label">Available</div>
+                        <div class="slds-form-element search-container">
+                            <div class="slds-form-element__control">
+                                <input id="clauseSearch" style="margin-right: 5px;" class="slds-input slds-size--2-of-3" type="text" placeholder="Search"/>
+                                <button id="createClauseButton" class="slds-button slds-button--neutral" type="button">New {!$ObjectType.Text_Snippet__c.label}</button>
+                            </div>
+                        </div>
+                        <div class="dd" id="nestable"></div>
+                    </div>
+                    <div class="slds-col slds-size--2-of-3 slds-col--padded">
+                        <div class="slds-text-heading--label">Selected</div>
+                        <div class="dd" id="nestable2" ></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slds-col slds-size--1-of-1">
+                <div class="slds-grid ">
+                    <div class="slds-col slds-size--1-of-1 slds-col--padded">
+                        <div class="slds-float--right">
+                            <button type="button" class="slds-button slds-button--brand   save-Group"      >Save</button>
+                            <button type="button" class="slds-button slds-button--neutral quicksave-Group" >Quick Save</button>
+                            <button type="button" class="slds-button slds-button--neutral clone-Group"     >Clone</button>
+                            <button type="button" class="slds-button slds-button--neutral cancel-Group"    >Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+          </div>
+          
+          <!-- Modal -->
+          <div>
+              <div aria-hidden="false" role="dialog" class="slds-modal slds-modal--large" id="modalSFDC" >
+                  <div class="slds-modal__container" style="width: 45%;">
+                      <div class="slds-modal__header">
+                          <h2 class="slds-text-heading--medium modal-title" >Modal Header</h2>
+                          <button class="slds-button slds-button--icon-inverse slds-modal__close" onclick="UTILS.closeModal('modalSFDC')">
+                            <span class="slds-assistive-text">Close</span>
+                          </button>
+                      </div>
+                      <div class="slds-modal__content slds-p-around--medium" id="modalBody"></div>
+                      <div class="slds-modal__footer">
+                          <button class="slds-button slds-button--neutral slds-button-cancel-modal" onclick="UTILS.closeModal('modalSFDC')" id="cancelModal">Cancel</button>
+                          <button class="slds-button slds-button--neutral slds-button--brand" id="storageFilters">Done</button>
+                      </div>
+                  </div>
+              </div>
+              <div id="modalSFDC_background" class="slds-modal-backdrop"></div>
+          </div>
+       
+        <div>
+            <div aria-hidden="false" role="dialog" class="slds-modal slds-modal--large" id="clauseModal">
+              <div class="slds-modal__container" style="width: 45%;">
+                <div class="slds-modal__header">
+                  New {!$ObjectType.Text_Snippet__c.label}
+                  <button onclick="UTILS.closeModal('clauseModal')" class="slds-button slds-button--icon-inverse slds-modal__close">
+                    <span class="slds-assistive-text">Close</span>
+                  </button>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium" id="clasueModalBody">
+                    <div class="slds-col slds-size--1-of-1 clause-field-container">
+                       <div class="slds-form-element">
+                           <label class="slds-form-element__label slds-float--left" for="newClauseName" style="float: left;">{!$ObjectType.Text_Snippet__c.fields.Name.label}</label>
+                           <div class="slds-form-element__control">
+                               <input id="newClauseName" class="slds-input" type="text" />
+                           </div>
+                        </div>
+                    </div> 
+                    <div class="slds-col slds-size--1-of-1 clause-field-container">
+                       <div class="slds-form-element">
+                           <label class="slds-form-element__label " for="newClauseBody">{!$ObjectType.Text_Snippet__c.fields.Body__c.label}</label>
+                           <div class="slds-form-element__control">
+                               <textarea id="newClauseBody" class="slds-textarea" ></textarea>
+                           </div>
+                       </div>
+                    </div>
+                    <div class="slds-col slds-size--1-of-1 clause-field-container">
+                       <div class="slds-form-element">
+                           <a class="fieldTagger slds-button slds-button--neutral" href="#">Field Tagger</a>
+                       </div>
+                    </div>
+                </div>
+                <!-- <br/><br/> -->
+                <div class="slds-modal__footer">
+                  <button class="slds-button slds-button--neutral slds-button-cancel-modal" onclick="UTILS.closeModal('clauseModal')" id="cancelCreateClause">Cancel</button>
+                  <button class="slds-button slds-button--neutral slds-button--brand" id="createClause">Create</button>
+                </div>
+              </div>
+            </div>
+            <div id="clauseModal_background" class="slds-modal-backdrop"></div>
+      </div>
+        <br/><br/>
+        <div id="DDPContainer">
+            <apex:pageBlock title="Associated {!$ObjectType.Loop__DDP__c.labelplural}" rendered="{!associatedDDPs.size > 0}"> 
+                <apex:pageBlockTable value="{!associatedDDPs}" var="ddp" styleClass="slds-table slds-table--bordered" rowClasses="slds-hint-parent" headerClass="slds-text-heading--label"> 
+                    <apex:column value="{!ddp.Loop__DDP__c}"/> 
+                </apex:pageBlockTable> 
+            </apex:pageBlock>
+        </div>
+    </div>
+    
+    <apex:form >
+        <apex:actionFunction name="cancelJS" action="{!cancel}"/>
+    </apex:form>
+    
+    <apex:includeScript value="{!URLFOR($Resource.Loop__Scripts, 'textgroup.js')}"/>
+
+</html>
+
+</apex:page>

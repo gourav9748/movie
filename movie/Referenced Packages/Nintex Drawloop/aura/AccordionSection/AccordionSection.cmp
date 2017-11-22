@@ -1,0 +1,60 @@
+<aura:component >
+    <aura:attribute name="sectionName" type="string" required="true"/>
+    <aura:attribute name="label" type="string" required="true"/>
+    <aura:attribute name="required" type="boolean" default="false"/>
+    <aura:attribute name="expanded" type="boolean" default="false" access="private"/>
+    <aura:attribute name="searchString" type="string" access="private"/>
+    <aura:attribute name="badgeText" type="string" access="private"/>
+    <aura:attribute name="multiple" type="boolean" default="false"/>
+    
+    <aura:method name="toggle" action="{!c.toggle}"/>
+    <aura:method name="collapse" action="{!c.collapse}"/>
+    <aura:method name="setBadge" action="{!c.setBadge}">
+        <aura:attribute name="text" type="string"/>
+    </aura:method>
+    <aura:method name="toggleAccordionDisabled" action="{!c.toggleAccordionDisabled}">
+        <aura:attribute name="disable" type="boolean"/>
+    </aura:method>
+    <aura:method name="hideScrollBar" action="{!c.hideScrollBar}"/>
+    <aura:method name="showScrollBar" action="{!c.showScrollBar}"/>
+    
+    <aura:registerEvent name="collapseOtherAccordionSections" type="Loop:collapseOtherAccordionSections"/>
+    <ul class="slds-tree" role="tree" aria-labelledby="treeheading">
+        <li class="slds-tree__branch" role="treeitem" aria-level="1" aria-expanded="true">
+            <div class="slds-tree__item tree-item tree-item-top-border" data-hidden="false" aura:id="section" id="section" onclick="{!c.toggle}" style="background-color: #fff;">
+                <div class="slds-grid slds-grid--align-spread section-header">
+                    <div aura:id="label" class="section-header-label">
+                        <div id="section-icon" aura:id="section-icon" class="icon-transition icon-position" >
+                            <Loop:Svg id="section" onclick="{!c.toggle}" xlinkHref="{!'/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#chevronright'}" class="icon"/>
+                        </div>
+                        <div style="margin-left: .5rem;font-size: 12pt;">{!v.label}</div>
+                    </div>
+                    <div class="section-header-extra">
+                        <span aura:id="badge" class="slds-badge blue-badge hidden">{!v.badgeText}</span>
+                        <span aura:id="requiredBadge" class="slds-badge slds-theme--error hidden">REQUIRED</span>
+                        <div aura:id="section-search" id="section-search" class="slds-lookup search-hidden" data-select="multi" data-scope="single" data-typeahead="true">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                                    <input aura:id="searchBar" class="{!'slds-input input-search' + (!v.searchString ? '' : ' input-search-populated')}" type="text" aria-autocomplete="list" role="combobox" aria-expanded="true" aria-activedescendant="" oninput="{!c.search}" onclick="{!c.stopPropagation}"/>
+                                    <aura:if isTrue="{!!v.searchString}">
+                                        <Loop:Svg class="slds-input__icon" xlinkHref="{!'/resource/Loop__SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#search'}" style="pointer-events: none;"/>
+                                        <aura:set attribute="else">
+                                            <button class="slds-button slds-button--icon-container slds-input__icon" onclick="{!c.clearInput}">
+                                                <Loop:Svg class="slds-input__icon close-icon" xlinkHref="{!'/resource/Loop__SalesforceLightning/assets/icons/action-sprite/svg/symbols.svg#close'}"/>
+                                            </button>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div aura:id="section-node" class="scrollable--y accordion-content">
+                    {!v.body}
+                </div>
+            </div>
+        </li>
+    </ul>
+</aura:component>

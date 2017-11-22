@@ -1,0 +1,41 @@
+<aura:component controller="ReportController">
+ 
+    <head>
+        <title>Report</title>
+    </head>
+    <aura:attribute name="contactList" type="Contact[]"  />
+    <aura:attribute name="accountList" type="Account[]"  />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!-- <div class="container">-->
+    <div class="slds"> 
+    <table class="slds-table slds-table--bordered slds-table--striped">
+        <thead>
+            <tr class="slds-line-height--reset">
+                <th scope="col" style="width:3.25rem;" class="slds-text-align--right"><span class="slds-truncate">Account Name</span></th>
+                <th scope="col" style="width:3.25rem;" class="slds-text-align--right"><span class="slds-truncate">Contact Name</span></th>
+            </tr>
+        </thead>
+        <tbody>
+          
+            <aura:iteration items="{!v.accountList}" var="accountRec">
+                <tr>
+                    <td>{!accountRec.Name}</td>
+                    <td></td>
+                </tr>    
+                <aura:iteration items="{!v.contactList}" var="contactRec">
+                <tr>
+                    <aura:renderIf isTrue="{!contactRec.Account.Name == accountRec.Name}">
+                       <td></td>
+                       <td>{!contactRec.Name}</td>
+                     </aura:renderIf>                     
+                
+                </tr>
+                </aura:iteration>
+              
+            </aura:iteration>
+        </tbody>
+    </table>
+        </div>
+   
+</aura:component>

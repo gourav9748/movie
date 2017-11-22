@@ -1,0 +1,3 @@
+<apex:page standardController="sharinpix__EinsteinVisionProject__c" extensions="sharinpix.EinsteinVisionProjectAlbumCtrl" >
+    <iframe src="{!albumUrl}" height="500px" width="100%" style="border: 0" />
+</apex:page>

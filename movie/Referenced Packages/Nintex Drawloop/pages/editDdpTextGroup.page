@@ -1,0 +1,1469 @@
+<apex:page standardController="Loop__DDP_Text_Group__c" extensions="Loop.DdpTextGroupExt"  docType="html-5.0" title="{!$ObjectType.Loop__DDP_Text_Group__c.label} Edit: {!headerSubTitle}" applyHtmlTag="{!applyHtmlTag}">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<apex:includeScript value="{!URLFOR($Resource.Loop__Scripts, 'jquery-2.1.4.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.Loop__Scripts, 'jquery.ui-1.11.3.js')}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.Loop__SalesforceLightning, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}"/>
+<style>
+.outer td.oRight {
+    padding: 0 0 20px 10px;
+}
+.slds-col{
+    margin: 5px 0px;
+}
+#noFilterCriteria{
+  padding: 12px;
+  background-color: #F1F1F1;
+  color: #A5A5A5;
+  border-radius: 6px;
+}
+#noFilters-container{
+    display: none;
+}
+.addFilter{
+    cursor: pointer;
+}
+.slds-icon__container{
+    padding: 4px;
+}
+.filter-data {
+    padding: 4px !important;
+    vertical-align: middle !important;
+}
+.filter-data-field {
+    width: 20%;
+}
+.icon-section{
+    margin-top: 36px;
+    min-width: 54px !important;
+    float: left;
+}
+#lookupContainer{
+    height: 500px;
+}
+.record-item{
+    cursor: pointer;
+}
+.lookup-close-container{
+    height: 34px !important;;
+}
+.lookup-close{
+    padding: 0px 6px !important;
+}
+.remove-filter{
+    height: 22px;
+}
+.btns-container {
+    width: 100%;
+}
+.btns-container .fieldTagger {
+    float: right;
+}
+
+.default-cursor, .slds button.default-cursor {
+    cursor: default;
+}
+
+.slds .slds-button--icon-bare.help-icon {
+    vertical-align: text-top;
+}
+
+.filter-count-container{
+  float: left;
+  color: white;
+  margin: 0px 2px;
+  width: 25px;
+  padding: 3px;
+  cursor: default;
+}
+.remove-filter{
+  padding: 3px;
+  cursor: pointer;
+}
+.icon-section svg{
+    vertical-align: inherit;
+}
+.filter-count{
+    text-align: center;
+}
+
+.slds .slds-section-title--divider {
+    width: 100%;
+    margin: 0;
+}
+</style>
+
+<div class="slds">
+    <div class="slds-page-header">
+        <div class="slds-grid slds-grid--align-spread">
+            <div class="slds-media slds-col">
+                <div class="slds-media__figure">
+                    <svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-custom-13">
+                        <use xlink:href="{!URLFOR($Resource.SalesforceLightning, 'assets/icons/custom-sprite/svg/symbols.svg#custom13')}"></use>
+                    </svg>
+                </div>
+                <div class="slds-media__body">
+                    <p class="slds-text-heading--label">{!$ObjectType.DDP_Text_Group__c.label} Edit</p>
+                    <div class="slds-grid">
+                        <div class="slds-col">
+                            <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate">{!headerSubTitle}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="msgSection"></div>
+    
+    <div>
+        <div aria-hidden="false" role="dialog" class="slds-modal" id="lookupContainer_modal" >
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading--medium modal-title" >Lookup Record</h2>
+                    <button class="slds-button slds-button--icon-inverse slds-modal__close" onclick="UTILS.closeModal('lookupContainer')">
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium" id="lookupContainer"></div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button--neutral slds-button-cancel-modal" onclick="UTILS.closeModal('lookupContainer')" id="cancelModal">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div id="lookupContainer_background" class="slds-modal-backdrop"></div>
+    </div>
+    
+    <div id="editContainer">
+        <div class="slds-col slds-size--1-of-1">
+            <div class="slds-grid ">
+                <div class="slds-col slds-size--1-of-1 slds-col--padded">
+                    <button type="button" class="slds-button slds-button--neutral slds-float--right cancelGroup">Cancel</button>
+                    <button type="button" class="slds-button slds-button--brand   slds-float--right slds-m-right--x-small saveGroup">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slds-col slds-size--1-of-1">
+            <div class="slds-grid">
+                <div class="slds-col slds-size--1-of-2 slds-col--padded">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="clauseGroupRelated">{!$ObjectType.DDP_Text_Group__c.fields.Text_Group__c.label}</label>
+                        <div class="slds-form-element__control {!IF(isNewDdpTextGroup, 'slds-input-has-icon slds-input-has-icon--right lookup-add-search-icon', '')}">
+                            <input disabled="" value="{!clauseGroup.Text_Group__r.Name}" data-variable="clauseGroup" data-lookup="{!$ObjectType.DDP_Text_Group__c.fields.Text_Group__c.label}" data-lookupobject="Text_Group__c" id="clauseGroupRelated" class="slds-input " type="text"  />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size--1-of-2 slds-col--padded">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="DDPRelated">{!$ObjectType.DDP_Text_Group__c.fields.DDP__c.label}</label>
+                        <div class="slds-form-element__control {!IF(isNewDdpTextGroup, 'slds-input-has-icon slds-input-has-icon--right lookup-add-search-icon', '')}">
+                            <input disabled="" value="{!clauseGroup.DDP__r.Name}" data-variable="ddp" data-lookup="{!$ObjectType.DDP_Text_Group__c.fields.DDP__c.label}" data-lookupobject="DDP__c" id="DDPRelated" class="slds-input " type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h3 class="slds-section-title--divider">Filters</h3>
+        
+        <div id="filters-container"  class="slds-col slds-size--1-of-1 filters-container">
+            <div id="addRemoveFilters-Container" class="btns-container slds-col slds-size--1-of-1">
+                <div class="slds-grid slds-col--padded">
+                    <div class="btns-container">
+                        <a id="addFilter" class="addFilter slds-button slds-button--neutral" href="#">Add Filter</a>
+                        <a id="fieldTagger" class="fieldTagger slds-button slds-button--neutral" href="#">Field Tagger</a>
+                    </div>
+                </div>
+            </div>
+            <div id="advancedFilterContainer" class="advancedFilter-container slds-col slds-size--1-of-1">
+                <div class="slds-form-element slds-col--padded">
+                    <div class="slds-form-element__label slds-m-bottom--x-small">
+                        <label class="slds-form-element__label" for="sample1" style="margin-right: 5px;">{!$ObjectType.DDP_Text_Group__c.fields.Advanced_Filter_Conditions__c.label}</label>
+                        <button title="Example: AND(1, 2, OR(3, 4))" class="help-icon slds-button slds-button--icon-bare slds-m-right--xx-small">
+                            <svg aria-hidden="true" class="default-cursor slds-button__icon">
+                                <use xlink:href="{!URLFOR($Resource.SalesforceLightning, '/assets/icons/utility-sprite/svg/symbols.svg#info')}" class="default-cursor"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Help</span>
+                        </button>
+                    </div>
+                    <div class="slds-form-element__control">
+                        <input id="filterAdvancedInput" class="filter-advanced-input slds-input" type="text"  value="{!advancedFilterCondition}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slds-col slds-size--1-of-1">
+            <div class="slds-grid ">
+                <div class="slds-col slds-size--1-of-1 slds-col--padded">
+                    <button type="button" class="slds-button slds-button--neutral slds-float--right cancelGroup">Cancel</button>
+                    <button type="button" class="slds-button slds-button--brand   slds-float--right slds-m-right--x-small saveGroup">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <apex:form >
+        <apex:actionFunction name="cancelJS" action="{!cancel}"/>
+    </apex:form>
+
+<script>
+(function(w){
+
+    var namespace = window.Loop ? 'loop__' : '';
+    var date = new Date();
+    var dateTime = date.getTime();
+    
+    function createJSON(criteriaElements, inputAdvancedFilter) {
+
+        function Criteria(){
+            this.operator = '';
+            this.operand1 = '';
+            this.operand2 = '';
+            this.ddp = '';
+            this.object = '';
+            this.field = '';
+        };
+
+        function trimC(name) {
+            if (name.indexOf('__c', name.length - '__c'.length) != -1) {
+                return name.substring(0, name.length - '__c'.length);
+            }
+            return name;
+        }
+
+        var criterias = [] ;
+        var logic = [];
+        var O_OR = 'OR';
+        var O_AND = 'AND';
+        var jsonString = '';
+        var counterFilterError = 0;
+        var filterError = false;
+
+        criteriaElements.each(function() {
+            var $elem = $(this);
+            counterFilterError++;
+            
+            var object = $elem.find('.select-object').val();
+            var field = $elem.find('.select-field').val();
+            if (!$elem.find('.select-field').attr('disabled')) {
+                var filter =  new Criteria();
+                filter.operator = $elem.find('.select-operator').val();
+                filter.operand1 = '<<' + trimC(object) + '_' + trimC(field) + '>>';
+                filter.operand2 = $elem.find('.filter-compare-to-input').val();
+                filter.ddp = $elem.find('.select-ddp').val();
+                filter.object = object;
+                filter.field = field;
+
+                criterias.push(filter);
+            }
+            else {
+                window.UTILS.handleMSG('slds-theme--error','Object in filter '+ counterFilterError +' can not be --None--');
+                filterError = true;
+            }
+        });
+        
+        if (filterError) return 'Error';
+        if (criterias.length > 1) {
+            // Remove all whitespace
+            inputAdvancedFilter = inputAdvancedFilter.replace(/\s/g, '');
+            
+            if (!inputAdvancedFilter) {
+                var criteriaNumbers = [];
+                for (var i = 1; i <= criterias.length; i++) {
+                    criteriaNumbers.push(i);
+                }
+                inputAdvancedFilter = 'AND(' + criteriaNumbers.join(',') + ')';
+            }
+
+            if (!inputAdvancedFilter.toUpperCase().startsWith(O_OR) && !inputAdvancedFilter.toUpperCase().startsWith(O_AND)) {
+                window.UTILS.handleMSG('slds-theme--error', 'Advanced filter format must be like AND(1, OR(2, 3))');
+                return 'Error';
+            }
+            
+            var numbers = inputAdvancedFilter.match(/\d+/g);
+
+            // Make sure all filters are included in logic
+            var missingNumbers = [];
+            for (var i = 1; i <= criterias.length; i++) {
+                if (numbers.indexOf(i.toString()) == -1) {
+                    missingNumbers.push(i);
+                }
+            }
+            if (missingNumbers.length > 0) {
+                window.UTILS.handleMSG('slds-theme--error','Advanced filter format must include every filter number. Missing: ' + JSON.stringify(missingNumbers));
+                return 'Error';
+            }
+            
+            // Prevent numbers referencing filters that do not exist
+            var extraNumbers = [];
+            for (var i = 0; i < numbers.length; i++) {
+                if (numbers[i] > criterias.length) {
+                    extraNumbers.push(+numbers[i]);
+                }
+            }
+            if (extraNumbers.length > 0) {
+                window.UTILS.handleMSG('slds-theme--error','Advanced filter format includes numbers for filters that do not exist. Extra Numbers: ' + JSON.stringify(extraNumbers));
+                return 'Error';
+            }
+            
+            // Convert to JSON
+            inputAdvancedFilter = inputAdvancedFilter.replace(/AND\(/gi, '["AND",');
+            inputAdvancedFilter = inputAdvancedFilter.replace(/OR\(/gi, '["OR",');
+            inputAdvancedFilter = inputAdvancedFilter.replace(/\)/g, ']');
+            
+            // replace numbers with criteria
+            inputAdvancedFilter = inputAdvancedFilter.replace(/\d+/g, function(match, i, s) { 
+                return JSON.stringify(criterias[+match - 1]);
+            }); 
+            
+            try {
+                logic = JSON.parse(inputAdvancedFilter);
+                jsonString = inputAdvancedFilter;
+            } catch (error) {
+                window.UTILS.handleMSG('slds-theme--error','Advanced filter format must be like AND(1,OR(2,3))');
+                return 'Error';
+            }
+        } else if (criterias.length == 1) {
+            jsonString = JSON.stringify(criterias[0]);
+        }
+
+        return jsonString;
+    }
+    
+    function closeModal(name) {
+        $('#'+name+'_modal').removeClass(window.UTILS.sldsFadeInOpen_Class);
+        $('#'+name+'_background').removeClass(window.UTILS.sldsModalBackdropOpen_Class);
+    }
+
+    w.UTILS = {
+        objects : [],
+        mapOF   : {},
+        objectsOptionsHTML : '',
+        handleMSG : handleException,
+        ddpCGroup : {
+              id              :  null,
+              Name            :  '',
+              advancedFilter  :  '',
+              clauseGroupId   :  null,
+              clauseGroupName :  '',
+              ddpId           :  null,
+              ddpName         :  '',
+              filter          :  ''
+        },
+        closeModal: closeModal,
+        notificationHTML   :    '<div class="slds-notify-container">'+
+                                '<div id="notificationA" class=" slds-notify slds-notify--alert slds-theme--inverse-text slds-theme--alert-texture" role="alert">'+
+                                '<span class="slds-assistive-text">Error</span>'+
+                                '<button class="closeNotification slds-button slds-button--icon-inverse slds-notify__close">'+
+                                '<svg aria-hidden="true" class="slds-button__icon">'+
+                                '<use xlink:href="/resource/' + dateTime + '/' + namespace + 'SalesforceLightning/assets/icons/action-sprite/svg/symbols.svg#close" xmlns:xlink="http://www.w3.org/1999/xlink"></use>'+
+                                '</svg>'+
+                                '<span class="slds-assistive-text">Close</span>'+
+                                '</button>'+
+                                '<h2 id="messagesContainer">Base System Alert</h2>'+
+                                '</div>'+
+                                '</div>',
+        sldsFadeInOpen_Class   :  'slds-fade-in-open',
+        sldsModalBackdropOpen_Class   : 'slds-modal-backdrop--open',
+        filterTableHTML : '<div class="conditionFilters-container" >' +
+                              '<table id="filter-table">' +
+                                  '<tr>' +
+                                      '<td/>' +
+                                      '<td class="filter-data" id="select-ddp-cell">' +
+                                          '<label class="field-label slds-form-element__label">{!$ObjectType.Loop__DDP_Text_Group__c.fields.Loop__DDP__c.label}</label>' +
+                                      '</td>' +
+                                      '<td class="filter-data">' +
+                                          '<label class="field-label slds-form-element__label">Object</label>' +
+                                      '</td>' +
+                                      '<td class="filter-data">' +
+                                          '<label class="field-label slds-form-element__label">Field</label>' +
+                                      '</td>' +
+                                      '<td class="filter-data">' +
+                                          '<label class="field-label slds-form-element__label">Operator</label>' +
+                                      '</td>' +
+                                      '<td class="filter-data">' +
+                                          '<label class="field-label slds-form-element__label" style="margin-right: 5px;">Value</label>' +
+                                          '<button title="Use the Field Tagger for dynamic values" class="help-icon slds-button slds-button--icon-bare slds-m-right--xx-small" style="top: 1px;">' +
+                                              '<svg aria-hidden="true" class="default-cursor slds-button__icon">' +
+                                                  '<use xlink:href="/resource/' + dateTime + '/' + namespace + 'SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#info" class="default-cursor"></use>' +
+                                              '</svg>' +
+                                              '<span class="slds-assistive-text">Help</span>' +
+                                          '</button>' +
+                                      '</td>' +
+                                      '<td/>' +
+                                  '</tr>' +
+                              '</table>' +
+                          '</div>',
+        filterTableRowHTML : '<tr class="filter-row">' +
+                              '<td class="filter-data">' +
+                                  '<span class="slds-icon__container slds-icon-action-description filter-count-container" style="float: right;">' +
+                                      '<div class="filter-count slds-icon slds-icon--x-small slds-p-horizontal--xx-small slds-p-top--xxx-small slds-container--center">1</div>' +
+                                  '</span>' +
+                              '</td>' +
+                              '<td class="filter-data filter-data-field">' +
+                                  '<div class="slds-form-element">' +
+                                      '<div class="slds-form-element__control">' +
+                                          '<select class="select-ddp slds-select">' +
+                                              '<option value="None">--None--</option>' +
+                                          '</select>' +
+                                      '</div>' +
+                                  '</div>' +
+                              '</td>' +
+                              '<td class="filter-data filter-data-field">' +
+                                  '<div class="slds-form-element">' +
+                                      '<div class="slds-form-element__control">' +
+                                          '<select class="select-object slds-select">' +
+                                              '<option value="None">--None--</option>' +
+                                          '</select>' +
+                                      '</div>' +
+                                  '</div>' +
+                              '</td>' +
+                              '<td class="filter-data filter-data-field">' +
+                                  '<div class="slds-form-element">' +
+                                      '<div class="slds-form-element__control">' +
+                                          '<select class="select-field slds-select">' +
+                                              '<option value="None">--None--</option>' +
+                                          '</select>' +
+                                      '</div>' +
+                                  '</div>' +
+                              '</td>' +
+                              '<td class="filter-data filter-data-field">' +
+                                  '<div class="slds-form-element">' +
+                                      '<div class="slds-form-element__control">' +
+                                          '<select class="select-operator slds-select">' +
+                                              '<option value="equals">equals</option>' +
+                                              '<option value="not equal to">not equal to</option>' +
+                                              '<option value="starts with">starts with</option>' +
+                                              '<option value="ends with">ends with</option>' +
+                                              '<option value="contains">contains</option>' +
+                                              '<option value="does not contain">does not contain</option>' +
+                                              '<option value="less than">less than</option>' +
+                                              '<option value="greater than">greater than</option>' +
+                                              '<option value="less or equal">less or equal</option>' +
+                                              '<option value="greater or equal">greater or equal</option>' +
+                                              '<option value="includes">includes</option>' +
+                                              '<option value="excludes">excludes</option>' +
+                                              '<option value="is blank">is blank</option>' +
+                                          '</select>' +
+                                      '</div>' +
+                                  '</div>' +
+                              '</td>' +
+                              '<td class="filter-data filter-data-field">' +
+                                  '<div class="slds-form-element">' +
+                                      '<div class="slds-form-element__control">' +
+                                          '<input class="operand2 filter-compare-to-input slds-input" type="text">' +
+                                      '</div>' +
+                                  '</div>' +
+                              '</td>' +
+                              '<td class="filter-data">' +
+                                  '<span class="remove-filter slds-icon__container slds-icon-action-delete" style="height: 23px;">' +
+                                      '<svg aria-hidden="true" class="slds-icon slds-icon--x-small icon__svg slds-icon-action-delete" style="margin-bottom: 4px;">' +
+                                          '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/resource/1455316028430/loop__SalesforceLightning/assets/icons/action-sprite/svg/symbols.svg#delete"/>' +
+                                      '</svg>' +
+                                  '</span>' +
+                              '</td>' +
+                          '</tr>',
+        filterTableRowErrorHTML : '<tr class="filter-error">' +
+                                      '<td/>' +
+                                      '<td colspan="5" class="filter-data" style="color:rgb(194, 57, 52);">{error}</td>' +
+                                      '<td/>' +
+                                  '</tr>',
+        filterCriteriaHTML : '<div class="filter-criteria-container" id="filterCriteriaContainer" style="padding-right: 10px;">'+
+                           '</div>',
+        noFiltersContainer_element_id : '#noFilters-container',
+        removeFilterHTML       : '<span class="glyphicon glyphicon-remove text-center remove-filter"> </span>',
+        generateFilterJSON : createJSON,
+        text_btn_ddp_createGroup  :  'Create' ,
+        text_btn_ddp_updateGroup  :  'Update',
+        lookupHTML : '<div class="slds-lookup" data-select="multi" data-scope="single" data-typeahead="true">'+
+                        '<div id="lookupClose" class="slds-col slds-size--1-of-1 lookup-close-container">'+
+                            '<button class="slds-button slds-button--icon-inverse slds-icon-standard-account slds-float--right lookup-close">'+
+                             ' <svg aria-hidden="true" class="slds-button__icon slds-button__icon--large">'+
+                                '<use xlink:href="{!URLFOR($Resource.SalesforceLightning, '/assets/icons/action-sprite/svg/symbols.svg#close')}" xmlns:xlink="http://www.w3.org/1999/xlink"></use>'+
+                              '</svg>'+
+                              '<span class="slds-assistive-text">Close</span>'+
+                            '</button>'+
+                        '</div>'+
+                        '<div class="slds-form-element">'+
+                          '<label id="searchLabel" class="slds-form-element__label" for="lookup">Some Object</label>'+
+                          '<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">'+
+                            '<svg aria-hidden="true" class="slds-input__icon">'+
+                              '<use xlink:href="{!URLFOR($Resource.SalesforceLightning,  'assets/icons/utility-sprite/svg/symbols.svg#search')}" xmlns:xlink="http://www.w3.org/1999/xlink"></use>'+
+                            '</svg>'+
+                            '<input id="lookup" class="slds-input" type="text" aria-autocomplete="list" role="combobox" aria-expanded="true" aria-activedescendant="" />'+
+                          '</div>'+
+                        '</div>'+
+                        '<div class="slds-lookup__menu" role="listbox">'+
+                            '<div class="slds-lookup__item">'+
+                              '<button class="slds-button" id="search-button">'+
+                                '<svg aria-hidden="true" class="slds-icon slds-icon-text-default slds-icon--small">'+
+                                  '<use xlink:href="{!URLFOR($Resource.SalesforceLightning,  '/assets/icons/utility-sprite/svg/symbols.svg#search')}" xmlns:xlink="http://www.w3.org/1999/xlink"></use>'+
+                                '</svg><span id="searchTerm">&quot;ac&quot;</span><span id="inObject"> in Accounts</span></button>'+
+                            '</div>'+
+                            '<ul class="slds-lookup__list search-result-container" role="presentation">'+
+                            '</ul>'+
+                        '</div>'+
+                    '</div>',
+        lookupItemsHTML  :  '<li class="slds-lookup__item record-item">'+
+                                '<a  role="option">'+
+                                  '<svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon--small">'+
+                                    '<use xlink:href="{!URLFOR($Resource.SalesforceLightning,  '/assets/icons/standard-sprite/svg/symbols.svg#account')}" xmlns:xlink="http://www.w3.org/1999/xlink" ></use>'+
+                                  '</svg>'+
+                                  '<span class="record-name"></span></a>'+
+                            '</li>',
+        lookupIconSearchHTML  :  '<svg aria-hidden="true" class="slds-input__icon lookup-input"><use xlink:href="{!URLFOR($Resource.SalesforceLightning,'assets/icons/utility-sprite/svg/symbols.svg#search')}" xmlns:xlink="http://www.w3.org/1999/xlink" ></use></svg>',
+    }
+
+    function handleException(classToApply , msg){
+
+        $('#msgSection').empty();
+        $notificationElement = $(w.UTILS.notificationHTML);
+        $notificationElement.find('#notificationA').addClass(classToApply);
+        $notificationElement.find('#messagesContainer').text(msg);
+        $('#msgSection').append($notificationElement);
+
+    }
+
+})(window);
+
+var CGRemote = (function(apexCtrl){
+
+    var factory = {};
+
+    factory.searchRecords = function (word,object){
+        var deferred = new $.Deferred();
+        apexCtrl.searchRecords(word,object,function(result, event){
+            if(event.status){
+                deferred.resolve(result);
+            }else{
+                deferred.reject(event.message);
+            }
+        });
+        return deferred.promise();
+    }
+    
+    factory.getDdpData = function(ddpId, groupId) {
+        var deferred = new $.Deferred();
+        var thisDdpId = ddpId;
+        CGRemote.getDdpMainObject(thisDdpId).done(function(ddpMainObject) {
+            CGRemote.getDdpRelationships(thisDdpId).done(function(ddpRelationships) {
+                var ddpMainObjectName = ddpMainObject != null ? Object.keys(ddpMainObject)[0] : '';
+                var ddpObjectsMap = factory.getDdpObjects(thisDdpId, ddpMainObjectName, ddpRelationships);
+                var objectNames = [];
+                if (ddpMainObjectName) {
+                	objectNames.push(ddpMainObjectName);    
+                }
+                for (var ddpId in ddpObjectsMap) {
+                    var ddpObjects = ddpObjectsMap[ddpId];
+                    for (var i = 0; i < ddpObjects.length; i++) {
+                        var ddpObject = ddpObjects[i];
+                        if (ddpObject && objectNames.indexOf(ddpObject) < 0) {
+                            objectNames.push(ddpObject);
+                        }
+                    }
+                }
+                
+                var objectLabels = {};
+                factory.getObjectLabels(objectNames).done(function(objectLabelsResult) {
+                    objectLabels = objectLabelsResult;
+                }).fail(function(error){
+                    console.log('ERROR');
+                    w.UTILS.handleMSG('slds-theme--error', error);
+                });
+                var filterData;
+                if (groupId) {
+                    CGRemote.getFilters(groupId).done(function(data) {
+                        filterData = data;
+                    },{escape: false}).fail(function(error) {
+                        console.log('ERROR');
+                        w.UTILS.handleMSG('slds-theme--error', error);
+                    });
+                }
+                factory.getObjectFields(objectNames).done(function(objectFields) {
+                    deferred.resolve([ddpRelationships, ddpObjectsMap, objectFields, objectLabels, filterData]);
+                }).fail(function(error){
+                    console.log('ERROR');
+                    w.UTILS.handleMSG('slds-theme--error',error);
+                });
+            }).fail(function(error){
+                console.log('ERROR');
+                w.UTILS.handleMSG('slds-theme--error',error);
+            });
+        }).fail(function(error){
+            console.log('ERROR');
+            w.UTILS.handleMSG('slds-theme--error',error);
+        });
+        return deferred.promise();
+    };
+    
+    factory.getObjectLabels = function(objectNames) {
+        var deferred = new $.Deferred();
+        apexCtrl.getObjectLabels(objectNames, function(result, event) {
+            if (event.status) {
+                deferred.resolve(result);
+            } else {
+                deferred.reject(event.message);
+            }
+        }, {
+            escape : false
+        });
+        return deferred.promise();
+    };
+    
+    factory.getDdpMainObject = function(ddpId) {
+        var deferred = new $.Deferred();
+        apexCtrl.getDdpMainObject(ddpId, function(result, event) {
+            if (event.status) {
+                deferred.resolve(result);
+            } else {
+                deferred.reject(event.message);
+            }
+        }, {
+            escape : false
+        });
+        return deferred.promise();
+    };
+    
+    factory.getDdpRelationships = function(ddps) {
+        var deferred = new $.Deferred();
+        apexCtrl.getDdpRelationships(ddps, function(result, event) {
+            if (event.status) {
+                deferred.resolve(result);
+            } else {
+                deferred.reject(event.message);
+            }
+        }, {
+            escape : false
+        });
+        return deferred.promise();
+    };
+    
+    factory.getObjectFields = function(objectNames) {
+        var deferred = new $.Deferred();
+        apexCtrl.getObjectFields(objectNames, function(result, event) {
+            if (event.status) {
+                deferred.resolve(result);
+            } else {
+                deferred.reject(event.message);
+            }
+        });
+        return deferred.promise();
+    };
+    
+    factory.getDdpObjects = function(ddpId, ddpMainObject, ddpRelationships) {
+        var ddpObjectMap = {};
+        ddpObjectMap[ddpId] = ['Account', 'Contact'];
+        if (ddpMainObject) {
+            ddpObjectMap[ddpId].push(ddpMainObject)
+        }
+
+        for (var ddpId in ddpRelationships) {
+            var objectNames = ['Account', 'Contact'];
+            if (ddpMainObject && !(ddpMainObject in objectNames)) {
+                objectNames.push(ddpMainObject);
+            }
+            
+            // Add ddp relationship objects
+            var relationshipObjects = factory.getObjectsFromRelationships(ddpRelationships[ddpId]);
+            for (var i = 0; i < relationshipObjects.length; i++) {
+                var relObject = relationshipObjects[i];
+                if (relObject && objectNames.indexOf(relObject) < 0) {
+                    objectNames.push(relObject);
+                }
+            }
+
+            if (ddpId in ddpObjectMap) {
+                for (var i = 0; i < objectNames.length; i++) {
+                    var objectName = objectNames[i];
+                    if (ddpObjectMap[ddpId].indexOf(objectName) < 0) {
+                        ddpObjectMap[ddpId].push(objectName);
+                    }
+                }
+            } else {
+                ddpObjectMap[ddpId] = objectNames;
+            }
+        }
+        
+        return ddpObjectMap;
+    }
+
+    factory.getObjectsFromRelationships = function(relationships) {
+        var relObjects = [];
+        for (var i = 0; i < relationships.length; i++) {
+            var rel = relationships[i];
+            if (rel.Name && relObjects.indexOf(rel.Name) < 0) {
+                relObjects.push(rel.Name);
+            }
+        }
+        return relObjects;
+    }
+    
+    factory.getDdpComponentGroups = function(ddpId) {
+        var deferred = new $.Deferred();
+        apexCtrl.getDdpComponentGroups(ddpId, function(result, event) {
+            if (event.status) {
+                deferred.resolve(result);
+            } else {
+                deferred.reject(event.message);
+            }
+        });
+        return deferred.promise();
+    };
+    
+    factory.getSObjectsFields = function (groupId, maxRecords){
+        var deferred = new $.Deferred();
+        apexCtrl.getSObjectsFields(function(result, event){
+            if(event.status){
+                deferred.resolve(result);
+            }else{
+                deferred.reject(event.message);
+            }
+        });
+        return deferred.promise();
+    };
+
+    factory.getFilters = function (ddp_clauseGroupeId){
+        var deferred = new $.Deferred();
+        apexCtrl.getFilters(ddp_clauseGroupeId,function(result, event){
+            if(event.status){
+                    deferred.resolve(result);
+                }else{
+                deferred.reject(event.message);
+            }
+        },{escape: false});
+        return deferred.promise();
+    };
+
+    factory.upsertDDPClauseGroup = function (details){
+        var deferred = new $.Deferred();
+        apexCtrl.upsertDDPClauseGroup(details,function(result, event){
+        if(event.status){
+                deferred.resolve(result);
+            }else{
+            deferred.reject(event.message);
+        }
+        });
+        return deferred.promise();
+    };
+
+return factory;
+
+})(window.DdpTextGroupExt ? DdpTextGroupExt : Loop.DdpTextGroupExt);
+
+    var namespace = window.Loop ? 'Loop__' : '';
+
+    var addDdpOptions = function($elem, selectedDdp) {
+        var previousValue = $elem.val();
+        
+        var options = [];
+        var $existingOptions = $elem.children('[value!=None]');
+        for (var i = 0; i < $existingOptions.length; i++) {
+            var existingOption = $existingOptions[i];
+            if (existingOption && existingOption.value != window.UTILS.ddpCGroup.ddpId) {
+                options.push(existingOption);
+            }
+        }
+        
+        options.push($('<option />')
+            .text($('<div/>').html(window.UTILS.ddpCGroup.ddpName).text())
+            .val(window.UTILS.ddpCGroup.ddpId));
+        
+        if (selectedDdp) {
+            // Update to use the actual Unrelated Document Package Name
+            if (selectedDdp != window.UTILS.ddpCGroup.ddpId) {
+                options.push($('<option />')
+                    .text('Unrelated Ddp')
+                    .val(selectedDdp));
+            }
+        }
+        
+        options.sort(function(a, b) {
+            return a.value > b.value ? 1 : (a.value < b.value ? -1 : 0);
+        });
+        options.splice(0, 0, $('<option />').text('--None--').val('None'));
+        
+        $elem.empty();
+        for (var i = 0; i < options.length; i++) {
+            $elem.append(options[i]);
+        }
+        
+        if (selectedDdp || previousValue) {
+            $elem.val(!!selectedDdp ? selectedDdp : previousValue);
+        }
+    }
+    
+    var addObjectOptions = function($elem, ddpId) {
+        var relTitles = {};
+        
+        if (ddpId && ddpId != 'None') {
+            var labelMap = window.UTILS.ddpCGroup.objectLabels;
+
+            // Add Document Package objects
+            var ddpObjects = !!ddpId ? window.UTILS.ddpCGroup.ddpObjects[ddpId] : window.UTILS.ddpCGroup.ddpObjects[Object.keys(window.UTILS.ddpCGroup.ddpObjects)[0]];
+            if (ddpObjects) {
+                for (var i = 0; i < ddpObjects.length; i++) {
+                    var ddpObject = ddpObjects[i];
+                    var objectTitle = ddpObject in labelMap ? labelMap[ddpObject] : ddpObject;
+                    if (!(objectTitle in relTitles)) {
+                        relTitles[objectTitle] = ddpObject;
+                    }
+                }
+            }
+            
+            // Add Document Package related objects, if any exist
+            var relationships = !!ddpId ? window.UTILS.ddpCGroup.ddpRelationships[ddpId] : window.UTILS.ddpCGroup.ddpRelationships[Object.keys(window.UTILS.ddpCGroup.ddpRelationships)[0]];
+            if (relationships) {
+                for (var i = 0; i < relationships.length; i++) {
+                    var rel = relationships[i];
+                    var relAlias = !!rel[namespace + 'Related_Object_Alias__c'] ? rel[namespace + 'Related_Object_Alias__c'] : '';
+                    var relLabel = rel.Name in labelMap ? labelMap[rel.Name] : rel.Name;
+                    var relTitle = relAlias ? relAlias + ' (' + relLabel + ')' : relLabel;
+                    if (!(relTitle in relTitles)) {
+                        relTitles[relTitle] = rel.Name;
+                    }
+                }
+            }
+        } else {
+            relTitles = {Account: 'Account', Contact: 'Contact', Contract: 'Contract', Opportunity: 'Opportunity', Lead: 'Lead', Quote: 'Quote'};
+        }
+
+        
+        // Add option elements to select list
+        var relTitlesSorted = Object.keys(relTitles);
+        relTitlesSorted.sort();
+        for (var i = 0; i < relTitlesSorted.length; i++) {
+            var relTitle = relTitlesSorted[i];
+            $elem.append($('<option />').text($('<div/>').html(relTitle).text()).val(relTitles[relTitle]));
+        }
+    }
+
+    var addFieldOptions = function ($elem, SObjectName) {
+        var ddpRelationships = window.UTILS.ddpCGroup.ddpRelationships;
+        var selectedDdp = $elem.closest('tr').find('.select-ddp').val();
+        
+        var fields = [];
+        if (ddpRelationships && selectedDdp in ddpRelationships) {
+            var rels = ddpRelationships[selectedDdp];
+            for (var i = 0; i < rels.length; i++) {
+                var rel = rels[i];
+                var selectedObjectTitle = $elem.closest('tr').find('.select-object option:selected').text();
+                var isSoql = /\w+\s\(\w+\)/i.exec(selectedObjectTitle);
+                if ((rel[namespace + 'Parent_Object__c'] == 'SOQL Query' || isSoql) && rel.Name == SObjectName) {
+                    var query = rel[namespace + 'SOQL__c'];
+                    var matches = /SELECT\s+(.+)\s+FROM/i.exec(query);
+                    if (matches && matches.length > 1) {
+                        var untrimmedFields = matches[1].split(',');
+                        $(untrimmedFields).each(function(i, f) {fields.push(f.trim());});
+                    }
+                }
+            }
+        }
+        
+        var objectFieldMap = window.UTILS.mapOF[SObjectName];
+        var objectFields = Object.keys(objectFieldMap).sort(function(x, y) {var v1 = objectFieldMap[x]; var v2 = objectFieldMap[y]; return v1 < v2 ? -1 : v1 > v2 ? 1 : 0; });
+        for (var i = 0; i < objectFields.length; i++) {
+            var objectField = objectFields[i];
+            if (fields.length > 0 && fields.indexOf(objectField) < 0) continue;
+            $elem.append($('<option />')
+                .text($('<div/>').html(objectFieldMap[objectField]).text())
+                .val(objectField));
+        }
+    }
+
+var CGView = (function(CGRemote, $, window, document){
+
+    var factory = {};
+    
+    factory.setCurrentDdp = function(ddpId, ddpName) {
+        window.UTILS.ddpCGroup['ddpId'] = ddpId;
+        window.UTILS.ddpCGroup['ddpName'] = ddpName;
+        
+        CGRemote.getDdpData(ddpId, '').done(function(data) {
+            CGView.addDdpRelationships(data[0]);
+            CGView.addDdpObjects(data[1]);
+            CGView.addObjectFields(data[2]);
+            CGView.addObjectLabels(data[3]);
+        }).fail(function(error) {
+            console.log('ERROR');
+            w.UTILS.handleMSG('slds-theme--error',error);
+        });
+    }
+    
+    factory.updateFilterErrors = function() {
+        var $filterTable = $('#filter-table');
+        if ($filterTable) {
+            var $filterRows = $filterTable.find('tr.filter-row');
+            $filterRows.each(function(i, tr) {
+                factory.updateFilterRowError(tr);
+            });
+        }
+    }
+    
+    factory.updateDdpSelects = function() {
+        var $filterTable = $('#filter-table');
+        if ($filterTable) {
+            var $filterRows = $filterTable.find('tr.filter-row');
+            $filterRows.each(function(i, tr) {
+                var ddpSelect = $(tr).find('.select-ddp');
+                addDdpOptions(ddpSelect, '');
+            });
+        }
+
+        factory.updateFilterErrors();
+    }
+    
+    factory.updateFilterRowError = function(tr) {
+        $selectDdp = $(tr).find('.select-ddp');
+        $selectObject = $(tr).find('.select-object');
+        var rowDdp = $selectDdp.val();
+        if (rowDdp == 'None' || rowDdp == window.UTILS.ddpCGroup.ddpId) {
+            $selectDdp.closest('.slds-form-element').removeClass('slds-has-error');
+            $selectObject.closest('.slds-form-element').removeClass('slds-has-error');
+            
+            var $nextRow = $(tr).next();
+            if ($nextRow && $nextRow.attr('class') == 'filter-error') {
+                $nextRow.remove();
+            }
+        } else {
+            $selectDdp.closest('.slds-form-element').addClass('slds-has-error');
+            $selectObject.closest('.slds-form-element').addClass('slds-has-error');
+    
+            var rowDdpName = $(tr).find('.select-ddp [value=' + rowDdp + ']').text();
+            var errorMessage = factory.filterErrorMessage(rowDdpName);
+            var $nextRow = $(tr).next();
+            if ($nextRow && $nextRow.attr('class') == 'filter-error') {
+                $nextRow.remove();
+            }
+            $(tr).after(window.UTILS.filterTableRowErrorHTML.replace('{error}', errorMessage));
+        }
+    }
+    
+    factory.addDdpRelationships = function(ddpRelationships) {
+        var rels = window.UTILS.ddpCGroup['ddpRelationships'];
+        if (rels) {
+            for (var key in ddpRelationships) {
+                if (!(key in rels)) {
+                    rels[key] = ddpRelationships[key];
+                }
+            }
+        } else {
+            window.UTILS.ddpCGroup['ddpRelationships'] = ddpRelationships;
+        }
+    }
+    
+    factory.addDdpObjects = function(ddpObjects) {
+        var ddpObjectMap = window.UTILS.ddpCGroup['ddpObjects'];
+        if (ddpObjectMap) {
+            for (var key in ddpObjects) {
+                if (!(key in ddpObjectMap)) {
+                    window.UTILS.ddpCGroup['ddpObjects'][key] = ddpObjects[key];
+                }
+            }
+        } else {
+            window.UTILS.ddpCGroup['ddpObjects'] = ddpObjects;
+        }
+    }
+    
+    factory.addObjectFields = function(objectFields) {
+        for (var key in objectFields) {
+            if (!(key in window.UTILS.mapOF)) {
+                window.UTILS.mapOF[key] = objectFields[key];
+            }
+        }
+    }
+    
+    factory.addObjectLabels = function(objectLabels) {
+        var labelMap = window.UTILS.ddpCGroup['objectLabels'];
+        if (labelMap) {
+            for (var key in objectLabels) {
+                if (!(key in labelMap)) {
+                    labelMap[key] = objectLabels[key];
+                }
+            }
+        } else {
+            window.UTILS.ddpCGroup['objectLabels'] = objectLabels;
+        }
+    }
+    
+    factory.addAllDdpComponentGroups = function(dcgs) {
+    	var dcgNames = [];
+        if (dcgs != null) {
+        	for (var i = 0; i < dcgs.length; i++) {
+             	dcgNames.push(dcgs[i][namespace + 'Text_Group__r'].Name);
+            }
+        }
+        window.UTILS.allDdpCGroupNames = dcgNames;
+    }
+
+    var renderSearchItems = function(data){
+        var $container = $('.search-result-container');
+        $container.empty();
+        var itemsToAdd =  [];
+        for(var  i =0 ; i < data.length ; i++){
+            var item = data[i];
+            var $item = $(window.UTILS.lookupItemsHTML);
+            $item.data('record',item);
+            $item.find('.record-name').text($('<div/>').html(item.name).text());
+            itemsToAdd.push($item);
+        }
+        $container.append(itemsToAdd);
+    }
+
+    factory.activeCloseNotification = function (){
+          $(document).on('click','.closeNotification',function(){
+            $('#msgSection').empty();
+          });
+    }
+
+    factory.filterErrorMessage = function(ddpName) {
+        var encodedDdpName = $('<div/>').text(ddpName).html();
+        return 'This filter condition depends on \'' + encodedDdpName + '\' which is not related to this Component Group.';
+    }
+
+    factory.disabledFields = function (){
+        $('#filter').attr('disabled',"");
+    }
+
+    factory.addLookupIconElement = function(){
+        $('.lookup-add-search-icon').prepend(window.UTILS.lookupIconSearchHTML);
+    }
+
+    factory.addEvent_to_lookupSearchButton = function(){
+        $(document).on('click','#search-button',function(){
+            var $elem =  $(this);
+            var word = $('#lookup').val();
+            var object = $elem.data('lookupobject');
+            CGRemote.searchRecords(word,object).done(function(data){
+                renderSearchItems(data);
+                $('#lookup').val('');
+            }).fail(function(error){
+                console.log('ERROR');
+                window.UTILS.handleMSG('slds-theme--error',error);
+            });
+        });
+    }
+
+    factory.addEvent_to_cancelGroup = function(){
+        $('.cancelGroup').on('click',function(){
+            cancelJS();
+        });
+    }
+
+    factory.addEvent_to_lookup = function(){
+        $(document).on('click','.lookup-input',function(){
+            var $container = $('.search-result-container');
+            $container.empty();
+            var $elem = $(this);
+            var $elemInput = $elem.next();
+            var inObject = $elemInput.data('lookup');
+            var prefixAttr = $elemInput.data('variable');
+            var DDPRelatedText = $('#DDPRelated').val();
+            var clauseGroupRelatedText = $('#clauseGroupRelated').val();
+            var object = $elemInput.data('lookupobject');
+            $('#lookupContainer').data('variable',prefixAttr);
+            $('#lookupContainer').data('lookup-input-id',$elemInput.attr('id'));
+            $('#lookupContainer').find('#searchTerm').text('');
+            $('#search-button').data('lookupobject',object);
+            $('#searchLabel').text(inObject);
+            $('#lookupContainer').find('#inObject').text(' in '+inObject);
+            if(inObject == 'DDP'){
+                $('#lookup').val(DDPRelatedText);
+            }else{
+                $('#lookup').val(clauseGroupRelatedText);
+            }
+            $('#lookupContainer_modal').addClass(window.UTILS.sldsFadeInOpen_Class).show();
+            $('#lookupContainer_background').addClass(window.UTILS.sldsModalBackdropOpen_Class);
+        });
+
+        //$('#DDPRelated').on('keyup',function(){$(this).val('')});
+        //$('#clauseGroupRelated').on('keyup',function(){$(this).val('')});
+    }
+
+    factory.addEvent_to_selectRecordFromLookup = function(){
+        $(document).on('click','.record-item',function(){
+            var record =  $(this).data('record');
+            var lookupElementId =  $('#lookupContainer').data('lookup-input-id');
+            var prefixAttr = $('#lookupContainer').data('variable');
+            window.UTILS.ddpCGroup[prefixAttr+'Id']   = record.id;
+            window.UTILS.ddpCGroup[prefixAttr+'Name'] = $('<div/>').html(record.name).text();
+            $('#'+lookupElementId).val(window.UTILS.ddpCGroup[prefixAttr+'Name']);
+            $('#lookupContainer_modal').removeClass(window.UTILS.sldsFadeInOpen_Class).hide();
+            $('#lookupContainer_background').removeClass(window.UTILS.sldsModalBackdropOpen_Class);
+            
+            if (lookupElementId == 'DDPRelated') {
+                factory.setCurrentDdp(record.id, record.name);
+                factory.updateDdpSelects();
+            }
+        });
+    }
+
+    factory.addEvent_to_closeLookup = function (){
+        $(document).on('click','.lookup-close',function(){
+            $('#lookupContainer_modal').removeClass(window.UTILS.sldsFadeInOpen_Class).hide();
+            $('#lookupContainer_background').removeClass(window.UTILS.sldsModalBackdropOpen_Class);
+        });
+    }
+
+    factory.addEvent_to_addFilter = function () {
+        $('#addFilter').on('click', function() {
+            $(window.UTILS.noFiltersContainer_element_id).hide();
+            var $newFilter    = $(window.UTILS.filterTableRowHTML);
+
+            var $filterRows = $('#filter-table').find('tr.filter-row');
+            if ($filterRows.length > 0) {
+                $newFilter.find('.filter-count').text($filterRows.length + 1);
+                if ($filterRows.length > 9) {
+                    $newFilter.find('.filter-count').removeClass('slds-p-horizontal--xx-small');
+                }
+                $newFilter.attr('id', $filterRows.length);
+                $('#filter-table').find('tr').last().after($newFilter);
+                $('#filterAdvancedInput').removeAttr('disabled')
+            } else {
+                $filterCriteriaSection = $(window.UTILS.filterCriteriaHTML);
+                $filterTable = $(window.UTILS.filterTableHTML);
+                $filterCriteriaSection.append($filterTable);
+                $('.filters-container').prepend($filterCriteriaSection);
+
+                $newFilter.attr('id','0');
+                $newFilter.find('.filter-count').text(1);
+                $('#filter-table').find('tr').last().after($newFilter);
+                $('#fieldTagger').show();
+            }
+            
+            addDdpOptions($newFilter.find('.select-ddp'), window.UTILS.ddpCGroup.ddpId);
+            addObjectOptions($newFilter.find('.select-object'), window.UTILS.ddpCGroup.ddpId);
+            $newFilter.find('.select-field').attr('disabled', 'disabled');
+            $newFilter.find('.select-operator').attr('disabled', 'disabled');
+            $newFilter.find('.operand2').attr('disabled', 'disabled');
+        })
+    }
+
+    factory.addEvent_to_selectObject = function () {
+    
+        // Update Objects List
+        $(document).on('change', '.select-ddp', function() {
+            var $elem = $(this);
+
+            var clause = $('#modalBody').data('clause');
+            var parentIdElement = $($elem.parents('tr')[0]).attr('id');
+            var $ddpSelect = $('#' + parentIdElement + ' .select-ddp');
+            var $objectSelect = $('#' + parentIdElement + ' .select-object');
+            var $fieldSelect = $('#' + parentIdElement + ' .select-field');
+            var $operatorSelect = $('#' + parentIdElement + ' .select-operator');
+            var $valueInput = $('#' + parentIdElement + ' .filter-compare-to-input');
+
+            $objectSelect.removeAttr('disabled');
+            $objectSelect.empty();
+            $objectSelect.append('<option value="None">--None--</option>');
+            addObjectOptions($objectSelect, $elem.val());
+            $fieldSelect.empty();
+            $fieldSelect.append('<option value="None">--None--</option>');
+            $fieldSelect.attr('disabled','disabled');
+            $operatorSelect.attr('disabled','disabled');
+            $valueInput.attr('disabled','disabled');
+            
+            // Update error
+            factory.updateFilterRowError($elem.parents('tr')[0]);
+        });
+        
+        // Update Fields List
+        $(document).on('change', '.select-object', function() {
+            var $elem = $(this);
+
+            var clause = $('#modalBody').data('clause');
+            var parentIdElement = $($elem.parents('tr')[0]).attr('id');
+            var $fieldSelect = $('#' + parentIdElement + ' .select-field');
+            var $operatorSelect = $('#' + parentIdElement + ' .select-operator');
+            var $valueInput = $('#' + parentIdElement + ' .filter-compare-to-input');
+
+            if ($elem.val() == 'None') {
+                $fieldSelect.attr('disabled','disabled');
+                $operatorSelect.attr('disabled','disabled');
+                $valueInput.attr('disabled','disabled');
+                $fieldSelect.empty();
+                $fieldSelect.append('<option value="None">--None--</option>');
+            } else {
+                $fieldSelect.removeAttr('disabled','');
+                $operatorSelect.removeAttr('disabled','');
+                $valueInput.removeAttr('disabled','');
+                $fieldSelect.empty();
+                addFieldOptions($fieldSelect, $elem.val());
+            }
+        });
+    }
+    
+    factory.addEvent_to_selectOperator = function () {
+        $(document).on('change', '.select-operator', function() {
+            var $elem = $(this);
+            var parentIdElement = $($elem.parents('.filter-item')[0]).attr('id');
+            var $valueInput     = $('#'+parentIdElement+' .filter-compare-to-input');
+            
+            if ($elem.val() == 'is blank') {
+                $valueInput.attr('disabled','');
+            } else {
+                $valueInput.removeAttr('disabled');
+            }
+        });
+    }
+
+    factory.addEvent_to_saveBtn = function(Sobject,fieldSelectElem){
+        $('.saveGroup').on('click', function(){
+            var $saveButtons = $('.saveGroup'); 
+            $saveButtons.attr('disabled', 'disabled');
+
+            var ddpName = $('#DDPRelated').val().trim();
+            var clauseGroupName = $('#clauseGroupRelated').val().trim();
+            var isNew = {!isNewDdpTextGroup};
+            var $filterElements = $('#filter-table').find('tr.filter-row');
+            var advancedFilter = '';
+
+            if(!($('#filterAdvancedInput').attr('disabled'))){
+                advancedFilter = $('#filterAdvancedInput').val();
+                advancedFilter = advancedFilter.toUpperCase().trim();
+            }
+            filterJSONString = window.UTILS.generateFilterJSON($filterElements, advancedFilter);
+
+            if (!ddpName) {
+                window.UTILS.handleMSG('slds-theme--error', '{!$ObjectType.Loop__DDP__c.label} cannot be blank.');
+            } else if (!clauseGroupName) {
+                window.UTILS.handleMSG('slds-theme--error', 'Component Group cannot be blank.');
+            } else if (isNew && window.UTILS.allDdpCGroupNames.indexOf(clauseGroupName) > -1) {
+                window.UTILS.handleMSG('slds-theme--error', 'The Selected {!$ObjectType.Loop__DDP__c.label} and Component Group are already related.');
+            } else if (filterJSONString != 'Error'){
+                window.UTILS.ddpCGroup.advancedFilter = advancedFilter;
+                $('#filterAdvancedInput').text(filterJSONString);
+                window.UTILS.ddpCGroup.Name =  $('#name').val();
+                window.UTILS.ddpCGroup.filter = filterJSONString;
+                window.UTILS.ddpCGroup.clauseGroupName = clauseGroupName;
+                window.UTILS.ddpCGroup.ddpName = ddpName;
+                
+                var details = {
+                    id        : window.UTILS.ddpCGroup.id,
+                    Name      : window.UTILS.ddpCGroup.Name ,
+                    filter    : window.UTILS.ddpCGroup.filter,
+                    clauseGroupName : window.UTILS.ddpCGroup.clauseGroupName.trim() ,
+                    ddpName     : window.UTILS.ddpCGroup.ddpName.trim(),
+                    advancedFilter : window.UTILS.ddpCGroup.advancedFilter
+                }
+                CGRemote.upsertDDPClauseGroup(details).done(function(data){
+                    window.UTILS.handleMSG('slds-theme--success','{!$ObjectType.Loop__DDP_Text_Group__c.label} saved.');
+                    document.location = '{!JSENCODE(saveUrl)}';
+                }).fail(function(error){
+                    console.log('ERROR');
+                    window.UTILS.handleMSG('slds-theme--error', error);
+                    $saveButtons.removeAttr('disabled');
+                });
+            }
+            $saveButtons.removeAttr('disabled');
+        });
+    }
+
+    factory.addEvent_to_removeFilter = function () {
+        $(document).on('click','.remove-filter',function() {
+            var $elem = $(this);
+            var $parent = $($elem.parents('tr')[0]);
+            if ($parent) {
+                var filterId = $parent.attr('id');
+                var filterRow = $('#'+filterId)
+                if (filterRow.next().attr('class') == 'filter-error') {
+                    filterRow.next().remove();
+                }
+                filterRow.remove();
+                var $filterTable = $('#filter-table');
+                var $filterRows = $filterTable.find('tr.filter-row');
+                $filterRows.each(function(index, elem) {
+                    var $elem = $(this);
+                    $elem.attr('id', index);
+                    $elem.find('.filter-count').text(index + 1);
+                });
+                if ($filterRows.length == 1) {
+                    $('#filterAdvancedInput').attr('disabled', 'disabled');
+                }
+                if ($filterRows.length == 0) {
+                    $('#filterCriteriaContainer').remove();
+                    $('#fieldTagger').hide();
+                }
+            }
+        });
+    }
+
+    return factory;
+
+})(CGRemote, window.jQuery, window, document);
+
+
+
+var CGCtrl = (function(CGView, CGRemote, $, w){
+
+    var date =  new Date();
+    var resourceTimer = date.getTime();
+    var namespace = window.Loop ? 'loop__' : '';
+    var gearSVG_URL = '/resource/' + resourceTimer + '/' + namespace + 'SalesforceLightning/assets/icons/utility-sprite/svg/symbols.svg#settings';
+    var defaults = {
+        maxClauses : 50,
+        sobjectOptions   : ['aaaaa','sssss','dddddd','fffffff'],
+    };
+    var clauses  = [];
+    var unselectedClauses = [];
+    var selectedClauses = [];
+
+
+    var getUrlParameter = function (sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+
+    var disableLookupInputs = function() {
+        $('#DDPRelated').attr('disabled','');
+        $('#clauseGroupRelated').attr('disabled','');
+    }
+    
+    var renderFilters = function(data) {
+        var filters = [];
+        var selectAdvancedFilter = '#filterAdvancedInput';
+        var $advancedFilter = $(selectAdvancedFilter);
+
+        if (data.length == 0) {
+            $(w.UTILS.noFiltersContainer_element_id).show();
+        } else {
+            $('#fieldTagger').show();
+            if (data.length < 2) {
+                $advancedFilter.attr('disabled','');
+            }
+
+            $filterCriteriaSection = $(window.UTILS.filterCriteriaHTML);
+            $filterTable = $(window.UTILS.filterTableHTML);
+            $filterCriteriaSection.append($filterTable);
+            $('.filters-container').prepend($filterCriteriaSection);
+
+            for (var i = 0 ; i < data.length ; i++) {
+                var filter = data[i];
+                var $filter = $(w.UTILS.filterTableRowHTML);
+                $filter.attr('id', i);
+                $filter.data('filter', filter);
+                $filter.find('.filter-count').text(i + 1);
+                
+                addDdpOptions($filter.find('.select-ddp'), filter.ddp || '');
+                addObjectOptions($filter.find('.select-object'), filter.ddp);
+                addFieldOptions($filter.find('.select-field') , filter.objectName);
+                $filter.find('.select-object').val(filter.objectName || '');
+
+                $filter.find('.select-field').removeAttr('disabled');
+                $filter.find('.select-field').val(filter.fieldName || '');
+                $filter.find('.select-operator').val(filter.operator || '');
+                $filter.find('.operand2').val(filter.value || '');
+                
+                var $lastRow = $filterTable.find('tr:last');
+                $lastRow.after($filter);
+            }
+            
+            CGView.updateFilterErrors();
+        }
+    }
+
+    function init() {
+        // replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&")
+        var onGroupId = getUrlParameter('id') || null ;
+
+        w.UTILS.ddpCGroup.id   = ('{!clauseGroup.id}' == '')? null :'{!clauseGroup.id}' ;
+        w.UTILS.ddpCGroup.Name   = '{!JSENCODE(clauseGroup.Name)}';
+        w.UTILS.ddpCGroup.filter = $('#filter').val();
+        w.UTILS.ddpCGroup.advancedFilter = $('#filterAdvancedInput').val();
+        w.UTILS.ddpCGroup.clauseGroupId   = ('{!clauseGroup.Text_Group__c}' == '')? null :'{!clauseGroup.Text_Group__c}' ;
+        w.UTILS.ddpCGroup.clauseGroupName = '{!JSENCODE(clauseGroup.Text_Group__r.Name)}';
+        w.UTILS.ddpCGroup.ddpId  = ('{!clauseGroup.DDP__c}' == '') ? null : '{!clauseGroup.DDP__c}';
+        w.UTILS.ddpCGroup.ddpName  = '{!JSENCODE(clauseGroup.DDP__r.Name)}';
+        
+        $(document).on('click', '.fieldTagger', function() {
+            var url = '{!JSENCODE(clauseTaggerUrl)}';
+            url += w.UTILS.ddpCGroup.ddpId ?
+                '?id=' + w.UTILS.ddpCGroup.ddpId :
+                '?textgroup=true';
+            window.open(url, 'FieldTagger', 'left=20,top=20,width=1000,height=700,toolbar=1,resizable=0,scrollbars=1');
+        });
+        
+        CGRemote.getDdpData(w.UTILS.ddpCGroup.ddpId, onGroupId).done(function(data) {
+            CGView.addDdpRelationships(data[0]);
+            CGView.addDdpObjects(data[1]);
+            CGView.addObjectFields(data[2]);
+            CGView.addObjectLabels(data[3]);
+            
+            if (onGroupId) {
+                $('.saveGroup').text(w.UTILS.text_btn_updateGroup);
+                if (data[4]) {
+                    renderFilters(data[4]);
+                }
+            } else {
+                $('.saveGroup').text(w.UTILS.text_btn_createGroup);
+                var $advancedFilter = $('#filterAdvancedInput');
+                $advancedFilter.attr('disabled','');
+                $('#fieldTagger').hide();
+            }
+        }).fail(function(error){
+            console.log('ERROR');
+            w.UTILS.handleMSG('slds-theme--error',error);
+        });
+        
+        CGRemote.getDdpComponentGroups(w.UTILS.ddpCGroup.ddpId).done(function(data) {
+            CGView.addAllDdpComponentGroups(data);
+        }).fail(function(error) {
+            console.log('ERROR');
+            w.UTILS.handleMSG('slds-theme--error',error);
+        });
+
+        CGRemote.getSObjectsFields().done(function(data) {
+            w.UTILS.mapOF = data;
+            var objectOprionHTML = '';
+            for (var prop in data) {
+                w.UTILS.objects.push(prop);
+                objectOprionHTML += '<option value="'+prop+'">'+prop+'</option>';
+            }
+            w.UTILS.objectsOptionsHTML = objectOprionHTML;
+        }).fail(function(error){
+            console.log('ERROR');
+            w.UTILS.handleMSG('slds-theme--error',error);
+        });
+
+        CGView.addEvent_to_cancelGroup();
+        CGView.activeCloseNotification();
+        CGView.disabledFields();
+        CGView.addEvent_to_saveBtn();
+        CGView.addEvent_to_removeFilter();
+        CGView.addEvent_to_addFilter();
+        CGView.addEvent_to_selectObject();
+        CGView.addEvent_to_selectOperator();
+        CGView.addLookupIconElement();
+        CGView.addEvent_to_lookup();
+        CGView.addEvent_to_lookupSearchButton();
+        CGView.addEvent_to_selectRecordFromLookup();
+        CGView.addEvent_to_closeLookup();
+        $('#lookupContainer').append(w.UTILS.lookupHTML);
+        if ({!!isNewDdpTextGroup}) {
+            disableLookupInputs();
+        }
+    }
+
+    init();
+
+})(CGView, CGRemote , window.jQuery,window);
+
+</script>
+
+</html>
+
+</apex:page>

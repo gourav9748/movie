@@ -1,0 +1,17 @@
+<apex:page controller="c8">
+<apex:form >
+
+  <apex:pageBlock id="Details">
+  <apex:commandButton value="test" action="{!test}"/>
+<apex:pageblockSection columns="2">
+<apex:outputField value="{!acdetails2.AccountNumber}"/>
+<apex:outputField value="{!acdetails2.name}"/>
+<apex:outputField value="{!acdetails2.BillingCountry}"/>
+<apex:outputField value="{!acdetails2.Type}"/>
+ 
+</apex:pageblockSection>
+
+</apex:pageBlock>
+
+</apex:form>
+</apex:page>

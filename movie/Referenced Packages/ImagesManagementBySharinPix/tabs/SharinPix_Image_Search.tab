@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>SharinPix image search tab to view images for records provided by a report.</description>
+    <label>SharinPix Image Search</label>
+    <mobileReady>false</mobileReady>
+    <motif>Custom21: Computer</motif>
+    <page>ImageSearch</page>
+</CustomTab>

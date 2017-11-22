@@ -1,0 +1,162 @@
+.THIS .section-header {
+    height: 36px;
+	top: 2px;
+    position: relative;
+    width: 100%;
+    pointer-events: none;
+}
+.THIS .section-header-label {
+    position: absolute;
+	white-space: nowrap;
+    font-weight: 300;
+    font-size: 20px;
+}
+.THIS .section-header-extra {
+    position: absolute;
+    right: 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+.THIS .search-hidden {
+    display: none;
+}
+.THIS .icon {
+  	fill: rgb(84, 105, 141);
+    width: 10px;
+    height: 10px;
+    background-size: 6px 10px;
+    vertical-align: top;
+    margin-top: 12px;
+}
+.THIS .icon-on {
+    -ms-transform: rotate(90deg);
+    -ms-transform-origin: 50% 50%;
+    -webkit-transform: rotate(90deg);
+    -webkit-transform-origin: 50% 50%;
+    transform: rotate(90deg);
+    transform-origin: 50% 50%;
+}
+.THIS .icon-on .icon {
+    fill: #0070D2;
+}
+.THIS .font {
+    color: #0070D2;
+}
+.THIS .icon-position {
+    position: absolute;
+    height: 34px;
+    top: -2px;
+    left: -9px;
+}
+.THIS .icon-transition {
+    webkit-transition: 0.2s -webkit-transform linear,0.2s linear;
+    transition: 0.2s transform linear,0.2s linear;
+    display: inline-block;
+}
+.THIS .slds-tree-container .slds-tree .slds-tree__branch .slds-tree__group .itemHide[data-hidden=true]{
+    display: none;
+}
+.THIS .slds-tree-container .slds-tree .slds-tree__branch .sectionHide[data-hidden=true]{
+    display: none;
+}
+.THIS .slds-tree .noResultsHide[data-hidden=true] {
+ 	display: none;
+}
+.THIS .search-hidden {
+    display: none;
+}
+.THIS .tree-item {
+    padding-top: .5rem;
+    padding-right: 16px;
+    padding-bottom: .5rem;
+}
+.THIS .tree-item-bottom-border {
+    border-bottom: 1px solid rgba(216,221,230,1);
+}
+.THIS .tree-item-top-border {
+    border-top: 1px solid rgba(216,221,230,1);
+}
+.THIS .accordion-content {
+	background: #FAFBFF;
+    
+    -webkit-transition: max-height 0.5s; 
+    -moz-transition: max-height 0.5s; 
+    -ms-transition: max-height 0.5s; 
+    -o-transition: max-height 0.5s; 
+    transition: max-height 0.5s;  
+    max-height: 0;
+    -webkit-overflow-scrolling: touch;
+}
+.THIS .accordion-content-expand {
+    max-height: 522px !important;
+}
+.THIS .scrollable--y {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+    overflow-y: auto; 
+}
+.THIS .scrollable--y::-webkit-scrollbar {
+    width: 10px;
+    height: 10px; 
+}
+.THIS .scrollable--y::-webkit-scrollbar:window-inactive {
+    opacity: 0;
+}
+.THIS .scrollable--y::-webkit-scrollbar-thumb {
+    background: #e0e5ee;
+    border-radius: 8px;
+    box-shadow: #a8b7c7 0 0 0 1px inset;
+}
+.THIS .scrollable--y::-webkit-scrollbar-track {
+    background: #a8b7c7;
+}
+.THIS .input-search {
+    width: 40px !important;
+    padding-right: 24px !important;
+    color: transparent !important;
+    -webkit-transition: width 0.3s !important;
+    transition: width 0.3s !important;
+	pointer-events: auto;
+}
+.THIS .input-search:hover {
+    width: 250px !important;
+    padding-right: 32px !important;
+    color: #16325c !important;
+}
+.THIS .input-search:focus {
+    width: 250px !important;
+    padding-right: 32px !important;
+    color: #16325c !important;
+}
+.THIS .input-search-populated {
+    width: 250px !important;
+    padding-right: 32px !important;
+    color: #16325c !important;
+}
+.THIS .close-icon {
+    pointer-events: visible;
+    right: 0;
+}
+.THIS .blue-badge {
+    background-color: #0070d2;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 275px;
+    white-space: nowrap;
+    display: inline-block;
+}
+.THIS .section-disabled {
+    pointer-events: none;
+    opacity: .5;
+}
+.THIS .section-disabled.slds-is-selected {
+    opacity: 1.0;
+}
+.THIS .section-disabled.slds-is-selected .section-header-extra {
+ 	display: none;
+}
+.THIS .overflow-y-hidden {
+    overflow-y: hidden;
+}

@@ -1,0 +1,19 @@
+<aura:component controller="sharinpix.SharinPixAffixSelectorController">
+    <aura:attribute name="allAffixes" type="Object[]"/>
+    <aura:attribute name="affixes" type="String" default="[]"/>
+
+    <aura:handler name="init" value="this" action="{! c.doInit }"/>
+
+    <div class="slds-form-element">
+        <label class="slds-form-element__label">Affixes</label>
+        <div class="slds-form-element__control">
+            <aura:iteration items="{! v.allAffixes }" var="affix">
+                <lightning:input type="checkbox"
+                                 label="{! affix.label }"
+                                 name="{! affix.value }"
+                                 checked="{! affix.checked }"
+                                 onchange="{! c.handleChecked }"/>
+            </aura:iteration>
+        </div>
+    </div>
+</aura:component>

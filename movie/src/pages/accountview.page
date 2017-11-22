@@ -1,0 +1,8 @@
+<apex:page controller="MController">
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!accounts}" var="a">
+            <apex:column value="{!a.Name}"/>
+            
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

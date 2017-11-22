@@ -1,0 +1,20 @@
+<aura:component >
+    <aura:attribute name="length" type="Double" default="0"/>
+    <aura:attribute name="width" type="Double" default="0"/>
+    <aura:attribute name="result" type="Double" default="0"/>
+    <div class="slds-size_3-of-12 slds-align_absolute-center slds-m-vertical_xx-small">
+        <ui:inputNumber class="setWidth slds-align_absolute-center"
+                        value="{!v.length}" change="{!c.caculateResult}"/>
+    </div>
+    <div class="slds-size_1-of-12 slds-align_absolute-center slds-m-vertical_xx-small">X</div>
+    <div class="slds-size_3-of-12 slds-align_absolute-center slds-m-vertical_xx-small">
+        <ui:inputNumber class="setWidth slds-align_absolute-center"
+                        value="{!v.width}" change="{!c.caculateResult}"/>
+    </div>
+    <div class="slds-size_2-of-12 slds-align_absolute-center slds-m-vertical_xx-small">=</div>
+    <div class="slds-size_3-of-12 slds-align_absolute-center slds-m-vertical_xx-small">
+        <ui:inputNumber class="setWidth slds-align_absolute-center setResultcss"
+                         value="{!v.result}"
+                        disabled="true"/>
+    </div>
+</aura:component>

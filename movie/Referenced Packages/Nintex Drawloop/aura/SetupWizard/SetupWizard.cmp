@@ -1,0 +1,130 @@
+<aura:component controller="Loop.loopTools">
+    <!--Required attributes-->
+    <aura:attribute name="sessionId" type="string" required="true"/>
+    <aura:attribute name="isAuthorized" type="boolean" default="false" access="private"/>
+    
+    <!--Optional attributes-->
+    <aura:attribute name="isLightning" type="boolean" default="true"/>
+    <aura:attribute name="loopUrl" type="string" default=""/>
+    <aura:attribute name="apiUrl" type="string" default=""/>
+    
+    <!--Internal attributes-->
+    <aura:attribute name="steps" type="List" default="Edition,Users,Authorize,Integrations,Settings,Sample Document Packages,Basic Buttons" access="private"/>
+    <aura:attribute name="step" type="string" default="Splash" access="private"/>
+    <aura:attribute name="stepTitle" type="string" access="private"/>
+    <aura:attribute name="stepDescription" type="string" access="private"/>
+    <aura:attribute name="skipButtonLabel" type="string" default="Skip Wizard" access="private"/>
+    <aura:attribute name="saveButtonLabel" type="string" default="Start Wizard" access="private"/>
+    <aura:attribute name="busy" type="boolean" default="false" access="private"/>
+    <aura:attribute name="ready" type="boolean" default="true" access="private"/>
+    <aura:attribute name="complete" type="boolean" default="false" access="private"/>
+    <aura:attribute name="customizeApplication" type="boolean" default="true" access="private"/>
+    <aura:attribute name="alertType" type="string" default="" access="private"/>
+    <aura:attribute name="alertText" type="string" default="" access="private"/>
+    <aura:attribute name="sampleDdpObjects" type="List" default="" access="private"/>
+    <aura:attribute name="layoutButtonObjects" type="List" default="" access="private"/>
+    <aura:attribute name="services" type="Map" access="private" description="Contains isStandard, add-ons, allowedLicenses, usedLicenses etc."/>
+    <aura:attribute name="helpLink" type="string" default="" access="private"/>
+    <aura:attribute name="isStandard" type="boolean" default="false" access="private"/>
+    <aura:attribute name="isLoading" type="boolean" default="true" access="private"/>
+    <aura:attribute name="connectedAppsEnabled" type="boolean" default="false" access="private"/>
+    <aura:attribute name="oAuthUrl" type="string" default="" access="private"/>
+
+    <!--Handled events-->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler name="salesPathSelected" event="Loop:salesPathSelected" action="{!c.changeStep}"/>
+    <aura:handler name="moveToNextStep" event="Loop:moveToNextStep" action="{!c.moveToNextStep}"/>
+    <aura:handler name="showError" event="Loop:showError" action="{!c.showError}"/>
+    <aura:handler name="setSampleObjects" event="Loop:setSampleObjects" action="{!c.setSampleObjects}"/>
+    <aura:handler name="updateIsStandard" event="Loop:updateIsStandard" action="{!c.updateIsStandard}"/>
+    <aura:handler name="actionEvent" event="Loop:actionEvent" action="{!c.handleActionEvent}"/>
+    
+    <!--Register events-->
+    <aura:registerEvent name="showError" type="Loop:showError"/>
+    
+    <div class="slds" style="height:100%;">
+        <div aura:id="pageContent" class="content-container">
+            <div class="{!v.complete ? 'content-body' : 'content-body-with-footer'}">
+                <div class="overflow">
+                    <div class="slds-container--center slds-p-around--medium">
+                        <h1 class="slds-text-heading--large slds-m-bottom--medium" title="Nintex Drawloop Setup Wizard">Nintex Drawloop Setup Wizard</h1>
+                        <aura:if isTrue="{!v.step != 'Splash' &amp;&amp; !v.complete}">
+                            <div class="slds-m-around--medium">
+                                <div class="slds-align-middle">
+                                    <Loop:SalesPath step="{!v.step}" steps="{!v.steps}" disabled="{!v.busy}" complete="{!v.complete}"/>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.alertText != ''}">
+                            <div class="slds-m-bottom--medium">
+                                <Loop:Alert type="{!v.alertType}" text="{!v.alertText}"/>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.stepTitle != ''}">
+                            <h2 class="slds-text-heading--large">{!v.stepTitle}
+                                <aura:if isTrue="{!v.step != 'Settings'}">
+                                    <Loop:HelpLink helpTopic="{!v.helpLink}" style="height: 23px;width: 23px;margin-top: 9px;"/>
+                                </aura:if>
+                            </h2>
+                        </aura:if>
+                        <aura:if isTrue="{!v.stepDescription != ''}">
+                            <h3 class="slds-text-heading--small">{!v.stepDescription}</h3>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isLoading}">
+                            <div aura:id="loading" class="loading-container" style="min-width:60rem; height:30rem;">
+                                <div class="slds-grid slds-grid--align-center" style="width:100%; height:100%;">
+                                    <div id="spinner-container" class="slds-align-middle">
+                                        <div style="width:80px;">
+                                            <img src="/resource/Loop__SalesforceLightning/assets/images/spinners/slds_spinner_brand.gif" alt="Loading..." />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <div class="slds-m-top--medium slds-m-bottom--medium" hidden="{!v.isLoading}">
+                            <aura:if isTrue="{!!v.complete}">
+                                <aura:if isTrue="{!v.step == 'Splash'}">
+                                    <Loop:SetupWizardSplash />
+                                </aura:if>
+                                <aura:if isTrue="{!v.step == 'Edition'}">
+                                    <Loop:Edition aura:id="edition" sessionId="{!v.sessionId}" loopUrl="{!v.loopUrl}" services="{!v.services}" isAuthorized="{!v.isAuthorized}" connectedAppsEnabled="{!v.connectedAppsEnabled}" isStandard="{!v.isStandard}" isDdpAdmin="false"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.step == 'Users'}">
+                                    <Loop:SetupWizardUsers aura:id="setupUsers" isDdpAdmin="false"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.step == 'Authorize'}">
+                                    <Loop:AuthorizeLoopServices customizeApplication="{!v.customizeApplication}" loopUrl="{!v.loopUrl}"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.step == 'Integrations'}">
+                                    <Loop:ConfigureIntegrations sessionId="{!v.sessionId}" customizeApplication="{!v.customizeApplication}" loopUrl="{!v.loopUrl}" isAuthorized="{!v.isAuthorized}" oAuthUrl="{!v.oAuthUrl}"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.step == 'Settings'}">
+                                    <Loop:SetupWizardSettings aura:id="settings" sessionId="{!v.sessionId}" connectedAppsEnabled="{!v.connectedAppsEnabled}" isDdpAdmin="false"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.step == 'Sample Document Packages'}">
+                                    <Loop:SampleDdps sessionId="{!v.sessionId}" aura:id="sampleDdps" loopUrl="{!v.loopUrl}" isAuthorized="{!v.isAuthorized}" connectedAppsEnabled="{!v.connectedAppsEnabled}"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.step == 'Basic Buttons'}">
+                                    <Loop:LayoutButtons sessionId="{!v.sessionId}" aura:id="pageLayouts" customizeApplication="{!v.customizeApplication}" apiUrl="{!v.apiUrl}" isAuthorized="{!v.isAuthorized}" connectedAppsEnabled="{!v.connectedAppsEnabled}"/>
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!v.complete}">
+                                <Loop:SetupWizardEndPage isLightning="{!v.isLightning}" sampleDdpObjects="{!v.sampleDdpObjects}" layoutButtonObjects="{!v.layoutButtonObjects}"/>
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aura:if isTrue="{!!v.complete}">
+                <div aura:id="pageFooter" id="pageFooter" class="content-footer" style="{!!isLightning ? 'border-bottom-left-radius:4px; border-bottom-right-radius:4px;' : ''}">
+                    <div class="slds-x-small-buttons--horizontal">
+                        <button class="slds-button slds-button--neutral" style="{!'display:' + (v.skipButtonLabel != '' ? 'inline-block;' : 'none;')}" onclick="{!c.skipStep}" disabled="{!v.busy}">{!v.skipButtonLabel}</button>
+                        <button class="slds-button slds-button--brand slds-m-left--x-small" style="{!'display:' + (v.saveButtonLabel != '' ? 'inline-block;' : 'none;')}" onclick="{!c.save}" disabled="{!v.busy || !v.ready || ((!v.isAuthorized &amp;&amp; v.connectedAppsEnabled) &amp;&amp; (v.step == 'Edition' || v.step == 'Sample Document Packages' || v.step == 'Basic Buttons'))}">{!v.saveButtonLabel}</button>
+                        <Loop:Spinner class="slds-spinner--small" visible="{!v.busy}" useGraySpinner="true"/>
+                    </div>
+                </div>
+            </aura:if>
+        </div>
+        <Loop:Prompt aura:id="errorPrompt" headerTheme="slds-theme--error slds-theme--alert-texture" />
+    </div>
+</aura:component>

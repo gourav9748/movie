@@ -1,0 +1,1 @@
+<aura:event type="Component" description="Fires event to Run Document Package when the user is finished selecting documents." />

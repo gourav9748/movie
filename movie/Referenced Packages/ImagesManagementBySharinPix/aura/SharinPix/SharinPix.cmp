@@ -1,0 +1,37 @@
+<aura:component access="GLOBAL"
+                implements="force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
+                controller="sharinpix.SharinPixLightningController">
+  <aura:dependency resource="sharinpix:Loading"/>
+  <aura:dependency resource="ui:message"/>
+  <aura:registerEvent name="Event" type="sharinpix:Event"/>
+
+  <aura:attribute name="AlbumId" type="String" access="GLOBAL"/>
+  <aura:attribute name="recordId" type="String"/>
+  <aura:attribute name="height" type="Integer" access="GLOBAL"/>
+  <aura:attribute name="enableAction" type="boolean" access="GLOBAL"/>
+  <aura:attribute name="url" type="String"/>
+  <aura:attribute name="loading" type="Boolean" default="true"/>
+  <aura:attribute name="fullscreen" type="Boolean" default="false"/>
+  <aura:attribute name="sharinpixError" type="String"/>
+  <aura:attribute name="permissionId" type="String" access="GLOBAL"/>
+
+  <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
+  <!--<aura:handler event="aura:locationChange" action="{! c.doReload }"/>-->
+  <aura:handler name="change" value="{! v.AlbumId }" action="{! c.doReload }"/>
+  <aura:handler name="change" value="{! v.recordId }" action="{! c.doReload }"/>
+  <aura:method name="reload" action="{! c.doReload }"/>
+
+  <div aura:id="sharinpix" class="sharinpix-container" style="{! 'height:' + v.height + 'px;' }">
+    <aura:if isTrue="{! v.loading }">
+      <sharinpix:Loading />
+    </aura:if>
+    <aura:if isTrue="{! v.url }">
+      <iframe aura:id="iframe" class="{! 'sharinpix-iframe' + (v.fullscreen ? ' fullscreen' : '') }" src="{! v.url }" onload="{! c.onLoaded }"></iframe>
+    </aura:if>
+    <aura:if isTrue="{! v.sharinpixError }">
+      <ui:message title="Error" severity="Error">
+        {! v.sharinpixError }
+      </ui:message>
+    </aura:if>
+  </div>
+</aura:component>

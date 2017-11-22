@@ -1,0 +1,52 @@
+<apex:page controller="Loop.NintexFormsExt" title="Nintex Forms" standardStylesheets="false" showHeader="false" >
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #F0F1F2;
+        }
+    </style>
+    <script>
+        function log(msg) {
+            var d = document.createElement('DIV');
+            d.innerText = msg;
+            document.body.appendChild(d);
+        };
+        function goToForm(formName) {
+            try{
+                if (formName) {
+                    if (window.sforce && sforce.one && sforce.one.navigateToURL) {
+                        var baseUrl = '{!JSENCODE(loopurl)}';
+                        var relativePath = '{!JSENCODE(relativePath)}';
+                        var url = 'nintexmobile://form?name='+encodeURIComponent(formName) + '&returnUrl=' + encodeURIComponent('salesforce1://');
+                        var shouldBeAndroid = /Android/i.test(window.navigator.userAgent);
+                        if (shouldBeAndroid) {
+                            sforce.one.navigateToURL(baseUrl + relativePath + encodeURIComponent(url));
+                        } else {
+                            window.top.location = url;
+                        }
+                    } else {
+                        alert('Unable to redirect.');
+                    }
+                } else {
+                    alert('Please select a form.');
+                }
+            } catch(ex) { 
+                alert('Unable to redirect.');
+                if ('{!debug}' == 'true') {
+                    alert(ex);
+                }
+            }
+        }
+    </script>
+    <apex:form >
+        <div class="form-group">
+            <apex:outputLabel style="font-size: 150%;" for="formSelect" value="Select a Form" />
+            <apex:selectList style="font-size: 125%;" id="formSelect" size="1" styleClass="form-control formSelect">
+                <apex:selectOption itemValue="" itemLabel="--Select a form--" />
+                <apex:selectOptions value="{!ddpOptions}" />
+            </apex:selectList>
+        </div>
+        <apex:commandLink styleClass="btn btn-primary" value="Run Form" onclick="goToForm(document.getElementsByClassName('formSelect')[0].value); return false;" />
+        <br />
+    </apex:form>
+</apex:page>

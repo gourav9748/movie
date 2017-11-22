@@ -1,0 +1,63 @@
+<apex:page standardController="sharinpix__SharinPixPermission__c" extensions="sharinpix.SharinPixPermissionController">
+    <apex:form >
+        <apex:actionFunction action="{!cancelEdit}" name="cancel" />
+
+        <apex:actionFunction action="{!updatePermission}" name="update" rerender="showstate">
+            <apex:param name="name" assignTo="{!name}" value="" />
+            <apex:param name="description" assignTo="{!description}" value="" />
+            <apex:param name="json" assignTo="{!jsonfile}" value="" />
+        </apex:actionFunction>
+
+    </apex:form>
+
+    <apex:canvasApp developerName="Albums" parameters="{path: '/abilities'}" maxheight="infinite" height="1200px" width="100%" scrolling="auto"/>
+
+    <script>
+        (function(){
+            window.addEventListener('message', function(event){
+                if (event.origin !== 'https://app.sharinpix.com'){
+                    return;
+                }
+                switch(event.data.name) {
+                    case 'ability-loaded':
+                        loaded(event);
+                        break;
+                    case 'cancel':
+                        cancel();
+                        break;
+                    case 'update':
+                        update(event.data.payload.name, event.data.payload.description, JSON.stringify(event.data.payload.token));
+                        break;
+                    case 'resize':
+                        resize(event.data.payload.height);
+                        break;
+                    default:
+                        console.log('unhandled event: ', event.data);
+                }
+            });
+        })()
+
+        function resize(height){
+            Sfdc.canvas.parent.resize({height: height+'px'});
+        }
+
+        function loaded(e){
+            var isNew = false;
+            var recordName = '{!JSENCODE(name)}';
+            var description = '{!JSENCODE(description)}';
+            var token = '{!JSENCODE(jsonfile)}' == '' ? '{}' : '{!JSENCODE(jsonfile)}';
+            var readOnly = false;
+            var edit = false
+            if ('{!vfMode}' == 'New'){
+                isNew = true;
+            }
+            if ('{!vfMode}' == 'View'){
+                readOnly = true;
+            }
+            if ('{!vfMode}' == 'Edit'){
+                edit = true;
+            }
+            e.source.postMessage({name: 'ready', payload: { isNew: isNew, readOnly: readOnly, edit: edit, name: recordName, description: description, token: JSON.parse(token) } }, e.origin);
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Fire when OAuth is successful. Optionally return 'sessionId' and/or 'location'">
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="location" type="String"/>
+    <aura:attribute name="authorizingUser" type="String"/>
+</aura:event>

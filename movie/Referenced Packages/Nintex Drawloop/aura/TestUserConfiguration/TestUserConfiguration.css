@@ -1,0 +1,14 @@
+.THIS .move-up-1px {
+	position: relative;
+	bottom: 1px;
+}
+.THIS .move-down-1px {
+	position: relative;
+	top: 1px;
+}
+.THIS .slds-icon--xx-small {
+    line-height: 1;
+    border-radius: .25rem;
+    width: .750rem;
+    height: .750rem;
+}

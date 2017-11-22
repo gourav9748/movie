@@ -1,0 +1,6 @@
+<aura:event type="Component" description="Updates data on Run DDP when the DocuSign reminder settings have been modified.">
+    <aura:attribute name="reminderDelay" type="decimal" default="0" description="DocuSign expiration and reminder settings from DS deliveries."/>
+    <aura:attribute name="daysTillSigningExpires" type="decimal" default="0" description="DocuSign expiration and reminder settings from DS deliveries."/>
+    <aura:attribute name="reminderFrequency" type="decimal" default="0" description="DocuSign expiration and reminder settings from DS deliveries."/>
+    <aura:attribute name="warnOfExpiration" type="decimal" default="0" description="DocuSign expiration and reminder settings from DS deliveries."/>
+</aura:event>

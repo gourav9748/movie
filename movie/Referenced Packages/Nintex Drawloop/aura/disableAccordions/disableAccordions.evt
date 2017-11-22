@@ -1,0 +1,3 @@
+<aura:event type="Component" description="Disables and enables the accordions.">
+    <aura:attribute name="disable" type="boolean" default="false"/>
+</aura:event>

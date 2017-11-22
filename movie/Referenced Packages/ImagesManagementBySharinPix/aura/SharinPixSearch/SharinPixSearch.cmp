@@ -1,0 +1,50 @@
+<aura:component controller="sharinpix.SharinPixSearchController" access="global" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable">
+    <aura:attribute name="reportId" type="String" access="global"/>
+    <aura:attribute name="reportParameters" type="String" access="global"/>
+    <aura:attribute name="tagOperator" type="String" default="OR" access="global"/>
+    <aura:attribute name="tagNames" type="String" access="global"/>
+    <aura:attribute name="affixes" type="String" access="global"/>
+    <aura:attribute name="height" type="String" access="global" default="500"/>
+
+    <aura:attribute name="searchUrl" type="String" default=""/>
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+    <aura:attribute name="tokens" type="Object"/>
+    <aura:attribute name="errorMsg" type="String"/>
+
+    <aura:attribute name="eventListener" type="Object"/>
+    <aura:attribute name="searchReady" type="Boolean" default="false"/>
+    <aura:attribute name="debouncedFn" type="Object"/>
+
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
+
+    <aura:handler name="change" value="{! v.reportId }" action="{! c.startSearch }"/>
+    <aura:handler name="change" value="{! v.reportParameters }" action="{! c.startSearch }"/>
+    <aura:handler name="change" value="{! v.tagOperator }" action="{! c.startSearch }"/>
+    <aura:handler name="change" value="{! v.tagNames }" action="{! c.startSearch }"/>
+    <aura:handler name="change" value="{! v.affixes }" action="{! c.startSearch }"/>
+
+    <aura:handler name="change" value="{! v.searchUrl }" action="{! c.startLoading }"/>
+
+    <aura:handler name="change" value="{! v.tokens }" action="{! c.handleNewTokens }"/>
+    <aura:handler name="change" value="{! v.searchReady }" action="{! c.handleNewTokens }"/>
+
+    <aura:method name="startSearch" action="{! c.startSearch }"/>
+
+    <div style="{! 'display: ' + (empty(v.errorMsg) &amp;&amp; !v.loading &amp;&amp; empty(v.searchUrl) ? 'none' : 'block') }">
+        <div style="{! 'display: ' + (empty(v.errorMsg) ? 'block' : 'none') }">
+            <div style="{! 'display: ' + (v.loading ? 'block' : 'none') + '; height: ' + v.height + 'px' }">
+                <sharinpix:Loading />
+            </div>
+            <div style="{! 'display: ' + (v.loading ? 'none' : 'block') }">
+                <iframe aura:id="SharinPix" src="{! v.searchUrl }" width="100%" height="{! v.height + 'px' }" style="border: 0;"></iframe>
+            </div>
+            <!-- sandbox="allow-same-origin allow-scripts" -->
+            <!-- allow-forms allow-popups allow-popups-to-escape-sandbox  -->
+        </div>
+        <div style="{! 'display: ' + (empty(v.errorMsg) ? 'none' : 'block') }">
+            <ui:message title="Error" severity="Error">
+                {! v.errorMsg }
+            </ui:message>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,28 @@
+<apex:page controller="AllObjectDetails">
+<apex:pageblock >
+<apex:pageBlockSection columns="2">
+<apex:outputPanel >
+<apex:form >
+  <apex:selectList multiselect="false" value="{!objectApiName}" label="{!objectName}">
+        <apex:selectOptions value="{!options}" />
+        <apex:actionSupport event="onchange" action="{!allFields}" reRender="panel2"/>
+    </apex:selectList>
+     
+</apex:form>  
+
+</apex:outputPanel>
+<apex:outputPanel id="panel2" >  
+
+ <apex:pageBlockTable value="{!fieldDetails}" var="field" rendered="{!show}">
+    <apex:column headerValue="FieldApiName" value="{!field.fieldApiName}"/>
+    <apex:column headerValue="FieldName" value="{!field.label}"/> 
+    <apex:column headerValue="Creatable" value="{!field.creatable}"/> 
+    <apex:column headerValue="Type" value="{!field.type}"/> 
+ </apex:pageBlockTable>
+     
+ 
+</apex:outputPanel>
+</apex:pageBlockSection> 
+  </apex:pageblock>
+  
+</apex:page>

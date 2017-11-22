@@ -1,0 +1,5 @@
+<apex:page controller="ankittest2" ><apex:form >
+  
+<apex:outputText value="Name"></apex:outputText>
+<apex:inputText value="{!inputValue}" id="theTextInput"/>
+</apex:form></apex:page>

@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION">
+    
+    <aura:attribute name="LocationName" type="ProductConfiguration.location"/>
+    
+</aura:event>

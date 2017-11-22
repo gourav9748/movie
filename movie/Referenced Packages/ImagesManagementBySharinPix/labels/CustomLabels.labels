@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ApiTestFailure</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ApiTestFailure</shortDescription>
+        <value>Test failed: Verify that the information provided are valid.</value>
+    </labels>
+    <labels>
+        <fullName>ClientInformationMissing</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ClientInformationMissing</shortDescription>
+        <value>Both client id and client secret must be filled.</value>
+    </labels>
+    <labels>
+        <fullName>CredentialSuccess</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CredentialSuccess</shortDescription>
+        <value>Credentials has been successfully updated.</value>
+    </labels>
+    <labels>
+        <fullName>ErrorSeeConsole</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ErrorSeeConsole</shortDescription>
+        <value>Error - See console for details.</value>
+    </labels>
+    <labels>
+        <fullName>ImageNotFound</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Image Not Found</shortDescription>
+        <value>URL not found.</value>
+    </labels>
+    <labels>
+        <fullName>InvalidParameters</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>InvalidParameters</shortDescription>
+        <value>Invalid parameters.</value>
+    </labels>
+    <labels>
+        <fullName>InvalidReportId</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>InvalidReportId</shortDescription>
+        <value>Invalid report ID provided.</value>
+    </labels>
+    <labels>
+        <fullName>NoSearchResults</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>NoSearchResults</shortDescription>
+        <value>No search results found.</value>
+    </labels>
+    <labels>
+        <fullName>ReportGenerateError</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ReportGenerateError</shortDescription>
+        <value>Error in generating report - {0}[{1}]: {2}</value>
+    </labels>
+    <labels>
+        <fullName>ReportNoID</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ReportNoID</shortDescription>
+        <value>Report contains no ID column.</value>
+    </labels>
+    <labels>
+        <fullName>ReportNoRows</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ReportNoRows</shortDescription>
+        <value>Report returned no rows.</value>
+    </labels>
+    <labels>
+        <fullName>Save</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SecretNotConfigured</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SecretNotConfigured</shortDescription>
+        <value>SharinPix Secret has not been configured. Please contact your system administrator.</value>
+    </labels>
+    <labels>
+        <fullName>Token_Size</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Token Size</shortDescription>
+        <value>25</value>
+    </labels>
+</CustomLabels>

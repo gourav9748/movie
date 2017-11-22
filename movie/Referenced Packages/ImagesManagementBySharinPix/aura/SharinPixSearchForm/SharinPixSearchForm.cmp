@@ -1,0 +1,38 @@
+<aura:component access="global">
+    <aura:attribute name="reportId" type="String" access="global"/>
+    <aura:attribute name="reportParameters" type="String" access="global"/>
+    <aura:attribute name="tagOperator" type="String" default="OR" access="global"/>
+    <aura:attribute name="tagNames" type="String" access="global"/>
+    <aura:attribute name="affixes" type="String" access="global"/>
+
+    <aura:attribute name="resultsHeight" type="String" default="500" access="global"/>
+
+    <div class="slds-form_stacked slds-m-around_small">
+        <div class="slds-grid slds-wrap slds-grid_pull-padded slds-grid_align-center">
+            <div class="slds-size_1-of-1 slds-medium-size_4-of-6 slds-large-size_8-of-12">
+                <sharinpix:SharinPixSearchReportSelector aura:id="reportSelector"
+                                                 reportId="{! v.reportId }"
+                                                 reportParameters="{! v.reportParameters }"/>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-p-around_small slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                        <sharinpix:SharinPixSearchTagSelector aura:id="tagSelector"
+                                                      tagOperator="{! v.tagOperator }"
+                                                      tagNames="{! v.tagNames }"/>
+                    </div>
+                    <div class="slds-p-around_small slds-size_1-of-2 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                        <sharinpix:SharinPixSearchAffixSelector aura:id="affixSelector"
+                                                        affixes="{! v.affixes }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <sharinpix:SharinPixSearch aura:id="searchResults"
+                           reportId="{! v.reportId }"
+                           reportParameters="{! v.reportParameters }"
+                           tagOperator="{! v.tagOperator }"
+                           tagNames="{! v.tagNames }"
+                           affixes="{! v.affixes }"
+                           height="{! v.resultsHeight }"/>
+    </div>
+</aura:component>

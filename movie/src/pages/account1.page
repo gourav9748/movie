@@ -1,0 +1,78 @@
+<apex:page controller="MultiPageList">
+
+<apex:form >
+
+    <apex:dataTable value="{!bgList}" var="acc" id="theBigTable">
+
+         <apex:facet name="caption">Big List</apex:facet>
+
+        <apex:column >
+
+            <apex:facet name="header">Id</apex:facet>
+
+            <apex:outputText value="{!acc.Id}"/>
+
+        </apex:column>
+
+        <apex:column >
+
+            <apex:facet name="header">Name</apex:facet>
+
+            <apex:outputText value="{!acc.Name}"/>
+
+        </apex:column>
+
+    </apex:dataTable>
+
+     
+
+     
+
+     
+
+    -----------------------SMALL LIST---------------------
+
+     
+
+        <apex:dataTable value="{!smList}" var="acc" id="theSmallTable">
+
+         <apex:facet name="caption">Small List</apex:facet>
+
+        <apex:column >
+
+            <apex:facet name="header">Id</apex:facet>
+
+            <apex:outputText value="{!acc.Id}"/>
+
+        </apex:column>
+
+        <apex:column >
+
+            <apex:facet name="header">Name</apex:facet>
+
+            <apex:outputText value="{!acc.Name}"/>
+
+        </apex:column>
+
+    </apex:dataTable>
+
+     
+
+       <apex:commandButton action="{!prevPage}" value="prevPage" id="prevButton" rerender="theSmallTable"/>
+
+        
+
+          <apex:commandButton action="{!nextPage}" value="nextPage" id="NextButton" rerender="theSmallTable"/>
+
+     
+
+ 
+
+ 
+
+</apex:form>
+
+ 
+ 
+
+</apex:page>
